@@ -1,0 +1,11 @@
+Flask
+Flask-Login
+Flask-FlatPages
+Flask-Babel
+Flask-WTF
+Flask-SQLAlchemy
+Flask-Migrate
+Bootstrap-Flask
+SQLAlchemy-Utils
+Authlib
+WTForms-Alchemy

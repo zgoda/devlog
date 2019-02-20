@@ -1,2 +1,3 @@
 # devlog
-My dev log
+
+My dev log. And other logs.

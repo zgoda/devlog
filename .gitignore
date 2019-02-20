@@ -43,6 +43,7 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+cov.xml
 *.cover
 .hypothesis/
 .pytest_cache/
@@ -89,6 +90,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+_venv
 
 # Spyder project settings
 .spyderproject
@@ -102,3 +104,12 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# vscode
+.vscode
+*.code-workspace
+
+**/secrets/*.py
+
+# pycharm and others
+.idea

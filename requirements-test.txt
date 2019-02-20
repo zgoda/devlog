@@ -1,0 +1,8 @@
+-r requirements.txt
+
+pytest
+pytest-mock
+pytest-cov
+pytest-runner
+pytest-factoryboy
+pytest-flask
