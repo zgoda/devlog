@@ -1,4 +1,4 @@
-class BrewlogTests:
+class DevlogTests:
 
     def login(self, email):
         return self.client.get('/auth/local?email=%s' % email, follow_redirects=True)
