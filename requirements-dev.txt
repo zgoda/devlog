@@ -19,3 +19,4 @@ Sphinx
 towncrier
 
 flask-shell-ipython
+Flask-Migrate
