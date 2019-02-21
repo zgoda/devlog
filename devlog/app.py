@@ -10,13 +10,12 @@ from .templates import setup_template_extensions
 
 
 def make_app(env=None):
-    if not os.environ.get('FLASK_ENV', '') == 'development':
+    if os.environ.get('FLASK_ENV', '') != 'development':
         configure_logging()
-    app = Flask(__name__)
+    app = Flask(__name__.split('.')[0])
     configure_app(app, env)
     configure_extensions(app, env)
     with app.app_context():
-        configure_auth(app, env)
         configure_hooks(app, env)
         configure_blueprints(app, env)
         configure_error_handlers(app, env)
@@ -38,7 +37,7 @@ def configure_app(app, env):
     if os.environ.get('DEVLOG_CONFIG_SECRETS'):
         app.logger.info('secrets loaded from %s' % os.environ.get('DEVLOG_CONFIG_SECRETS'))
         app.config.from_envvar('DEVLOG_CONFIG_SECRETS')
-    if app.config['DEBUG']:
+    if app.debug:
         @app.route('/favicon.ico')
         def favicon():
             return send_from_directory(os.path.join(app.root_path, 'static'),
@@ -56,7 +55,8 @@ def configure_blueprints(app, env):
 
 def configure_extensions(app, env):
     db.init_app(app)
-    migrate.init_app(app, db)
+    if app.debug:
+        migrate.init_app(app, db)
     csrf.init_app(app)
     oauth.init_app(app)
     bootstrap.init_app(app)
@@ -81,10 +81,6 @@ def configure_extensions(app, env):
             return lang
 
     babel.init_app(app)
-
-
-def configure_auth(app, env):
-    pass
 
 
 def configure_logging():
