@@ -71,8 +71,8 @@ def configure_extensions(app, env):
 
     @login_manager.user_loader
     def get_user(userid):
-        from .models.users import BrewerProfile
-        return BrewerProfile.query.get(userid)
+        from .models import User
+        return User.query.get(userid)
 
     if not app.testing:
         @babel.localeselector
