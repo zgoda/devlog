@@ -11,16 +11,17 @@
     <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
     {% endif %}
     <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.min.css">
-    {% block extrastyles %}
+    <link rel="stylesheet" href="/static/css/app.css">
+    {% block extracss %}
     {% endblock %}
     {% block headjs %}
     {% endblock %}
   </head>
   <body>
 
-    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand" href="/">Dev Log</a>
+        <a class="navbar-brand" href="/">DevLog</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-toggler" aria-controls="navbar-toggler" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -29,24 +30,29 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Link</a>
             </li>
+          </ul>
+          <form class="form-inline mr-auto my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search">
+            <button class="btn btn-outline-default my-2 my-sm-0" type="submit">Search</button>
+          </form>
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbar-dropdown-menu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown link</a>
+              <a class="nav-link dropdown-toggle" href="#" id="navbar-dropdown-menu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-user-alt"></span>&nbsp;Account tools</a>
               <div class="dropdown-menu" aria-labelledby="navbar-dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
+                {% if current_user.is_authenticated %}
                 <a class="dropdown-item" href="#">Another action</a>
                 <a class="dropdown-item" href="#">Something else here</a>
+                {% else %}
+                <a class="dropdown-item" href="{{ url_for('auth.select') }}"><span class="fas fa-sign-in-alt"></span>&nbsp;{{ gettext('Login') }}</a>
+                {% endif %}
               </div>
             </li>
           </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
         </div>
       </div>
     </nav>
 
-    <div class="container">
+    <div class="container mt-4">
       <div class="row">
         <div class="col-12" id="flash-container">
         {% with flashes = get_flashed_messages(with_categories=True) %}

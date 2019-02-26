@@ -51,6 +51,8 @@ def configure_hooks(app, env):
 def configure_blueprints(app, env):
     from .home import home_bp
     app.register_blueprint(home_bp)
+    from .auth import auth_bp
+    app.register_blueprint(auth_bp, url_prefix='/auth')
 
 
 def configure_extensions(app, env):
