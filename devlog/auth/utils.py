@@ -17,6 +17,7 @@ def login_success(email, access_token, remote_id, service, **kwargs):
     if user is None:
         user = User(email=email, remote_user_id=remote_id, oauth_service=service)
     user.access_token = access_token
+    kwargs.pop('id', None)
     for k, v in kwargs.items():
         setattr(user, k, v)
     db.session.add(user)
@@ -26,7 +27,7 @@ def login_success(email, access_token, remote_id, service, **kwargs):
     flash(
         gettext(
             'you have been signed in as %(ident)s using %(service)s',
-            email=ident, service=service
+            ident=ident, service=service
         ), category='success'
     )
     return redirect(next_redirect('home.index'))

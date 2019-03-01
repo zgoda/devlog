@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
     {% endif %}
     <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/static/css/app.css">
     {% block extracss %}
     {% endblock %}
     {% block headjs %}
@@ -40,7 +39,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="navbar-dropdown-menu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-user-alt"></span>&nbsp;Account tools</a>
               <div class="dropdown-menu" aria-labelledby="navbar-dropdown-menu">
                 {% if current_user.is_authenticated %}
-                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="{{ url_for('user.details', user_id=current_user.id) }}"><span class="fas fa-user-cog"></span>&nbsp;{{ gettext('Account') }}</a>
                 <a class="dropdown-item" href="#">Something else here</a>
                 {% else %}
                 <a class="dropdown-item" href="{{ url_for('auth.select') }}"><span class="fas fa-sign-in-alt"></span>&nbsp;{{ gettext('Login') }}</a>
