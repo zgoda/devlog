@@ -1,9 +1,10 @@
-from flask import render_template, request, flash, redirect, url_for, session
+from flask import flash, redirect, render_template, request, session, url_for
 from flask_babel import lazy_gettext as gettext
+from flask_login import login_required, logout_user
 
+from . import auth_bp, provider as providers
 from ..ext import oauth
-from . import auth_bp
-from . import provider as providers
+from ..utils.views import next_redirect
 from .utils import login_success
 
 
@@ -48,3 +49,10 @@ def github_login_callback():
                 email, access_token, user_data['id'], 'github', **user_data,
             )
     return redirect(url_for('.select'))
+
+
+@auth_bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(next_redirect('home.index'))

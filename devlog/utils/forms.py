@@ -1,5 +1,5 @@
-from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext as gettext
+from flask_wtf import FlaskForm
 from wtforms.widgets import HTMLString, html_params
 
 from ..ext import db
@@ -19,15 +19,17 @@ class ObjectForm(FlaskForm):
 
 class SubmitButton:
 
-    def __init__(self, icon_type='fas', icon=None):
+    def __init__(self, button_type='primary', icon_type='fas', icon='sticky-note'):
         self.icon_type = icon_type
         self.icon = icon
+        self.button_type = button_type
 
     def __call__(self, field, **kwargs):
         icon_class = ' '.join([self.icon_type, 'fa-%s' % self.icon])
+        button_class = ' '.join(['btn', 'btn-%s' % self.button_type])
         return HTMLString(
             '<button {params}><span {icon}></span>&nbsp;{text}</button>'.format(
-                params=html_params(type='submit', class_='btn btn-primary'),
+                params=html_params(type='submit', class_=button_class),
                 icon=html_params(class_=icon_class),
                 text=gettext('save'),
             )
