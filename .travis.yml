@@ -3,8 +3,6 @@ language: python
 python:
   - "3.7"
   - "3.6"
-env:
-  - CODACY_PROJECT_TOKEN=ca32d9205ba348208855c70af8a682be
 install:
   - pip install -U codacy-coverage
   - pip install -U -r requirements-test.txt
