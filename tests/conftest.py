@@ -11,7 +11,7 @@ register(UserFactory)
 
 @pytest.fixture
 def app():
-    app = make_app('test')
+    app = make_app(env='test')
     with app.app_context():
         db.create_all()
         yield app

@@ -20,10 +20,6 @@ FLATPAGES_MARKDOWN_EXTENSIONS = []
 BABEL_DEFAULT_LOCALE = 'pl'
 BABEL_DEFAULT_TIMEZONE = 'Europe/Warsaw'
 
-# display limits
-SHORTLIST_DEFAULT_LIMIT = 5
-LIST_DEFAULT_LIMIT = 10
-
 AUTH_CONFIG = {
     'google': ('app_id', 'app_secret'),
     'facebook': ('app_id', 'app_secret'),
