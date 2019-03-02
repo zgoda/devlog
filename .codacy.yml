@@ -1,0 +1,10 @@
+exclude_paths:
+  - '*'
+  - 'docs/**'
+  - 'tests/**'
+  - 'devlog/_version.py'
+  - 'devlog/config.py'
+  - 'devlog/wsgi.py'
+  - 'devlog/secrets/**'
+  - 'devlog/static/**'
+  - 'devlog/templates/**'
