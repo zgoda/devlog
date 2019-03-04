@@ -1,4 +1,4 @@
-from flask import url_for
+from flask import url_for, escape
 
 import pytest
 
@@ -36,3 +36,13 @@ class TestUserViews(DevlogTests):
         rv = self.client.post(self.profile_url, data=data, follow_redirects=True)
         page = rv.data.decode('utf-8')
         assert 'value="{}"'.format(new_name) in page
+
+    def test_user_profile_authenticated_update_failure(self, user_factory):
+        user = user_factory(name='Ivory Tower')
+        self.login(email=user.email)
+        new_email = 'invalid&email:com'
+        data = {'email': new_email}
+        rv = self.client.post(self.profile_url, data=data, follow_redirects=True)
+        page = rv.data.decode('utf-8')
+        assert 'value="{}"'.format(escape(new_email)) in page
+        assert 'Invalid email address' in page

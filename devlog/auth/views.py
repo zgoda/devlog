@@ -36,7 +36,7 @@ def local_login_callback(email):
 
 
 @auth_bp.route('/github/callback', endpoint='callback-github')
-def github_login_callback():
+def github_login_callback():  # pragma: nocover
     token_data = oauth.github.authorize_access_token()
     if token_data:
         access_token = token_data.get('access_token')
