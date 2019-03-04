@@ -10,10 +10,6 @@ class User(db.Model, UserMixin):
 
     __tablename__ = 'users'
 
-    __mapper_args__ = {
-        'confirm_deleted_rows': False,
-    }
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200))
     blurb = db.Column(db.Text)
@@ -50,10 +46,6 @@ class Blog(db.Model):
 
     __tablename__ = 'blog'
 
-    __mapper_args__ = {
-        'confirm_deleted_rows': False,
-    }
-
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('blogs', lazy='dynamic'))
@@ -67,10 +59,6 @@ class Blog(db.Model):
 class Post(db.Model):
 
     __tablename__ = 'post'
-
-    __mapper_args__ = {
-        'confirm_deleted_rows': False,
-    }
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
