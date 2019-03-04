@@ -1,16 +1,16 @@
 from flask import flash, redirect, render_template, request
 from flask_babel import lazy_gettext as gettext
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from . import user_bp
 from ..models import User
 from .forms import UserForm
 
 
-@user_bp.route('/<int:user_id>', methods=['POST', 'GET'])
+@user_bp.route('', methods=['POST', 'GET'])
 @login_required
-def details(user_id):
-    user = User.query.get_or_404(user_id)
+def profile():
+    user = User.query.get_or_404(current_user.id)
     form = None
     if request.method == 'POST':
         form = UserForm()

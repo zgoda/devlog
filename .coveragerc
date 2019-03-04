@@ -8,3 +8,4 @@ omit =
     */ext.py
     */templates.py
     */__init__.py
+    */secrets/*

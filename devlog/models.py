@@ -22,6 +22,7 @@ class User(db.Model, UserMixin):
     oauth_service = db.Column(db.String(50))
     remote_user_id = db.Column(db.Text)
     is_active = db.Column(db.Boolean, default=True)
+    is_public = db.Column(db.Boolean, default=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     __table_args__ = (
