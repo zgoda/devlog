@@ -1,4 +1,4 @@
-from flask_sqlalchemy.model import Model
+from flask_sqlalchemy.model import Model as BaseModel
 
 
 class MappedModelMixin:
@@ -8,5 +8,5 @@ class MappedModelMixin:
     }
 
 
-class Model(Model, MappedModelMixin):
+class Model(BaseModel, MappedModelMixin):
     pass
