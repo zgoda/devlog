@@ -1,9 +1,11 @@
-tests/*
-docs/*
+tests/**
+docs/**
 manage.py
 setup.py
+versioneer.py
 
-devlog/_version.py
-devlog/wsgi.py
-devlog/config*.py
-devlog/secrets/*
+*/_version.py
+*/wsgi.py
+*/config*.py
+*/secrets/**
+*/static/vendor/**
