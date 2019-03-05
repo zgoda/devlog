@@ -1,0 +1,9 @@
+tests/*
+docs/*
+manage.py
+setup.py
+
+devlog/_version.py
+devlog/wsgi.py
+devlog/config*.py
+devlog/secrets/*
