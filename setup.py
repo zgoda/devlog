@@ -50,6 +50,8 @@ setup(
         'Authlib',
         'markdown2',
         'WTForms-Alchemy',
+        # pinned
+        'SQLAlchemy<1.3',
     ),
     setup_requires=(
         'pytest-runner',

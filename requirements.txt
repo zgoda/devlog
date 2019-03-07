@@ -9,3 +9,6 @@ Bootstrap-Flask
 SQLAlchemy-Utils
 Authlib
 WTForms-Alchemy
+
+# pinned
+SQLAlchemy<1.3
