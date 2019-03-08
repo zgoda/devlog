@@ -13,6 +13,8 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200))
     blurb = db.Column(db.Text)
+    blurb_html = db.Column(db.Text)
+    blurb_markup_type = db.Column(db.String(50))
     email = db.Column(db.String(200), index=True)
     access_token = db.Column(db.Text)
     oauth_service = db.Column(db.String(50))
@@ -47,13 +49,19 @@ class Blog(db.Model):
     __tablename__ = 'blog'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='set null'))
     user = db.relationship('User', backref=db.backref('blogs', lazy='dynamic'))
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
     name = db.Column(db.String(200), nullable=False, index=True)
     blurb = db.Column(db.Text)
+    blurb_html = db.Column(db.Text)
+    blurb_markup_type = db.Column(db.String(50))
     is_active = db.Column(db.Boolean, default=True)
-    is_public = db.Column(db.Boolean, default=False)
+    is_public = db.Column(db.Boolean, default=True)
+
+    __table_args__ = (
+        db.Index('ix_blog_active_public', 'is_active', 'is_public'),
+    )
 
 
 class Post(db.Model):
@@ -61,8 +69,6 @@ class Post(db.Model):
     __tablename__ = 'post'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    user = db.relationship('User', backref=db.backref('posts', lazy='dynamic'))
     blog_id = db.Column(db.Integer, db.ForeignKey('blog.id'))
     blog = db.relationship('Blog', backref=db.backref('posts', lazy='dynamic'))
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
@@ -70,5 +76,6 @@ class Post(db.Model):
     title = db.Column(db.String(200))
     text = db.Column(db.Text)
     text_html = db.Column(db.Text)
+    text_markup_type = db.Column(db.String(50))
     mood = db.Column(db.String(50))
-    is_public = db.Column(db.Boolean, default=False)
+    is_draft = db.Column(db.Boolean, default=True)

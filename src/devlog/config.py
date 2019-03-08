@@ -25,13 +25,3 @@ AUTH_CONFIG = {
     'facebook': ('app_id', 'app_secret'),
     'github': ('app_id', 'app_secret'),
 }
-
-try:
-    from .secrets.config_local import *  # noqa
-except ImportError:
-    pass
-
-try:
-    from .secrets.secrets import *  # noqa
-except ImportError:
-    pass

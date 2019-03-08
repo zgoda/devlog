@@ -1,11 +1,12 @@
 [run]
 omit =
     tests/*
-    */_version.py
-    */wsgi.py
-    */config*.py
-    */app.py
-    */ext.py
-    */templates.py
-    */__init__.py
-    */secrets/*
+    docs/*
+    **/_version.py
+    **/wsgi.py
+    **/config*.py
+    **/app.py
+    **/ext.py
+    **/templates.py
+    **/__init__.py
+    **/secrets/*

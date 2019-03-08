@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='DevLog',
+    name='devlog',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     author='Jarek Zgoda',
@@ -19,7 +19,8 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     license='MIT',
-    packages=find_packages(exclude=['docs', 'tests', 'secrets']),
+    packages=find_packages('src', exclude=['*.secrets']),
+    package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
     url='http://github.com/zgoda/devlog',
@@ -48,7 +49,6 @@ setup(
         'Bootstrap-Flask',
         'SQLAlchemy-Utils',
         'Authlib',
-        'markdown2',
         'WTForms-Alchemy',
         # pinned
         'SQLAlchemy<1.3',

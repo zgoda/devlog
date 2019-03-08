@@ -1,1 +1,1 @@
-devlog/_version.py export-subst
+src/devlog/_version.py export-subst

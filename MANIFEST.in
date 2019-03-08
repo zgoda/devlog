@@ -1,9 +1,3 @@
-exclude devlog/secrets/*.py
-include devlog/secrets/*.template
 include versioneer.py
-include devlog/_version.py
 
-recursive-include devlog/pages *
-recursive-include devlog/static *
-recursive-include devlog/templates *
-recursive-include devlog/translations *
+graft src
