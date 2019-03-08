@@ -27,21 +27,25 @@ def configure_app(app, env):
     app.config.from_object('devlog.config')
     if env is not None:
         try:
-            app.config.from_object('devlog.config_%s' % env)
+            app.config.from_object(f'devlog.config_{env}')
         except ImportStringError:
             # module is not importable
             pass
-    if os.environ.get('DEVLOG_CONFIG_LOCAL'):
-        app.logger.info('local configuration loaded from %s' % os.environ.get('DEVLOG_CONFIG_LOCAL'))
+    config_local = os.environ.get('DEVLOG_CONFIG_LOCAL')
+    if config_local:
+        app.logger.info(f'local configuration loaded from {config_local}')
         app.config.from_envvar('DEVLOG_CONFIG_LOCAL')
-    if os.environ.get('DEVLOG_CONFIG_SECRETS'):
-        app.logger.info('secrets loaded from %s' % os.environ.get('DEVLOG_CONFIG_SECRETS'))
+    config_secrets = os.environ.get('DEVLOG_CONFIG_SECRETS')
+    if config_secrets:
+        app.logger.info(f'secrets loaded from {config_secrets}')
         app.config.from_envvar('DEVLOG_CONFIG_SECRETS')
     if app.debug:
         @app.route('/favicon.ico')
         def favicon():
-            return send_from_directory(os.path.join(app.root_path, 'static'),
-                'favicon.ico', mimetype='image/vnd.microsoft.icon')
+            return send_from_directory(
+                os.path.join(app.root_path, 'static'), 'favicon.ico',
+                mimetype='image/vnd.microsoft.icon'
+            )
 
 
 def configure_hooks(app, env):
@@ -108,12 +112,12 @@ def configure_logging():
 def configure_error_handlers(app, env):
     @app.errorhandler(403)
     def forbidden_page(error):
-        return render_template("errors/403.html"), 403
+        return render_template("errors/403.jinja"), 403
 
     @app.errorhandler(404)
     def page_not_found(error):
-        return render_template("errors/404.html"), 404
+        return render_template("errors/404.jinja"), 404
 
     @app.errorhandler(500)
     def server_error_page(error):
-        return render_template("errors/500.html"), 500
+        return render_template("errors/500.jinja"), 500

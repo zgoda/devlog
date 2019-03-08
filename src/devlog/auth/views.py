@@ -10,7 +10,7 @@ from .utils import login_success
 
 @auth_bp.route('/select')
 def select():
-    return render_template('auth/select.html')
+    return render_template('auth/select.jinja')
 
 
 @auth_bp.route('/<provider>/login')
@@ -25,7 +25,7 @@ def login(provider):
             ), category='danger'
         )
         return redirect(url_for('.select'))
-    endpoint = '.callback-{}'.format(provider)
+    endpoint = f'.callback-{provider}'
     callback = url_for(endpoint, _external=True)
     return service.authorize_redirect(callback)
 

@@ -25,8 +25,8 @@ class SubmitButton:
         self.button_type = button_type
 
     def __call__(self, field, **kwargs):
-        icon_class = ' '.join([self.icon_type, 'fa-%s' % self.icon])
-        button_class = ' '.join(['btn', 'btn-%s' % self.button_type])
+        icon_class = ' '.join([self.icon_type, f'fa-{self.icon}'])
+        button_class = ' '.join(['btn', f'btn-{self.button_type}'])
         return HTMLString(
             '<button {params}><span {icon}></span>&nbsp;{text}</button>'.format(
                 params=html_params(type='submit', class_=button_class),

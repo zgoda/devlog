@@ -19,9 +19,3 @@ FLATPAGES_MARKDOWN_EXTENSIONS = []
 # babel
 BABEL_DEFAULT_LOCALE = 'pl'
 BABEL_DEFAULT_TIMEZONE = 'Europe/Warsaw'
-
-AUTH_CONFIG = {
-    'google': ('app_id', 'app_secret'),
-    'facebook': ('app_id', 'app_secret'),
-    'github': ('app_id', 'app_secret'),
-}
