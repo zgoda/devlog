@@ -1,1 +1,14 @@
 {% extends "base.jinja" %}
+
+{% block sidebar %}
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 class="card-title">{{ gettext('blogs') }}</h2>
+  </div>
+</div>
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 class="card-title">{{ gettext('recent posts') }}</h2>
+  </div>
+</div>
+{% endblock %}

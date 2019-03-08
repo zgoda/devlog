@@ -4,6 +4,7 @@ from flask_login import login_required, current_user
 
 from . import user_bp
 from .forms import UserForm
+from ..utils.forms import DeleteForm
 
 
 @user_bp.route('', methods=['POST', 'GET'])
@@ -30,4 +31,9 @@ def profile():
 @user_bp.route('/remove', methods=['POST', 'GET'])
 @login_required
 def remove():
-    pass
+    deactivation_form = delete_form = None
+    context = {
+        'deactivation_form': deactivation_form or DeleteForm(),
+        'delete_form': delete_form or DeleteForm()
+    }
+    return render_template('user/remove.jinja', **context)

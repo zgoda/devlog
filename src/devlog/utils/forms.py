@@ -1,8 +1,13 @@
 from flask_babel import lazy_gettext as gettext
 from flask_wtf import FlaskForm
+from wtforms.fields import BooleanField
 from wtforms.widgets import HTMLString, html_params
 
 from ..ext import db
+
+
+class DeleteForm(FlaskForm):
+    delete_id = BooleanField(gettext('confirm'), default=False)
 
 
 class ObjectForm(FlaskForm):

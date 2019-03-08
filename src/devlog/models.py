@@ -41,7 +41,7 @@ class User(db.Model, UserMixin):
         ).first()
 
     def display_name(self):
-        return self.name or self.email.split('@')[0] or gettext('anonymous')
+        return self.name or self.email.split('@')[0] or gettext('no name')
 
 
 class Blog(db.Model):

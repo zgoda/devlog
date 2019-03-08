@@ -7,17 +7,7 @@
 {% block content %}
 <h1>{{ gettext('account details') }}</h1>
 {{ render_form(form, action=url_for('user.profile'), form_type='horizontal') }}
-{% endblock %}
-
-{% block sidebar %}
-<div class="card mb-4">
-  <div class="card-body">
-    <h2 class="card-title">{{ gettext('blogs') }}</h2>
-  </div>
-</div>
-<div class="card mb-4">
-  <div class="card-body">
-    <h2 class="card-title">{{ gettext('recent posts') }}</h2>
-  </div>
-</div>
+<h2>{{ gettext('remove or deactivate account') }}</h2>
+<p>{% trans %}If you decide to leave follow the below link to deactivate or completely remove your account. We will miss you.{% endtrans %}</p>
+<p><a href="{{ url_for('user.remove') }}" class="btn btn-danger"><span class="fas fa-skull-crossbones"></span>&nbsp;{{ gettext('bye!') }}</a></p>
 {% endblock %}
