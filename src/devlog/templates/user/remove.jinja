@@ -1,7 +1,15 @@
 {% extends "user/base.jinja" %}
 
+{% from 'bootstrap/form.html' import render_form %}
+
 {% block pagetitle %}{{ gettext('remove or deactivate account') }}{% endblock %}
 
 {% block content %}
 <h1>{{ gettext('remove or deactivate account') }}</h1>
+<h2>{{ gettext('account deactivation') }}</h2>
+<p>{% trans %}If you want just temporarily suspend your account but still retain it ad possibly reactivate later then just make it inactive. All your content will become effectively hidden.{% endtrans %}</p>
+{{ render_form(deactivation_form, action=url_for('user.deactivate'), form_type='horizontal') }}
+<h2>{{ gettext('account removal') }}</h2>
+<p>{% trans %}Deleting account is destructive process. It can not be reverted. All your content will be deleted and if you decide to rejoin us later, it will be lost so be careful.{% endtrans %}</p>
+{{ render_form(delete_form, action=url_for('user.delete'), form_type='horizontal') }}
 {% endblock content %}

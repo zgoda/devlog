@@ -28,12 +28,23 @@ def profile():
     return render_template('user/details.jinja', **context)
 
 
-@user_bp.route('/remove', methods=['POST', 'GET'])
+@user_bp.route('/remove')
 @login_required
-def remove():
-    deactivation_form = delete_form = None
+def deactivate_or_delete():
     context = {
-        'deactivation_form': deactivation_form or DeleteForm(),
-        'delete_form': delete_form or DeleteForm()
+        'deactivation_form': DeleteForm(),
+        'delete_form': DeleteForm()
     }
     return render_template('user/remove.jinja', **context)
+
+
+@user_bp.route('/deactivate')
+@login_required
+def deactivate():
+    pass
+
+
+@user_bp.route('/delete')
+@login_required
+def delete():
+    pass
