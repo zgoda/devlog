@@ -4,6 +4,7 @@ python:
   - "3.7"
   - "3.6"
 install:
+  - pip install -e .
   - pip install -U codacy-coverage
   - pip install -U -r requirements-test.txt
 script:
