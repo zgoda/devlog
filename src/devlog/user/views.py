@@ -1,9 +1,10 @@
-from flask import flash, redirect, render_template, request
+from flask import flash, redirect, render_template, request, url_for
 from flask_babel import lazy_gettext as gettext
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, logout_user
 
 from . import user_bp
 from .forms import UserForm
+from ..ext import db
 from ..utils.forms import DeleteForm
 
 
@@ -38,13 +39,27 @@ def deactivate_or_delete():
     return render_template('user/remove.jinja', **context)
 
 
-@user_bp.route('/deactivate')
+@user_bp.route('/deactivate', methods=['POST'])
 @login_required
 def deactivate():
-    pass
+    form = DeleteForm()
+    if form.confirm():
+        current_user.active = False
+        db.session.add(current_user)
+        db.session.commit()
+        flash(gettext('Account deactivated'), category='success')
+    return redirect(url_for('.profile'))
 
 
-@user_bp.route('/delete')
+@user_bp.route('/delete', methods=['POST'])
 @login_required
 def delete():
-    pass
+    form = DeleteForm()
+    if form.confirm():
+        user_name = current_user.name or current_user.email or gettext('no name')
+        logout_user()
+        db.session.delete(current_user)
+        db.session.commit()
+        flash(gettext('Account for user %(name)s deleted', name=user_name), category='success')
+        return redirect(url_for('home.index'))
+    return redirect(url_for('.profile'))

@@ -29,8 +29,13 @@ class SubmitButton:
 
 
 class DeleteForm(FlaskForm):
-    delete_id = BooleanField(gettext('confirm'), default=False)
+    delete_it = BooleanField(gettext('confirm'), default=False)
     submit_button = StringField('', widget=SubmitButton(icon='check', text=gettext('confirm')))
+
+    def confirm(self):
+        if self.delete_it.data:
+            return True
+        return False
 
 
 class ObjectForm(FlaskForm):

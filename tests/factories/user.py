@@ -8,7 +8,7 @@ from devlog.models import User
 class UserFactory(SQLAlchemyModelFactory):
 
     email = factory.Faker('email')
-    is_public = True
+    public = True
 
     class Meta:
         model = User

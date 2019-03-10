@@ -9,6 +9,6 @@ class UserForm(ObjectForm):
     name = StringField(gettext('name'))
     blurb = TextAreaField(gettext('blurb'))
     email = StringField(gettext('email'), validators=[Email(), Optional()])
-    is_active = BooleanField(gettext('active'), default=True)
-    is_public = BooleanField(gettext('public'), default=False)
+    active = BooleanField(gettext('active'), default=True)
+    public = BooleanField(gettext('public'), default=False)
     submit_button = StringField('', widget=SubmitButton(icon='check'))

@@ -19,8 +19,8 @@ class User(db.Model, UserMixin):
     access_token = db.Column(db.Text)
     oauth_service = db.Column(db.String(50))
     remote_user_id = db.Column(db.Text)
-    is_active = db.Column(db.Boolean, default=True)
-    is_public = db.Column(db.Boolean, default=False)
+    active = db.Column(db.Boolean, default=True)
+    public = db.Column(db.Boolean, default=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     __table_args__ = (
@@ -28,7 +28,7 @@ class User(db.Model, UserMixin):
     )
 
     def is_active(self):
-        return self.is_active
+        return self.active
 
     @classmethod
     def get_by_email(cls, email):
@@ -56,11 +56,11 @@ class Blog(db.Model):
     blurb = db.Column(db.Text)
     blurb_html = db.Column(db.Text)
     blurb_markup_type = db.Column(db.String(50))
-    is_active = db.Column(db.Boolean, default=True)
-    is_public = db.Column(db.Boolean, default=True)
+    active = db.Column(db.Boolean, default=True)
+    public = db.Column(db.Boolean, default=True)
 
     __table_args__ = (
-        db.Index('ix_blog_active_public', 'is_active', 'is_public'),
+        db.Index('ix_blog_active_public', 'active', 'public'),
     )
 
 
@@ -78,4 +78,4 @@ class Post(db.Model):
     text_html = db.Column(db.Text)
     text_markup_type = db.Column(db.String(50))
     mood = db.Column(db.String(50))
-    is_draft = db.Column(db.Boolean, default=True)
+    draft = db.Column(db.Boolean, default=True)
