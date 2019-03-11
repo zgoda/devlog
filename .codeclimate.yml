@@ -1,0 +1,27 @@
+version: "2"
+plugins:
+  git-legal:
+    enabled: true
+exclude_patterns:
+  - "docs/"
+  - "tests/"
+  - "secrets/"
+  - "**/_version.py"
+  - "**/wsgi.py"
+  - "**/config*.py"
+  - "**/app.py"
+  - "**/ext.py"
+  - "**/__init__.py"
+  - "versioneer.py"
+  - "manage.py"
+  - "setup.py"
+  - "**/static/"
+  - "**/translations/"
+  - "**/templates/"
+checks:
+  argument-count:
+    config:
+      threshold: 8
+  method-complexity:
+    config:
+      threshold: 10
