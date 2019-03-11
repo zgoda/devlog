@@ -49,7 +49,7 @@ class Blog(db.Model):
     __tablename__ = 'blog'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='set null'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'))
     user = db.relationship('User', backref=db.backref('blogs', lazy='dynamic'))
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
     name = db.Column(db.String(200), nullable=False, index=True)
@@ -69,7 +69,7 @@ class Post(db.Model):
     __tablename__ = 'post'
 
     id = db.Column(db.Integer, primary_key=True)
-    blog_id = db.Column(db.Integer, db.ForeignKey('blog.id'))
+    blog_id = db.Column(db.Integer, db.ForeignKey('blog.id', ondelete='cascade'))
     blog = db.relationship('Blog', backref=db.backref('posts', lazy='dynamic'))
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
     updated = db.Column(db.DateTime, onupdate=datetime.datetime.utcnow)

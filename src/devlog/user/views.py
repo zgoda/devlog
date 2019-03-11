@@ -31,24 +31,11 @@ def profile():
 
 @user_bp.route('/remove')
 @login_required
-def deactivate_or_delete():
+def confirm_delete():
     context = {
-        'deactivation_form': DeleteForm(),
         'delete_form': DeleteForm()
     }
     return render_template('user/remove.jinja', **context)
-
-
-@user_bp.route('/deactivate', methods=['POST'])
-@login_required
-def deactivate():
-    form = DeleteForm()
-    if form.confirm():
-        current_user.active = False
-        db.session.add(current_user)
-        db.session.commit()
-        flash(gettext('Account deactivated'), category='success')
-    return redirect(url_for('.profile'))
 
 
 @user_bp.route('/delete', methods=['POST'])
@@ -57,9 +44,9 @@ def delete():
     form = DeleteForm()
     if form.confirm():
         user_name = current_user.name or current_user.email or gettext('no name')
-        logout_user()
         db.session.delete(current_user)
         db.session.commit()
+        logout_user()
         flash(gettext('Account for user %(name)s deleted', name=user_name), category='success')
         return redirect(url_for('home.index'))
     return redirect(url_for('.profile'))
