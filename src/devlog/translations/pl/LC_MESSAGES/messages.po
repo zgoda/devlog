@@ -1,0 +1,146 @@
+# Polish translations for Devlog.
+# Copyright (C) 2019 Jarek Zgoda
+# This file is distributed under the same license as the Devlog project.
+# Jarek Zgoda <jarek.zgoda@gmail.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-03-12 23:17+0100\n"
+"PO-Revision-Date: 2019-03-12 23:18+0100\n"
+"Last-Translator: Jarek Zgoda <jarek.zgoda@gmail.com>\n"
+"Language: pl\n"
+"Language-Team: pl <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
+"(n%100<10 || n%100>=20) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: src/devlog/app.py:75
+msgid "Please log in to access this page"
+msgstr ""
+
+#: src/devlog/models.py:44 src/devlog/user/views.py:46
+msgid "no name"
+msgstr "bez nazwy"
+
+#: src/devlog/auth/utils.py:28
+#, python-format
+msgid "you have been signed in as %(ident)s using %(service)s"
+msgstr ""
+
+#: src/devlog/auth/views.py:23
+#, python-format
+msgid "service %(provider)s is not supported"
+msgstr ""
+
+#: src/devlog/templates/base.jinja:39
+msgid "account tools"
+msgstr "narzędzia konta"
+
+#: src/devlog/templates/base.jinja:42
+msgid "account"
+msgstr "konto"
+
+#: src/devlog/templates/base.jinja:43
+msgid "sign out"
+msgstr "wylogowanie"
+
+#: src/devlog/templates/base.jinja:45
+msgid "sign in"
+msgstr "zaloguj się"
+
+#: src/devlog/templates/auth/select.jinja:7
+#: src/devlog/templates/auth/select.jinja:10
+msgid "select login provider"
+msgstr "wybierz serwis logowania"
+
+#: src/devlog/templates/auth/select.jinja:11
+msgid "Select site to authenticate with"
+msgstr ""
+
+#: src/devlog/templates/user/base.jinja:6
+msgid "blogs"
+msgstr "blogi"
+
+#: src/devlog/templates/user/base.jinja:11
+msgid "recent posts"
+msgstr "ostatnie posty"
+
+#: src/devlog/templates/user/details.jinja:5
+msgid "user account details"
+msgstr ""
+
+#: src/devlog/templates/user/details.jinja:8
+msgid "account details"
+msgstr ""
+
+#: src/devlog/templates/user/details.jinja:10
+#: src/devlog/templates/user/remove.jinja:5
+#: src/devlog/templates/user/remove.jinja:8
+msgid "remove account"
+msgstr "usuń konto"
+
+#: src/devlog/templates/user/details.jinja:11
+msgid ""
+"You may temporarily deactivate your account using the form above. To "
+"completely remove your account click the button below to get to "
+"confirmation page. We will miss you."
+msgstr ""
+
+#: src/devlog/templates/user/details.jinja:12
+msgid "bye!"
+msgstr "bywaj!"
+
+#: src/devlog/templates/user/remove.jinja:9
+msgid ""
+"Deleting account is destructive process. It can not be reverted. All your"
+" content will be deleted and if you decide to rejoin us later, it will be"
+" lost so be careful."
+msgstr ""
+
+#: src/devlog/templates/user/remove.jinja:10
+msgid "You will be logged out and redirected to site home page."
+msgstr ""
+
+#: src/devlog/user/forms.py:9
+msgid "name"
+msgstr "nazwa"
+
+#: src/devlog/user/forms.py:10
+msgid "blurb"
+msgstr ""
+
+#: src/devlog/user/forms.py:11
+msgid "email"
+msgstr "email"
+
+#: src/devlog/user/forms.py:12
+msgid "active"
+msgstr "aktywny"
+
+#: src/devlog/user/forms.py:13
+msgid "public"
+msgstr "publiczny"
+
+#: src/devlog/user/views.py:22
+#, python-format
+msgid "Data for user %(name)s has been saved"
+msgstr ""
+
+#: src/devlog/user/views.py:50
+#, python-format
+msgid "Account for user %(name)s deleted"
+msgstr ""
+
+#: src/devlog/utils/forms.py:16
+msgid "save"
+msgstr "zapisz"
+
+#: src/devlog/utils/forms.py:32 src/devlog/utils/forms.py:33
+msgid "confirm"
+msgstr "potwierdź"
+
