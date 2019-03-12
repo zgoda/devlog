@@ -11,7 +11,7 @@ services:
     environment:
       - PG_HOST=db
     volumes:
-      - ./devlog:/app/devlog
+      - ./src/devlog:/app/devlog
     image: zgoda/devlog
     entrypoint:
       - /bin/sh

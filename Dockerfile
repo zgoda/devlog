@@ -4,7 +4,7 @@ RUN apk --no-cache add \
     bash build-base \
     libffi-dev postgresql-dev
 
-ADD devlog /app/devlog/
+ADD src/devlog /app/devlog/
 COPY requirements*.txt manage.py /app/
 
 WORKDIR /app
