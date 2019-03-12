@@ -1,14 +1,14 @@
-# Translations template for PROJECT.
+# Translations template for devlog.
 # Copyright (C) 2019 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
+# This file is distributed under the same license as the devlog project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
+"Project-Id-Version: devlog 0+untagged.46.ge4f1937.dirty\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-03-12 23:17+0100\n"
+"POT-Creation-Date: 2019-03-12 23:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -85,8 +85,8 @@ msgstr ""
 #: src/devlog/templates/user/details.jinja:11
 msgid ""
 "You may temporarily deactivate your account using the form above. To "
-"completely remove your account click the button below to get to "
-"confirmation page. We will miss you."
+"completely remove your account click the button below to get to confirmation "
+"page. We will miss you."
 msgstr ""
 
 #: src/devlog/templates/user/details.jinja:12
@@ -95,9 +95,9 @@ msgstr ""
 
 #: src/devlog/templates/user/remove.jinja:9
 msgid ""
-"Deleting account is destructive process. It can not be reverted. All your"
-" content will be deleted and if you decide to rejoin us later, it will be"
-" lost so be careful."
+"Deleting account is destructive process. It can not be reverted. All your "
+"content will be deleted and if you decide to rejoin us later, it will be lost"
+" so be careful."
 msgstr ""
 
 #: src/devlog/templates/user/remove.jinja:10
