@@ -59,6 +59,8 @@ def configure_blueprints(app, env):
     app.register_blueprint(auth_bp, url_prefix='/auth')
     from .user import user_bp
     app.register_blueprint(user_bp, url_prefix='/user')
+    from .blog import blog_bp
+    app.register_blueprint(blog_bp, url_prefix='/blog')
 
 
 def configure_extensions(app, env):

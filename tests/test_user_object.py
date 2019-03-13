@@ -6,7 +6,7 @@ from devlog.ext import db
 from . import DevlogTests
 
 
-@pytest.mark.usefixtures('client_class')
+@pytest.mark.usefixtures('app')
 class TestUserObject(DevlogTests):
 
     def test_defaults(self):

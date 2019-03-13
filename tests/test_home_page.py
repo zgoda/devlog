@@ -14,6 +14,4 @@ class TestMainPage(DevlogTests):
 
     def test_anon_login_url(self):
         r = self.client.get(self.url)
-        page = r.data.decode('utf-8')
-        login_url = url_for('auth.select')
-        assert login_url in page
+        assert url_for('auth.select') in r.text

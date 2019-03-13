@@ -12,6 +12,7 @@ flake8-builtins
 flake8-bugbear
 flake8-mutable
 flake8-blind-except
+flake8-comprehensions
 cohesion
 doc8
 rope

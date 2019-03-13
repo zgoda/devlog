@@ -58,6 +58,7 @@ class Blog(db.Model):
     blurb_markup_type = db.Column(db.String(50))
     active = db.Column(db.Boolean, default=True)
     public = db.Column(db.Boolean, default=True)
+    default = db.Column(db.Boolean, default=False)
 
     __table_args__ = (
         db.Index('ix_blog_active_public', 'active', 'public'),
@@ -79,3 +80,8 @@ class Post(db.Model):
     text_markup_type = db.Column(db.String(50))
     mood = db.Column(db.String(50))
     draft = db.Column(db.Boolean, default=True)
+    pinned = db.Column(db.Boolean, default=False)
+
+    __table_args__ = (
+        db.Index('ix_post_draft_pinned', 'draft', 'pinned'),
+    )

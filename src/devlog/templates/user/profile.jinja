@@ -1,0 +1,3 @@
+{% extends "user/base.jinja" %}
+
+{% block pagetitle %}{{ gettext('profile page for %(user_name)s', user_name=user.display_name()) }}{% endblock %}

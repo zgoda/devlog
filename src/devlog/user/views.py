@@ -1,16 +1,17 @@
-from flask import flash, redirect, render_template, request, url_for
+from flask import abort, flash, redirect, render_template, request, url_for
 from flask_babel import lazy_gettext as gettext
-from flask_login import login_required, current_user, logout_user
+from flask_login import current_user, login_required, logout_user
 
 from . import user_bp
-from .forms import UserForm
 from ..ext import db
+from ..models import User
 from ..utils.forms import DeleteForm
+from .forms import UserForm
 
 
 @user_bp.route('', methods=['POST', 'GET'])
 @login_required
-def profile():
+def account():
     form = None
     if request.method == 'POST':
         form = UserForm()
@@ -27,6 +28,18 @@ def profile():
         'form': form or UserForm(obj=current_user)
     }
     return render_template('user/details.jinja', **context)
+
+
+@user_bp.route('/<int:user_id>')
+@login_required
+def profile(user_id):
+    user = User.query.get_or_404(user_id)
+    if not (user.public and user.active):
+        abort(404)
+    context = {
+        'user': user
+    }
+    return render_template('user/profile.jinja', **context)
 
 
 @user_bp.route('/remove')
@@ -49,4 +62,4 @@ def delete():
         logout_user()
         flash(gettext('Account for user %(name)s deleted', name=user_name), category='success')
         return redirect(url_for('home.index'))
-    return redirect(url_for('.profile'))
+    return redirect(url_for('.account'))
