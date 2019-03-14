@@ -3,7 +3,9 @@ from flask_babel import lazy_gettext as gettext
 from flask_login import login_required
 
 from . import blog_bp
-from ..models import Blog
+from ..ext import db
+from ..models import Blog, Post
+from ..utils.pagination import get_page
 from .forms import BlogForm
 
 
@@ -29,7 +31,10 @@ def create():
 @blog_bp.route('/<int:blog_id>', methods=['POST', 'GET'])
 def display(blog_id):
     blog = Blog.query.get_or_404(blog_id)
+    page = get_page()
+    pagination = blog.posts.order_by(db.desc(Post.updated)).paginate(page, 10)
     context = {
         'blog': blog,
+        'posts': pagination,
     }
     return render_template('blog/display.jinja', **context)

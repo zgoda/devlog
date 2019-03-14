@@ -7,7 +7,7 @@ def url_for_other_page(page):
     return url_for(request.endpoint, **args)
 
 
-def get_page(request, arg_name='p'):
+def get_page(arg_name='p'):
     try:
         return int(request.args.get(arg_name, '1'))
     except ValueError:

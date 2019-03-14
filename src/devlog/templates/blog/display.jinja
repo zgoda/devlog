@@ -1,7 +1,22 @@
 {% extends "blog/base.jinja" %}
 
+{% from "macros/blog.jinja" import render_post_headline %}
+
 {% block pagetitle %}{{ blog.name }}{% endblock %}
 
 {% block content %}
 <h1>{{ blog.name }}</h1>
+{% if blog.blurb_html %}
+{{ blog.blurb_html|safe }}
+{% endif %}
+{% if current_user == blog.user %}
+<ul class="list-inline">
+  <li class="list-inline-item"><i class="fas fa-cog"></i></li>
+  <li class="list-inline-item"><a href="">{{ gettext('edit blog') }}</a></li>
+  <li class="list-inline-item"><a href="">{{ gettext('add post') }}</a></li>
+</ul>
+{% endif %}
+{% for post in posts.iter_pages() %}
+{{ render_post_headline(post) }}
+{% endfor %}
 {% endblock %}

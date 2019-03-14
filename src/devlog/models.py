@@ -106,6 +106,7 @@ class Post(db.Model, MarkupProcessingMixin):
     text = db.Column(db.Text)
     text_html = db.Column(db.Text)
     text_markup_type = db.Column(db.String(50))
+    summary_html = db.Column(db.Text)
     mood = db.Column(db.String(50))
     draft = db.Column(db.Boolean, default=True)
     pinned = db.Column(db.Boolean, default=False)
@@ -121,5 +122,9 @@ class Post(db.Model, MarkupProcessingMixin):
         )
 
 
-db.event.listen(Post, 'before_insert', Post.process_markup)
-db.event.listen(Post, 'before_update', Post.process_markup)
+@db.event.listens_for(Post, 'before_insert')
+@db.event.listens_for(Post, 'before_update')
+def post_before_save(mapper, connection, target):
+    Post.process_markup(mapper, connection, target)
+    summary = target.text.split()[:10]
+    target.summary_html = target.markup_to_html(summary, target.text_markup_type)
