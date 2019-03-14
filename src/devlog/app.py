@@ -18,7 +18,7 @@ def make_app(env=None):
     with app.app_context():
         configure_hooks(app, env)
         configure_blueprints(app, env)
-        configure_error_handlers(app, env)
+        configure_error_handlers(app)
         setup_template_extensions(app)
     return app
 
@@ -111,7 +111,7 @@ def configure_logging():
     })
 
 
-def configure_error_handlers(app, env):
+def configure_error_handlers(app):
     @app.errorhandler(403)
     def forbidden_page(error):
         return render_template("errors/403.jinja"), 403

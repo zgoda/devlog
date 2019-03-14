@@ -7,6 +7,7 @@
 {% block content %}
 <h1>{{ gettext('account details').capitalize() }}</h1>
 {{ render_form(form, action=url_for('user.account'), form_type='horizontal') }}
+<p><a href="{{ url_for('user.profile', user_id=current_user.id) }}">{{ gettext('view your profile page').capitalize() }}</a></p>
 <h2>{{ gettext('remove account') }}</h2>
 <p>{% trans %}You may temporarily deactivate your account using the form above. To completely remove your account click the button below to get to confirmation page. We will miss you.{% endtrans %}</p>
 <p><a href="{{ url_for('user.confirm_delete') }}" class="btn btn-danger"><span class="fas fa-skull-crossbones"></span>&nbsp;{{ gettext('bye!') }}</a></p>

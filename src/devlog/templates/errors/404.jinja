@@ -1,0 +1,8 @@
+{% extends "errors/base.jinja" %}
+
+{% block pagetitle %}{{ gettext('page not found').capitalize() }}{% endblock %}
+
+{% block widecontent %}
+<h1>{{ gettext('page not found').capitalize() }}</h1>
+<p>{% trans %}The page you requested could not be found{% endtrans %}.</p>
+{% endblock %}

@@ -31,7 +31,7 @@ class User(db.Model, UserMixin, MarkupProcessingMixin):
     @classmethod
     def markup_fields(cls):
         return MarkupFields(
-            source='blurb', dest='blurb_html', processor='blurb_markup_type'
+            source='blurb', dest='blurb_html', processor='blurb_markup_type',
         )
 
     def is_active(self):
@@ -78,7 +78,7 @@ class Blog(db.Model, MarkupProcessingMixin):
     @classmethod
     def markup_fields(cls):
         return MarkupFields(
-            source='blurb', dest='blurb_html', processor='blurb_markup_type'
+            source='blurb', dest='blurb_html', processor='blurb_markup_type',
         )
 
 
@@ -110,7 +110,7 @@ class Post(db.Model, MarkupProcessingMixin):
     @classmethod
     def markup_fields(cls):
         return MarkupFields(
-            source='text', dest='text_html', processor='text_markup_type'
+            source='text', dest='text_html', processor='text_markup_type',
         )
 
 
