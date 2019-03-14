@@ -11,6 +11,7 @@ class UserForm(ObjectForm):
     blurb = TextAreaField(gettext('blurb'))
     blurb_markup_type = SelectField(
         gettext('blurb markup processor'), choices=User.SMP_CHOICES,
+        validators=[Optional()],
     )
     email = StringField(gettext('email'), validators=[Email(), Optional()])
     active = BooleanField(gettext('active'), default=True)
