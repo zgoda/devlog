@@ -34,7 +34,7 @@ def account():
 @login_required
 def profile(user_id):
     user = User.query.get_or_404(user_id)
-    if not (user.public and user.active):
+    if user != current_user and not (user.public and user.active):
         abort(404)
     context = {
         'user': user

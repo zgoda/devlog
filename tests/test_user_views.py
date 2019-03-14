@@ -103,3 +103,40 @@ class TestProfileView(UserViewsTests):
         rv = self.client.get(self.url(user))
         assert rv.status_code == 302
         assert url_for('auth.select') in rv.headers['Location']
+
+    def test_authenticated_profile_accessible(self, user_factory):
+        user = user_factory(name='Ivory Tower', public=True, active=True)
+        actor = user_factory(name='Snowflake White')
+        self.login(actor.email)
+        rv = self.client.get(self.url(user))
+        assert 'Profile page for Ivory Tower' in rv.text
+
+    @pytest.mark.parametrize('public,active', [
+        (False, True),
+        (True, False),
+        (False, False),
+    ], ids=['private-active', 'public-inactive', 'private-inactive'])
+    def test_authenticated_profile_inaccessible(self, public, active, user_factory):
+        user = user_factory(name='Ivory Tower', public=public, active=active)
+        actor = user_factory(name='Snowflake White')
+        self.login(actor.email)
+        rv = self.client.get(self.url(user))
+        assert rv.status_code == 404
+
+    def test_owner_profile_accessible(self, user_factory):
+        user = user_factory(name='Ivory Tower', public=True, active=True)
+        self.login(user.email)
+        rv = self.client.get(self.url(user))
+        assert 'Profile page for Ivory Tower' in rv.text
+
+    @pytest.mark.parametrize('public,active', [
+        (False, True),
+        (True, False),
+        (False, False),
+    ], ids=['private-active', 'public-inactive', 'private-inactive'])
+    def test_owner_profile_inaccessible(self, public, active, user_factory):
+        user = user_factory(name='Ivory Tower', public=public, active=active)
+        self.login(user.email)
+        rv = self.client.get(self.url(user))
+        assert rv.status_code == 200
+        assert 'no one except you can see this page' in rv.text

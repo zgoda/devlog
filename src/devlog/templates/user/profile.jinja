@@ -1,11 +1,14 @@
 {% extends "user/base.jinja" %}
 
-{% block pagetitle %}{{ gettext('profile page for %(user_name)s', user_name=user.display_name()) }}{% endblock %}
+{% block pagetitle %}{{ gettext('Profile page for %(user_name)s', user_name=user.display_name()) }}{% endblock %}
 
 {% block content %}
-<h1>{{ gettext('profile page for %(user_name)s', user_name=user.display_name()) }}</h1>
+<h1>{{ gettext('Profile page for %(user_name)s', user_name=user.display_name()) }}</h1>
+{% if user == current_user and not (user.active and user.public) %}
+<p class="lead">{{ gettext('Your account is inactive or set as private (or both), no one except you can see this page') }}.</p>
+{% endif %}
 <dl class="row">
-  <dt class="col-sm-3">{{ gettext('name') }}</dt>
+  <dt class="col-sm-3">{{ gettext('user name') }}</dt>
   <dd class="col-sm-9">{{ user.display_name() }}</dd>
   <dt class="col-sm-3">{{ gettext('date joined') }}</dt>
   <dd class="col-sm-9">{{ user.created|datetimeformat('medium') }}</dd>
