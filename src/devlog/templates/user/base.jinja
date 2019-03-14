@@ -1,9 +1,17 @@
 {% extends "base.jinja" %}
 
 {% block sidebar %}
+{% if current_user.is_authenticated %}
 <div class="card mb-4">
   <div class="card-body">
     <h2 class="card-title">{{ gettext('blogs') }}</h2>
+    {% if current_user.has_blogs %}
+    <ul class="list-group list-group-flush">
+      {% for blog in current_user.recent_blogs() %}
+      <li class="list-group-item"><a href="{{ url_for('blog.display', blog_id=blog.id) }}">{{ blog.name }}</a> <em>({{ blog.updated|datetimeformat('short') }})</em></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
   </div>
 </div>
 <div class="card mb-4">
@@ -11,4 +19,5 @@
     <h2 class="card-title">{{ gettext('recent posts') }}</h2>
   </div>
 </div>
+{% endif %}
 {% endblock %}

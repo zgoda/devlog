@@ -50,6 +50,12 @@ class User(db.Model, UserMixin, MarkupProcessingMixin):
     def display_name(self):
         return self.name or self.email.split('@')[0] or gettext('no name')
 
+    def has_blogs(self):
+        return self.blogs.count() > 0
+
+    def recent_blogs(self, limit=5):
+        return self.blogs.order_by(db.desc(Blog.updated)).limit(limit)
+
 
 db.event.listen(User, 'before_insert', User.process_markup)
 db.event.listen(User, 'before_update', User.process_markup)
@@ -63,6 +69,7 @@ class Blog(db.Model, MarkupProcessingMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'))
     user = db.relationship('User', backref=db.backref('blogs', lazy='dynamic'))
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
+    updated = db.Column(db.DateTime, index=True)
     name = db.Column(db.String(200), nullable=False, index=True)
     blurb = db.Column(db.Text)
     blurb_html = db.Column(db.Text)

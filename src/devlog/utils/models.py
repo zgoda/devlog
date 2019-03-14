@@ -3,6 +3,7 @@ import collections
 import markdown2
 import textile
 from docutils.core import publish_parts
+from flask_babel import lazy_gettext as gettext
 from flask_sqlalchemy.model import Model as BaseModel
 
 
@@ -18,11 +19,13 @@ MarkupFields = collections.namedtuple('MarkupFields', 'source,dest,processor')
 
 class MarkupProcessingMixin:
 
+    SMP_NONE = ''
     SMP_TEXTTILE = 'textile'
     SMP_RST = 'rst'
     SMP_MARKDOWN = 'markdown'
 
     SMP_CHOICES = (
+        (SMP_NONE, gettext('None')),
         (SMP_MARKDOWN, 'Markdown'),
         (SMP_TEXTTILE, 'Textile'),
         (SMP_RST, 'reStructuredText'),

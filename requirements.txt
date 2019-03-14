@@ -9,6 +9,7 @@ Bootstrap-Flask
 SQLAlchemy-Utils
 Authlib
 WTForms-Alchemy
+attrs
 
 # simplified markup processors
 docutils

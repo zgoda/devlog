@@ -1,0 +1,25 @@
+{% from 'bootstrap/form.html' import form_errors, render_field %}
+
+{% macro render_form_fields(form, form_type="basic", horizontal_columns=('sm', 2, 10)) %}
+  {{ form.hidden_tag() }}
+  {{ form_errors(form, hiddens='only') }}
+  {%- for field in form %}
+    {% if not bootstrap_is_hidden_field(field) -%}
+      {{ render_field(
+        field,
+        form_type=form_type,
+        horizontal_columns=horizontal_columns,
+        button_map=button_map) }}
+    {%- endif %}
+  {%- endfor %}
+{%- endmacro %}
+
+{% macro render_form_buttons(buttons) %}
+<div class="form-group row">
+  <div class="offset-sm-2 col-sm-10">
+    {% for button in buttons %}
+    <button type="{{ button.type_ }}" class="btn btn-{{ button.class_ }}"><i class="{{ button.icon_type }} fa-{{ button.icon }}"></i>&nbsp;{{ button.text }}</button>
+    {% endfor %}
+  </div>
+</div>
+{%- endmacro %}

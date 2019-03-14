@@ -53,6 +53,7 @@ setup(
         'docutils',
         'markdown2',
         'textile',
+        'attrs',
         # pinned
         'SQLAlchemy<1.3',
     ),
