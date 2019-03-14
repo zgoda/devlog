@@ -50,6 +50,9 @@ setup(
         'SQLAlchemy-Utils',
         'Authlib',
         'WTForms-Alchemy',
+        'docutils',
+        'markdown2',
+        'textile',
         # pinned
         'SQLAlchemy<1.3',
     ),
