@@ -11,6 +11,7 @@
       <li class="list-group-item"><a href="{{ url_for('blog.display', blog_id=blog.id) }}">{{ blog.name }}</a> <em>({{ blog.updated|datetimeformat('short') }})</em></li>
       {% endfor %}
     </ul>
+    <p class="card-text mt-4 text-center"><a href="{{ url_for('blog.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>&nbsp;{{ gettext('create new') }}</a></p>
     {% endif %}
   </div>
 </div>

@@ -1,1 +1,7 @@
 {% extends "blog/base.jinja" %}
+
+{% block pagetitle %}{{ blog.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ blog.name }}</h1>
+{% endblock %}
