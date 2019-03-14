@@ -14,7 +14,7 @@ def select():
 
 
 @auth_bp.route('/<provider>/login')
-def login(provider):
+def login(provider):  # pragma: nocover
     if provider == 'local':
         return local_login_callback(request.args.get('email'))
     service = getattr(providers, provider, None)
@@ -55,4 +55,5 @@ def github_login_callback():  # pragma: nocover
 @login_required
 def logout():
     logout_user()
+    session.clear()
     return redirect(next_redirect('home.index'))
