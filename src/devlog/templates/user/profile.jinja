@@ -1,3 +1,16 @@
 {% extends "user/base.jinja" %}
 
 {% block pagetitle %}{{ gettext('profile page for %(user_name)s', user_name=user.display_name()) }}{% endblock %}
+
+{% block content %}
+<h1>{{ gettext('profile page for %(user_name)s', user_name=user.display_name()) }}</h1>
+<dl class="row">
+  <dt class="col-sm-3">{{ gettext('name') }}</dt>
+  <dd class="col-sm-9">{{ user.display_name() }}</dd>
+  <dt class="col-sm-3">{{ gettext('date joined') }}</dt>
+  <dd class="col-sm-9">{{ user.created|datetimeformat('medium') }}</dd>
+</dl>
+{% if user.blurb_html %}
+{{ user.blurb_html|safe }}
+{% endif %}
+{% endblock %}

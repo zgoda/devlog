@@ -4,9 +4,10 @@ from flask_login import UserMixin
 from flask_babel import lazy_gettext as gettext
 
 from .ext import db
+from .utils.models import MarkupProcessingMixin, MarkupFields
 
 
-class User(db.Model, UserMixin):
+class User(db.Model, UserMixin, MarkupProcessingMixin):
 
     __tablename__ = 'users'
 
@@ -27,6 +28,12 @@ class User(db.Model, UserMixin):
         db.Index('ix_users_user_remote_id', 'oauth_service', 'remote_user_id'),
     )
 
+    @classmethod
+    def markup_fields(cls):
+        return MarkupFields(
+            source='blurb', dest='blurb_html', processor='blurb_markup_type'
+        )
+
     def is_active(self):
         return self.active
 
@@ -44,7 +51,11 @@ class User(db.Model, UserMixin):
         return self.name or self.email.split('@')[0] or gettext('no name')
 
 
-class Blog(db.Model):
+db.event.listen(User, 'before_insert', User.process_markup)
+db.event.listen(User, 'before_update', User.process_markup)
+
+
+class Blog(db.Model, MarkupProcessingMixin):
 
     __tablename__ = 'blog'
 
@@ -64,8 +75,18 @@ class Blog(db.Model):
         db.Index('ix_blog_active_public', 'active', 'public'),
     )
 
+    @classmethod
+    def markup_fields(cls):
+        return MarkupFields(
+            source='blurb', dest='blurb_html', processor='blurb_markup_type'
+        )
 
-class Post(db.Model):
+
+db.event.listen(Blog, 'before_insert', Blog.process_markup)
+db.event.listen(Blog, 'before_update', Blog.process_markup)
+
+
+class Post(db.Model, MarkupProcessingMixin):
 
     __tablename__ = 'post'
 
@@ -85,3 +106,13 @@ class Post(db.Model):
     __table_args__ = (
         db.Index('ix_post_draft_pinned', 'draft', 'pinned'),
     )
+
+    @classmethod
+    def markup_fields(cls):
+        return MarkupFields(
+            source='text', dest='text_html', processor='text_markup_type'
+        )
+
+
+db.event.listen(Post, 'before_insert', Post.process_markup)
+db.event.listen(Post, 'before_update', Post.process_markup)

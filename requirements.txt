@@ -10,5 +10,10 @@ SQLAlchemy-Utils
 Authlib
 WTForms-Alchemy
 
+# simplified markup processors
+docutils
+textile
+markdown2
+
 # pinned
 SQLAlchemy<1.3
