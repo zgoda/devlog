@@ -13,6 +13,6 @@ This is mostly idea testing project for Flask applications I'm developing at wor
 
 Because badges are meh spies.
 
-* Code Climate [Maintainability](https://codeclimate.com/github/zgoda/devlog/maintainability)
-* Code Climate [Test Coverage](https://codeclimate.com/github/zgoda/devlog/test_coverage)
+* Code Climate [maintainability](https://codeclimate.com/github/zgoda/devlog/maintainability) and [test coverage](https://codeclimate.com/github/zgoda/devlog/test_coverage)
+* [Codacy quality report](https://www.codacy.com/app/jarek.zgoda/devlog)
 * Travis CI [Build Status](https://travis-ci.com/zgoda/devlog)
