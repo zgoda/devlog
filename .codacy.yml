@@ -1,0 +1,9 @@
+---
+engines:
+  bandit:
+    enabled: true
+exclude_paths:
+  - 'docs/**'
+  - 'secrets/**'
+  - 'tests/**'
+  - '**/config*'

@@ -10,7 +10,10 @@ before_script:
 install:
   - pip install -e .
   - pip install -U -r requirements-test.txt
+  - pip install -U codacy-coverage
 script:
   - pytest --cov-branch --cov-report xml --cov=devlog tests
 after_script:
   - ./cc-test-reporter after-build -t coverage.py --exit-code $TRAVIS_TEST_RESULT
+after_success:
+  - python-codacy-coverage -r coverage.xml
