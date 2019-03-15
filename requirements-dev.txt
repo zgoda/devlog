@@ -17,7 +17,6 @@ cohesion
 doc8
 rope
 
-Sphinx
 towncrier
 
 flask-shell-ipython

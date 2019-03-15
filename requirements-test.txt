@@ -6,3 +6,6 @@ pytest-cov
 pytest-runner
 pytest-factoryboy
 pytest-flask
+
+# docs are built by Travis-CI
+Sphinx
