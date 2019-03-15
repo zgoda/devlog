@@ -7,14 +7,26 @@ from wtforms.fields import BooleanField
 from ..ext import db
 
 
-class Clickable:
+class Renderable:
 
     def render(self):
         return render_template_string(self.template, obj=self)
 
 
 @attr.s
-class Button(Clickable):
+class Link(Renderable):
+    href = attr.ib()
+    text = attr.ib('click')
+
+    template = ''.join([
+        '<a href="{{ obj.href }}">',
+        '{{ obj.text }}',
+        '</a>',
+    ])
+
+
+@attr.s
+class Button(Renderable):
     type_ = attr.ib(default='submit')
     class_ = attr.ib(default='primary')
     icon = attr.ib(default='check')
@@ -22,12 +34,13 @@ class Button(Clickable):
     text = attr.ib('ok')
     link = attr.ib(default=False)
 
-    template = '''
-<button type="{{ obj.type_ }}" class="btn btn-{{ obj.class_ }}">
-    <i class="{{ obj.icon_type }} fa-{{ obj.icon }}"></i>
-    &nbsp;
-    {{ obj.text }}
-</button>'''.strip()
+    template = ''.join([
+        '<button type="{{ obj.type_ }}" class="btn btn-{{ obj.class_ }}">',
+        '<i class="{{ obj.icon_type }} fa-{{ obj.icon }}"></i>',
+        '&nbsp;',
+        '{{ obj.text }}',
+        '</button>',
+    ])
 
 
 class DeleteForm(FlaskForm):
@@ -43,7 +56,10 @@ class DeleteForm(FlaskForm):
 
 class ObjectForm(FlaskForm):
 
-    buttons = [Button(text=gettext('save'))]
+    buttons = [
+        Button(text=gettext('save')),
+        Link(href='javascript:history.back()', text=gettext('go back')),
+    ]
 
     def save(self, obj, save=True):
         self.populate_obj(obj)
