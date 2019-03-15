@@ -54,6 +54,7 @@ setup(
         'markdown2',
         'textile',
         'attrs',
+        'text-unidecode',
         # pinned
         'SQLAlchemy<1.3',
     ),

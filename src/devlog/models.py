@@ -1,10 +1,10 @@
 import datetime
 
 from flask_login import UserMixin
-from flask_babel import lazy_gettext as gettext
 
 from .ext import db
 from .utils.models import MarkupProcessingMixin, MarkupFields
+from .utils.text import slugify
 
 
 class User(db.Model, UserMixin, MarkupProcessingMixin):
@@ -12,7 +12,8 @@ class User(db.Model, UserMixin, MarkupProcessingMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200))
+    name = db.Column(db.String(200), nullable=False)
+    slug = db.Column(db.String(200), index=True)
     blurb = db.Column(db.Text)
     blurb_html = db.Column(db.Text)
     blurb_markup_type = db.Column(db.String(50))
@@ -47,9 +48,6 @@ class User(db.Model, UserMixin, MarkupProcessingMixin):
             cls.oauth_service == service, cls.remote_user_id == user_id
         ).first()
 
-    def display_name(self):
-        return self.name or self.email.split('@')[0] or gettext('no name')
-
     def has_blogs(self):
         return self.blogs.count() > 0
 
@@ -57,8 +55,12 @@ class User(db.Model, UserMixin, MarkupProcessingMixin):
         return self.blogs.order_by(db.desc(Blog.updated)).limit(limit)
 
 
-db.event.listen(User, 'before_insert', User.process_markup)
-db.event.listen(User, 'before_update', User.process_markup)
+@db.event.listens_for(User, 'before_insert')
+@db.event.listens_for(User, 'before_update')
+def user_brefore_save(mapper, connection, target):
+    User.process_markup(mapper, connection, target)
+    if not target.slug and target.name:
+        target.slug = slugify(target.name)
 
 
 class Blog(db.Model, MarkupProcessingMixin):
@@ -71,6 +73,7 @@ class Blog(db.Model, MarkupProcessingMixin):
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
     updated = db.Column(db.DateTime, index=True)
     name = db.Column(db.String(200), nullable=False, index=True)
+    slug = db.Column(db.String(200), index=True)
     blurb = db.Column(db.Text)
     blurb_html = db.Column(db.Text)
     blurb_markup_type = db.Column(db.String(50))
@@ -89,8 +92,12 @@ class Blog(db.Model, MarkupProcessingMixin):
         )
 
 
-db.event.listen(Blog, 'before_insert', Blog.process_markup)
-db.event.listen(Blog, 'before_update', Blog.process_markup)
+@db.event.listens_for(Blog, 'before_insert')
+@db.event.listens_for(Blog, 'before_update')
+def blog_before_save(mapper, connection, target):
+    Blog.process_markup(mapper, connection, target)
+    if not target.slug and target.name:
+        target.slug = slugify(target.name)
 
 
 class Post(db.Model, MarkupProcessingMixin):
@@ -102,18 +109,17 @@ class Post(db.Model, MarkupProcessingMixin):
     blog = db.relationship('Blog', backref=db.backref('posts', lazy='dynamic'))
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
     updated = db.Column(db.DateTime, onupdate=datetime.datetime.utcnow)
-    title = db.Column(db.String(200))
+    published = db.Column(db.DateTime, index=True)
+    title = db.Column(db.String(200), nullable=False)
+    slug = db.Column(db.String(200), index=True)
     text = db.Column(db.Text)
     text_html = db.Column(db.Text)
     text_markup_type = db.Column(db.String(50))
     summary_html = db.Column(db.Text)
     mood = db.Column(db.String(50))
+    public = db.Column(db.Boolean, default=True, index=True)
     draft = db.Column(db.Boolean, default=True)
     pinned = db.Column(db.Boolean, default=False)
-
-    __table_args__ = (
-        db.Index('ix_post_draft_pinned', 'draft', 'pinned'),
-    )
 
     @classmethod
     def markup_fields(cls):
@@ -128,3 +134,5 @@ def post_before_save(mapper, connection, target):
     Post.process_markup(mapper, connection, target)
     summary = target.text.split()[:10]
     target.summary_html = target.markup_to_html(summary, target.text_markup_type)
+    if not target.slug and target.name:
+        target.slug = slugify(target.title)

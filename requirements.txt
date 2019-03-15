@@ -10,6 +10,7 @@ SQLAlchemy-Utils
 Authlib
 WTForms-Alchemy
 attrs
+text-unidecode
 
 # simplified markup processors
 docutils
