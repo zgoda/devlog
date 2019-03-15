@@ -1,14 +1,25 @@
-.. Devlog documentation master file, created by
-   sphinx-quickstart on Thu Feb 21 09:44:57 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Devlog files
+============
 
-Welcome to Devlog's documentation!
-==================================
+Devlog is my personal project done mostly as a playground for different things
+related to web application development with Flask and architecting software in
+general.
+
+Speaking of functionality, the application implements *simple blog*:
+
+* authentication
+* authorization
+* inline content management
+* content access management
+
+Miscellanea
+-----------
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    :maxdepth: 2
+
+    concepts
+    tools
 
 
 
