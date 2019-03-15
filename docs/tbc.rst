@@ -7,5 +7,11 @@ this project. Or just interesting.
 Resource Access Control
 -----------------------
 
-Eg. [Vakt](https://github.com/kolotaev/vakt) for Attribute Based Access Control
-(ABAC).
+* `Vakt <https://github.com/kolotaev/vakt>`_ implements Attribute Based Access
+  Control (ABAC).
+* `Casbin <https://pypi.org/project/casbin/>`_ implements Role Based Access
+  Control (RBAC)
+
+Or prepare somethig that would be better suited for projects of this size
+because both RBAC and ABAC are big things that don't scale down well - there is
+large beginning processing overhead. Perhaps something losely resembling ABAC.

@@ -17,6 +17,14 @@ Please note this application does not strive to be neither complete nor even
 working. It's just a playground. Initial plan was to deploy this application as
 a part of zgodowie.org service similar to Brewlog, but this may be postponed.
 
+Deployment
+----------
+
+.. toctree::
+    :maxdepth: 2
+
+    uwsgi
+
 Miscellanea
 -----------
 
