@@ -16,7 +16,7 @@
   <li class="list-inline-item"><a href="">{{ gettext('add post') }}</a></li>
 </ul>
 {% endif %}
-{% for post in posts.iter_pages() %}
+{% for post in posts.items %}
 {{ render_post_headline(post) }}
 {% endfor %}
 {% endblock %}

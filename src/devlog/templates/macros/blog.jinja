@@ -2,6 +2,7 @@
 <div class="card">
   <div class="card-body">
     <h2 class="card-title">{{ post.title }}</h2>
+    <p class="card-subtitle text-muted"><small></small></p>
     <p class="card-text">{{ post.summary_html|safe }}</p>
     <a href="{{ url_for('post.display', post_id=post.id) }}" class="card-link">{{ gettext('read more') }}</a>
   </div>

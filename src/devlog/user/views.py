@@ -20,7 +20,7 @@ def account():
             flash(
                 gettext(
                     'Data for user %(name)s has been saved',
-                    name=current_user.display_name()
+                    name=current_user.name
                 ), category='success'
             )
             return redirect(request.path)

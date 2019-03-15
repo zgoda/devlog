@@ -1,6 +1,6 @@
-from flask import flash, redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, request, url_for, abort
 from flask_babel import lazy_gettext as gettext
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from . import blog_bp
 from ..ext import db
@@ -31,8 +31,13 @@ def create():
 @blog_bp.route('/<int:blog_id>', methods=['POST', 'GET'])
 def display(blog_id):
     blog = Blog.query.get_or_404(blog_id)
+    if not (blog.active and blog.public) and (current_user != blog.user):
+        abort(404)
     page = get_page()
-    pagination = blog.posts.order_by(db.desc(Post.updated)).paginate(page, 10)
+    query = blog.posts
+    if (current_user != blog.user):
+        query = query.filter(Post.public.is_(True), Post.published.isnot(None))
+    pagination = query.order_by(db.desc(Post.updated)).paginate(page, 10)
     context = {
         'blog': blog,
         'posts': pagination,
