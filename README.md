@@ -19,8 +19,8 @@ Because badges are meh spies.
 
 * Code Climate [maintainability](https://codeclimate.com/github/zgoda/devlog/maintainability) and [test coverage](https://codeclimate.com/github/zgoda/devlog/test_coverage)
 * [Codacy quality report](https://www.codacy.com/app/jarek.zgoda/devlog)
-* Travis CI [Build Status](https://travis-ci.com/zgoda/devlog)
+* [Travis CI Build Status](https://travis-ci.com/zgoda/devlog)
 
 ## Governance
 
-It's *not* a community project.
+This is **not** a community project.
