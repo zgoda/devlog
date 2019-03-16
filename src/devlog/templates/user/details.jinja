@@ -7,7 +7,7 @@
 {% block content %}
 <h1>{{ gettext('account details').capitalize() }}</h1>
 <form action="{{ url_for('user.account') }}" method="post" class="form form-horizontal" role="form">
-{{ render_form_fields(form, form_type='horizontal') }}
+{{ render_form_fields(form) }}
 {{ render_form_buttons(form.buttons) }}
 </form>
 <p><a href="{{ url_for('user.profile', user_id=current_user.id) }}">{{ gettext('view your profile page').capitalize() }}</a></p>

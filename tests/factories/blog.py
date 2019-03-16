@@ -1,17 +1,16 @@
-import factory
 from factory.alchemy import SQLAlchemyModelFactory
 
 from devlog.ext import db
-from devlog.models import User
+from devlog.models import Blog
 
 
-class UserFactory(SQLAlchemyModelFactory):
+class BlogFactory(SQLAlchemyModelFactory):
 
-    name = factory.Faker('name')
-    email = factory.Faker('email')
+    active = True
     public = True
+    default = False
 
     class Meta:
-        model = User
+        model = Blog
         sqlalchemy_session = db.session
         sqlalchemy_session_persistence = 'commit'

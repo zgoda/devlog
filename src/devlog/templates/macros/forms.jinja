@@ -1,6 +1,6 @@
 {% from 'bootstrap/form.html' import form_errors, render_field %}
 
-{% macro render_form_fields(form, form_type="basic", horizontal_columns=('sm', 2, 10)) %}
+{% macro render_form_fields(form, form_type="horizontal", horizontal_columns=('sm', 2, 10)) %}
   {{ form.hidden_tag() }}
   {{ form_errors(form, hiddens='only') }}
   {%- for field in form %}

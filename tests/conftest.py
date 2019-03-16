@@ -6,9 +6,10 @@ from werkzeug.utils import cached_property
 from devlog import make_app
 from devlog.ext import db
 
-from .factories import UserFactory
+from .factories import BlogFactory, UserFactory
 
 register(UserFactory)
+register(BlogFactory)
 
 
 class TestResponse(Response):
