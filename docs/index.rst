@@ -5,25 +5,18 @@ Devlog is my personal project done mostly as a playground for different things
 related to web application development with Flask and architecting software in
 general.
 
-Speaking of functionality, the application implements or is implementing
+Speaking of functionality, the application implements or aims to implement
 *simple blog*:
 
 * authentication
 * authorization
 * inline content management
-* stric and extensible content access management
+* strict and extensible content access management
 
 Please note this application does not strive to be neither complete nor even
 working. It's just a playground. Initial plan was to deploy this application as
-a part of zgodowie.org service similar to Brewlog, but this may be postponed.
-
-Deployment
-----------
-
-.. toctree::
-    :maxdepth: 2
-
-    uwsgi
+a part of zgodowie.org service similar to Brewlog, but this may be postponed
+or even never happen. The code is what matters here.
 
 Miscellanea
 -----------
@@ -34,8 +27,15 @@ Miscellanea
     concepts
     tools
     tbc
+    todo
 
+Deployment
+----------
 
+.. toctree::
+    :maxdepth: 2
+
+    uwsgi
 
 Indices and tables
 ==================
