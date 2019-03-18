@@ -1,0 +1,13 @@
+{% extends "blog/base.jinja" %}
+
+{% from 'macros/forms.jinja' import render_form_fields, render_form_buttons %}
+
+{% block pagetitle %}{{ gettext('Details for blog %(name)s', name=blog.name) }}{% endblock %}
+
+{% block content %}
+<h1>{{ gettext('Details for blog %(name)s', name=blog.name) }}</h1>
+<form method="post" action="{{ url_for('blog.details', blog_id=blog.id) }}" class="form form-horizontal" role="form">
+{{ render_form_fields(form) }}
+{{ render_form_buttons(form.buttons) }}
+</form>
+{% endblock %}

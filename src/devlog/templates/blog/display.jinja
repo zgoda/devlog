@@ -12,7 +12,7 @@
 {% if current_user == blog.user %}
 <ul class="list-inline">
   <li class="list-inline-item"><i class="fas fa-cog"></i></li>
-  <li class="list-inline-item"><a href="">{{ gettext('edit blog') }}</a></li>
+  <li class="list-inline-item"><a href="{{ url_for('blog.details', blog_id=blog.id) }}">{{ gettext('edit blog') }}</a></li>
   <li class="list-inline-item"><a href="">{{ gettext('add post') }}</a></li>
 </ul>
 {% endif %}
