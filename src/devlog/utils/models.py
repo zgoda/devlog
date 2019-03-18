@@ -6,6 +6,8 @@ from docutils.core import publish_parts
 from flask_babel import lazy_gettext as gettext
 from flask_sqlalchemy.model import Model as BaseModel
 
+from .text import slugify
+
 
 class MappedModelMixin:
 
@@ -14,12 +16,13 @@ class MappedModelMixin:
     }
 
 
-MarkupFields = collections.namedtuple('MarkupFields', 'source,dest,processor')
+MarkupField = collections.namedtuple('MarkupField', 'source,dest,processor')
+SlugField = collections.namedtuple('SlugField', 'source,dest')
 
 
-class MarkupProcessingMixin:
+class TextProcessingMixin:
 
-    SMP_NONE = ''
+    SMP_NONE = None
     SMP_TEXTTILE = 'textile'
     SMP_RST = 'rst'
     SMP_MARKDOWN = 'markdown'
@@ -49,18 +52,29 @@ class MarkupProcessingMixin:
 
     @classmethod
     def markup_fields(cls):
-        raise NotImplementedError()
+        return []
 
     @classmethod
-    def process_markup(cls, mapper, connection, target):
-        fields = cls.markup_fields()
-        source = getattr(target, fields.source)
-        processor = getattr(target, fields.processor)
-        if source and processor:
-            value = target.markup_to_html(source, processor)
-            setattr(target, fields.dest, value)
-        else:
-            setattr(target, fields.dest, None)
+    def slug_fields(cls):
+        return []
+
+    @classmethod
+    def pre_save(cls, mapper, connection, target):
+        mkp_fields = cls.markup_fields()
+        for field in mkp_fields:
+            source = getattr(target, field.source, None)
+            processor = getattr(target, field.processor, None)
+            if source and processor:
+                value = target.markup_to_html(source, processor)
+                setattr(target, field.dest, value)
+            else:
+                setattr(target, field.dest, None)
+        sg_fields = cls.slug_fields()
+        for field in sg_fields:
+            source = getattr(target, field.source, None)
+            if source:
+                value = slugify(source)
+                setattr(target, field.dest, value)
 
 
 class Model(BaseModel, MappedModelMixin):

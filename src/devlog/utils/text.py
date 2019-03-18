@@ -2,7 +2,6 @@ import re
 
 from text_unidecode import unidecode
 
-
 _punctuation_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
 
 

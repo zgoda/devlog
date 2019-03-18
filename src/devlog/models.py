@@ -3,11 +3,10 @@ import datetime
 from flask_login import UserMixin
 
 from .ext import db
-from .utils.models import MarkupProcessingMixin, MarkupFields
-from .utils.text import slugify
+from .utils.models import TextProcessingMixin, MarkupField, SlugField
 
 
-class User(db.Model, UserMixin, MarkupProcessingMixin):
+class User(db.Model, UserMixin, TextProcessingMixin):
 
     __tablename__ = 'users'
 
@@ -31,9 +30,15 @@ class User(db.Model, UserMixin, MarkupProcessingMixin):
 
     @classmethod
     def markup_fields(cls):
-        return MarkupFields(
+        return [MarkupField(
             source='blurb', dest='blurb_html', processor='blurb_markup_type',
-        )
+        )]
+
+    @classmethod
+    def slug_fields(cls):
+        return [
+            SlugField(source='name', dest='slug')
+        ]
 
     def is_active(self):
         return self.active
@@ -58,18 +63,19 @@ class User(db.Model, UserMixin, MarkupProcessingMixin):
 @db.event.listens_for(User, 'before_insert')
 @db.event.listens_for(User, 'before_update')
 def user_brefore_save(mapper, connection, target):
-    User.process_markup(mapper, connection, target)
-    if not target.slug and target.name:
-        target.slug = slugify(target.name)
+    User.pre_save(mapper, connection, target)
 
 
-class Blog(db.Model, MarkupProcessingMixin):
+class Blog(db.Model, TextProcessingMixin):
 
     __tablename__ = 'blog'
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'))
-    user = db.relationship('User', backref=db.backref('blogs', lazy='dynamic'))
+    user = db.relationship(
+        'User',
+        backref=db.backref('blogs', lazy='dynamic', cascade='all,delete-orphan')
+    )
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
     updated = db.Column(db.DateTime, index=True)
     name = db.Column(db.String(200), nullable=False, index=True)
@@ -87,26 +93,33 @@ class Blog(db.Model, MarkupProcessingMixin):
 
     @classmethod
     def markup_fields(cls):
-        return MarkupFields(
+        return [MarkupField(
             source='blurb', dest='blurb_html', processor='blurb_markup_type',
-        )
+        )]
+
+    @classmethod
+    def slug_fields(cls):
+        return [
+            SlugField(source='name', dest='slug'),
+        ]
 
 
 @db.event.listens_for(Blog, 'before_insert')
 @db.event.listens_for(Blog, 'before_update')
 def blog_before_save(mapper, connection, target):
-    Blog.process_markup(mapper, connection, target)
-    if not target.slug and target.name:
-        target.slug = slugify(target.name)
+    Blog.pre_save(mapper, connection, target)
 
 
-class Post(db.Model, MarkupProcessingMixin):
+class Post(db.Model, TextProcessingMixin):
 
     __tablename__ = 'post'
 
     id = db.Column(db.Integer, primary_key=True)
     blog_id = db.Column(db.Integer, db.ForeignKey('blog.id', ondelete='cascade'))
-    blog = db.relationship('Blog', backref=db.backref('posts', lazy='dynamic'))
+    blog = db.relationship(
+        'Blog',
+        backref=db.backref('posts', lazy='dynamic', cascade='all,delete-orphan')
+    )
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
     updated = db.Column(db.DateTime, onupdate=datetime.datetime.utcnow)
     published = db.Column(db.DateTime, index=True)
@@ -123,16 +136,26 @@ class Post(db.Model, MarkupProcessingMixin):
 
     @classmethod
     def markup_fields(cls):
-        return MarkupFields(
+        return [MarkupField(
             source='text', dest='text_html', processor='text_markup_type',
+        )]
+
+    @classmethod
+    def slug_fields(cls):
+        return [
+            SlugField(source='title', dest='slug'),
+        ]
+
+    @classmethod
+    def pre_save(cls, mapper, connection, target):
+        super().pre_save(mapper, connection, target)
+        summary = target.text.split()[:10]
+        target.summary_html = target.markup_to_html(
+            summary, target.text_markup_type
         )
 
 
 @db.event.listens_for(Post, 'before_insert')
 @db.event.listens_for(Post, 'before_update')
 def post_before_save(mapper, connection, target):
-    Post.process_markup(mapper, connection, target)
-    summary = target.text.split()[:10]
-    target.summary_html = target.markup_to_html(summary, target.text_markup_type)
-    if not target.slug and target.name:
-        target.slug = slugify(target.title)
+    Post.pre_save(mapper, connection, target)
