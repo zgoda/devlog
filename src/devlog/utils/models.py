@@ -22,7 +22,7 @@ SlugField = collections.namedtuple('SlugField', 'source,dest')
 
 class TextProcessingMixin:
 
-    SMP_NONE = None
+    SMP_NONE = ''
     SMP_TEXTTILE = 'textile'
     SMP_RST = 'rst'
     SMP_MARKDOWN = 'markdown'
