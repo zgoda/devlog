@@ -10,11 +10,15 @@
 {{ blog.blurb_html|safe }}
 {% endif %}
 {% if current_user == blog.user %}
-<ul class="list-inline">
-  <li class="list-inline-item"><i class="fas fa-cog"></i></li>
-  <li class="list-inline-item"><a href="{{ url_for('blog.details', blog_id=blog.id) }}">{{ gettext('edit blog') }}</a></li>
-  <li class="list-inline-item"><a href="">{{ gettext('add post') }}</a></li>
-</ul>
+<p>
+  <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#owner-toolbox" aria-expanded="false" aria-controls="owner-toolbox"><i class="fas fa-cog"></i>&nbsp;{{ gettext('tools') }}</button>
+</p>
+<div class="collapse" id="owner-toolbox">
+  <ul class="list-inline">
+    <li class="list-inline-item"><a href="{{ url_for('blog.details', blog_id=blog.id) }}">{{ gettext('edit blog') }}</a></li>
+    <li class="list-inline-item"><a href="">{{ gettext('add post') }}</a></li>
+  </ul>
+</div>
 {% endif %}
 {% for post in posts.items %}
 {{ render_post_headline(post) }}
