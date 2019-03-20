@@ -17,9 +17,16 @@
 {% macro render_form_buttons(buttons) %}
 <div class="form-group row">
   <div class="offset-sm-2 col-sm-10">
-    {% for button in buttons %}
+    {%- for button in buttons %}
     {{ button.render() }}&nbsp;
-    {% endfor %}
+    {%- endfor %}
   </div>
 </div>
+{%- endmacro %}
+
+{% macro render_form(form, action) %}
+<form method="post" action="{{ action }}" class="form form-horizontal" role="form">
+{{ render_form_fields(form) }}
+{{ render_form_buttons(form.buttons) }}
+</form>
 {%- endmacro %}

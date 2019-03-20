@@ -1,13 +1,14 @@
 {% extends "blog/base.jinja" %}
 
-{% from 'macros/forms.jinja' import render_form_fields, render_form_buttons %}
+{% from 'macros/forms.jinja' import render_form %}
+
+{% set blog_display_url = url_for('blog.display', blog_id=blog.id) %}
+{% set blog_details_url = url_for('blog.details', blog_id=blog.id) %}
 
 {% block pagetitle %}{{ gettext('Details for blog %(name)s', name=blog.name) }}{% endblock %}
 
 {% block content %}
 <h1>{{ gettext('Details for blog %(name)s', name=blog.name) }}</h1>
-<form method="post" action="{{ url_for('blog.details', blog_id=blog.id) }}" class="form form-horizontal" role="form">
-{{ render_form_fields(form) }}
-{{ render_form_buttons(form.buttons) }}
-</form>
+{{ render_form(form, blog_details_url) }}
+<p><a href="{{ blog_display_url }}">{{ gettext('display blog').capitalize() }}</a></p>
 {% endblock %}
