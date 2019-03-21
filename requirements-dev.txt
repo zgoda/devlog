@@ -7,6 +7,7 @@ wheel
 pip
 setuptools
 
+pre-commit
 flake8
 flake8-builtins
 flake8-bugbear
