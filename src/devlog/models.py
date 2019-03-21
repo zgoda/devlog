@@ -10,7 +10,7 @@ class User(db.Model, UserMixin, TextProcessingMixin):
 
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     name = db.Column(db.String(200), nullable=False)
     slug = db.Column(db.String(200), index=True)
     blurb = db.Column(db.Text)
@@ -70,7 +70,7 @@ class Blog(db.Model, TextProcessingMixin):
 
     __tablename__ = "blog"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="cascade"))
     user = db.relationship(
         "User", backref=db.backref("blogs", lazy="dynamic", cascade="all,delete-orphan")
@@ -111,7 +111,7 @@ class Post(db.Model, TextProcessingMixin):
 
     __tablename__ = "post"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     blog_id = db.Column(db.Integer, db.ForeignKey("blog.id", ondelete="cascade"))
     blog = db.relationship(
         "Blog", backref=db.backref("posts", lazy="dynamic", cascade="all,delete-orphan")
@@ -151,3 +151,13 @@ class Post(db.Model, TextProcessingMixin):
 @db.event.listens_for(Post, "before_update")
 def post_before_save(mapper, connection, target):
     Post.pre_save(mapper, connection, target)
+
+
+class Activity(db.Model):
+    __tablename__ = "activity"
+    id = db.Column(db.Integer, primary_key=True)  # noqa: A003
+    user_id = db.Column(db.Integer, index=True)
+    activity_dt = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
+    obj_type = db.Column(db.String(200))
+    obj_id = db.Column(db.Integer)
+    description = db.Column(db.Text)

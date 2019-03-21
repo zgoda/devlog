@@ -1,14 +1,13 @@
 {% extends "blog/base.jinja" %}
 
-{% from 'macros/forms.jinja' import render_form_fields, render_form_buttons %}
+{% from 'macros/forms.jinja' import render_form %}
+
+{% set form_url = url_for('blog.create') %}
 
 {% block pagetitle %}{{ gettext('create new blog').capitalize() }}{% endblock %}
 
 {% block content %}
 <h1>{{ gettext('create new blog').capitalize() }}</h1>
 <p>{% trans %}Fill out the form below to create new blog{% endtrans %}.</p>
-<form action="{{ url_for('blog.create') }}" method="post" class="form form-horizontal" role="form">
-{{ render_form_fields(form, form_type='horizontal') }}
-{{ render_form_buttons(form.buttons) }}
-</form>
+{{ render_form(form, form_url) }}
 {% endblock %}

@@ -8,7 +8,6 @@ from ..ext import db
 
 
 class Renderable:
-
     def render(self):
         return render_template_string(self.template, obj=self)
 
@@ -16,37 +15,35 @@ class Renderable:
 @attr.s
 class Link(Renderable):
     href = attr.ib()
-    text = attr.ib('click')
+    text = attr.ib("click")
 
-    template = ''.join([
-        '<a href="{{ obj.href }}">',
-        '{{ obj.text }}',
-        '</a>',
-    ])
+    template = "".join(['<a href="{{ obj.href }}">', "{{ obj.text }}", "</a>"])
 
 
 @attr.s
 class Button(Renderable):
-    type_ = attr.ib(default='submit')
-    class_ = attr.ib(default='primary')
-    icon = attr.ib(default='check')
-    icon_type = attr.ib(default='fas')
-    text = attr.ib('ok')
+    type_ = attr.ib(default="submit")
+    class_ = attr.ib(default="primary")
+    icon = attr.ib(default="check")
+    icon_type = attr.ib(default="fas")
+    text = attr.ib("ok")
     link = attr.ib(default=False)
 
-    template = ''.join([
-        '<button type="{{ obj.type_ }}" class="btn btn-{{ obj.class_ }}">',
-        '<i class="{{ obj.icon_type }} fa-{{ obj.icon }}"></i>',
-        '&nbsp;',
-        '{{ obj.text }}',
-        '</button>',
-    ])
+    template = "".join(
+        [
+            '<button type="{{ obj.type_ }}" class="btn btn-{{ obj.class_ }}">',
+            '<i class="{{ obj.icon_type }} fa-{{ obj.icon }}"></i>',
+            "&nbsp;",
+            "{{ obj.text }}",
+            "</button>",
+        ]
+    )
 
 
 class DeleteForm(FlaskForm):
-    delete_it = BooleanField(gettext('confirm'), default=False)
+    delete_it = BooleanField(gettext("confirm"), default=False)
 
-    buttons = [Button(text=gettext('confirm'))]
+    buttons = [Button(text=gettext("confirm"))]
 
     def confirm(self):
         if self.delete_it.data:
@@ -57,8 +54,8 @@ class DeleteForm(FlaskForm):
 class ObjectForm(FlaskForm):
 
     buttons = [
-        Button(text=gettext('save')),
-        Link(href='javascript:history.back()', text=gettext('go back')),
+        Button(text=gettext("save")),
+        Link(href="javascript:history.back()", text=gettext("go back")),
     ]
 
     def save(self, obj, save=True):

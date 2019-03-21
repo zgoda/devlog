@@ -4,30 +4,24 @@
 
 {% block widecontent %}
 <div class="row">
-  <div class="col-12 col-md-4 card border-0">
-    <div class="card-body">
-      <h4 class="card-title">{{ gettext('recent posts').capitalize() }}</h4>
-    </div>
+  <div class="col-md-4 px-2">
+    <h4>{{ gettext('recent posts').capitalize() }}</h4>
   </div>
-  <div class="col-12 col-md-4 card border-0">
-    <div class="card-body">
-      <h4 class="card-title">{{ gettext('recent blogs').capitalize() }}</h4>
-      {%- if blogs %}
-      <ul class="list-group list-group-flush">
-        {%- for blog in blogs %}
-        <li class="list-group-item border-0"><a href="{{ url_for('blog.display', blog_id=blog.id) }}">{{ blog.name }}</a></li>
-        {% endfor -%}
-      </ul>
-      <p class="card-text"><a href="">{{ gettext('see more') }}</a></p>
-      {% else %}
-      <p class="card-text">{{ gettext('no blogs yet').capitalize() }}...</p>
-      {% endif -%}
-    </div>
+  <div class="col-md-4 px-2">
+    <h4>{{ gettext('recent blogs').capitalize() }}</h4>
+    {%- if blogs %}
+    <ul class="list-unstyled">
+      {%- for blog in blogs %}
+      <li><a href="{{ url_for('blog.display', blog_id=blog.id) }}">{{ blog.name }}</a></li>
+      {% endfor -%}
+    </ul>
+    <p><a href="">{{ gettext('see more') }}</a></p>
+    {% else %}
+    <p>{{ gettext('no blogs yet').capitalize() }}...</p>
+    {% endif -%}
   </div>
-  <div class="col-12 col-md-4 card border-0">
-    <div class="card-body">
-      <h4 class="card-title">{{ gettext('recently active').capitalize() }}</h4>
-    </div>
+  <div class="col-md-4 px-2">
+    <h4>{{ gettext('recently active').capitalize() }}</h4>
   </div>
 </div>
 {% endblock %}

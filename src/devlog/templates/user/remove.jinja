@@ -1,6 +1,6 @@
 {% extends "user/base.jinja" %}
 
-{% from 'bootstrap/form.html' import render_form %}
+{% from 'macros/forms.jinja' import render_form %}
 
 {% block pagetitle %}{{ gettext('remove account') }}{% endblock %}
 
@@ -8,5 +8,5 @@
 <h1>{{ gettext('remove account') }}</h1>
 <p>{% trans %}Deleting account is destructive process. It can not be reverted. All your content will be deleted and if you decide to rejoin us later, it will be lost so be careful.{% endtrans %}</p>
 <p>{% trans %}You will be logged out and redirected to site home page.{% endtrans %}</p>
-{{ render_form(delete_form, action=url_for('user.delete'), form_type='horizontal') }}
+{{ render_form(delete_form, action=url_for('user.delete')) }}
 {% endblock content %}
