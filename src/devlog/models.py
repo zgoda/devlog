@@ -8,7 +8,7 @@ from .utils.models import TextProcessingMixin, MarkupField, SlugField
 
 class User(db.Model, UserMixin, TextProcessingMixin):
 
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
@@ -25,20 +25,20 @@ class User(db.Model, UserMixin, TextProcessingMixin):
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     __table_args__ = (
-        db.Index('ix_users_user_remote_id', 'oauth_service', 'remote_user_id'),
+        db.Index("ix_users_user_remote_id", "oauth_service", "remote_user_id"),
     )
 
     @classmethod
     def markup_fields(cls):
-        return [MarkupField(
-            source='blurb', dest='blurb_html', processor='blurb_markup_type',
-        )]
+        return [
+            MarkupField(
+                source="blurb", dest="blurb_html", processor="blurb_markup_type"
+            )
+        ]
 
     @classmethod
     def slug_fields(cls):
-        return [
-            SlugField(source='name', dest='slug')
-        ]
+        return [SlugField(source="name", dest="slug")]
 
     def is_active(self):
         return self.active
@@ -60,24 +60,23 @@ class User(db.Model, UserMixin, TextProcessingMixin):
         return self.blogs.order_by(db.desc(Blog.updated)).limit(limit)
 
 
-@db.event.listens_for(User, 'before_insert')
-@db.event.listens_for(User, 'before_update')
+@db.event.listens_for(User, "before_insert")
+@db.event.listens_for(User, "before_update")
 def user_brefore_save(mapper, connection, target):
     User.pre_save(mapper, connection, target)
 
 
 class Blog(db.Model, TextProcessingMixin):
 
-    __tablename__ = 'blog'
+    __tablename__ = "blog"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="cascade"))
     user = db.relationship(
-        'User',
-        backref=db.backref('blogs', lazy='dynamic', cascade='all,delete-orphan')
+        "User", backref=db.backref("blogs", lazy="dynamic", cascade="all,delete-orphan")
     )
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
-    updated = db.Column(db.DateTime, index=True)
+    updated = db.Column(db.DateTime, onupdate=datetime.datetime.utcnow, index=True)
     name = db.Column(db.String(200), nullable=False, index=True)
     slug = db.Column(db.String(200), index=True)
     blurb = db.Column(db.Text)
@@ -87,38 +86,35 @@ class Blog(db.Model, TextProcessingMixin):
     public = db.Column(db.Boolean, default=True)
     default = db.Column(db.Boolean, default=False)
 
-    __table_args__ = (
-        db.Index('ix_blog_active_public', 'active', 'public'),
-    )
+    __table_args__ = (db.Index("ix_blog_active_public", "active", "public"),)
 
     @classmethod
     def markup_fields(cls):
-        return [MarkupField(
-            source='blurb', dest='blurb_html', processor='blurb_markup_type',
-        )]
+        return [
+            MarkupField(
+                source="blurb", dest="blurb_html", processor="blurb_markup_type"
+            )
+        ]
 
     @classmethod
     def slug_fields(cls):
-        return [
-            SlugField(source='name', dest='slug'),
-        ]
+        return [SlugField(source="name", dest="slug")]
 
 
-@db.event.listens_for(Blog, 'before_insert')
-@db.event.listens_for(Blog, 'before_update')
+@db.event.listens_for(Blog, "before_insert")
+@db.event.listens_for(Blog, "before_update")
 def blog_before_save(mapper, connection, target):
     Blog.pre_save(mapper, connection, target)
 
 
 class Post(db.Model, TextProcessingMixin):
 
-    __tablename__ = 'post'
+    __tablename__ = "post"
 
     id = db.Column(db.Integer, primary_key=True)
-    blog_id = db.Column(db.Integer, db.ForeignKey('blog.id', ondelete='cascade'))
+    blog_id = db.Column(db.Integer, db.ForeignKey("blog.id", ondelete="cascade"))
     blog = db.relationship(
-        'Blog',
-        backref=db.backref('posts', lazy='dynamic', cascade='all,delete-orphan')
+        "Blog", backref=db.backref("posts", lazy="dynamic", cascade="all,delete-orphan")
     )
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
     updated = db.Column(db.DateTime, onupdate=datetime.datetime.utcnow)
@@ -136,26 +132,22 @@ class Post(db.Model, TextProcessingMixin):
 
     @classmethod
     def markup_fields(cls):
-        return [MarkupField(
-            source='text', dest='text_html', processor='text_markup_type',
-        )]
+        return [
+            MarkupField(source="text", dest="text_html", processor="text_markup_type")
+        ]
 
     @classmethod
     def slug_fields(cls):
-        return [
-            SlugField(source='title', dest='slug'),
-        ]
+        return [SlugField(source="title", dest="slug")]
 
     @classmethod
     def pre_save(cls, mapper, connection, target):
         super().pre_save(mapper, connection, target)
         summary = target.text.split()[:10]
-        target.summary_html = target.markup_to_html(
-            summary, target.text_markup_type
-        )
+        target.summary_html = target.markup_to_html(summary, target.text_markup_type)
 
 
-@db.event.listens_for(Post, 'before_insert')
-@db.event.listens_for(Post, 'before_update')
+@db.event.listens_for(Post, "before_insert")
+@db.event.listens_for(Post, "before_update")
 def post_before_save(mapper, connection, target):
     Post.pre_save(mapper, connection, target)
