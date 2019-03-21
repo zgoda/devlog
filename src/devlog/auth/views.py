@@ -55,5 +55,4 @@ def github_login_callback():  # pragma: nocover
 @login_required
 def logout():
     logout_user()
-    session.clear()
     return redirect(next_redirect('home.index'))
