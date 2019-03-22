@@ -20,14 +20,40 @@ to configure analysis with config file kept under version control ruled out
 Code Beat.
 
 Feature wise, both services offer similar insight on Python project quality.
-It's selection of analytical packages is rather adequate, although not
+The selection of analytical packages is rather adequate, although not
 specially flexible, the choice of external quality checkers is very limited. I
 found Code Climate to produce more false negatives re. code duplication and
 suggesting refactoring completely unrelated code because it barely *looks
-similar*.
+similar* but Codacy is not much better.
 
 When it comes to access to quality indicators and *insights*, Codacy seems to
 provide easier access to key quality factors. The information is well
 structured with important things put in front. On the other hand, Code Climate
 presents almost identical set of information completely flat. There are no
-visual indicators on trends.
+visual indicators on trends, no alerts, just tabs filled with information. The
+scope of provided information is very similar but you need to know what you're
+looking for on Code Climate. On the other hand, Codacy immediately shows
+what's important.
+
+Black
+-----
+
+[Black](https://github.com/ambv/black) is controversial "uncompromising Python
+code formatter". And despite all these controversies it's quite popular and has
+been adopted by many projects, eg. [Werkzeug](http://werkzeug.pocoo.org/) or
+[Attrs](https://www.attrs.org).
+
+The controversy with Black comes from the fact that it enforces code
+formatting and is extremely intrusive. There's almost no configuration options
+available except for only handful not related to Black's mode of work, and the
+goal to produce smallest possible diff and most compact yet still readable
+code is not something that will be plausible for everybody. To me, the result
+code is *too compact* and loses too much readability in two cases: rewriting
+`dict` literals to be in one line and specially rewriting class definitions so
+they do not have vertical whitespace between class header and 1st method
+definition. But my overall impression is that in *community* projects this kind
+of code style unification may be invaluable, and this tool will make any admin
+of public Python project with large committer base happy.
+
+I will continue using it in this project and who knows, maybe some day I will
+even like it.

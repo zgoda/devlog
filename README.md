@@ -1,8 +1,8 @@
 # Devlog
 
-My dev log. And other logs. Feel free to use and modify, drop me a line if you like it.
+My dev log and other logs.
 
-This is mostly idea and tools testing project for applications I'm developing at work, not necessarily web applications.
+This is mostly idea and tools testing project for applications I'm developing at work, not necessarily web applications. And generally architecting software systems.
 
 Free form documentation is on [my github pages](https://zgoda.github.io/devlog).
 
