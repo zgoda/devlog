@@ -38,10 +38,10 @@ what's important.
 Black
 -----
 
-[Black](https://github.com/ambv/black) is controversial "uncompromising Python
-code formatter". And despite all these controversies it's quite popular and has
-been adopted by many projects, eg. [Werkzeug](http://werkzeug.pocoo.org/) or
-[Attrs](https://www.attrs.org).
+`Black <https://github.com/ambv/black>`_ is controversial "uncompromising
+Python code formatter". And despite all these controversies it's quite popular
+and has been adopted by many projects, eg.
+`Werkzeug <http://werkzeug.pocoo.org/>`_ or `Attrs <https://www.attrs.org>`_.
 
 The controversy with Black comes from the fact that it enforces code
 formatting and is extremely intrusive. There's almost no configuration options
