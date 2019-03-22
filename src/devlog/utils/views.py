@@ -12,4 +12,8 @@ def next_redirect(fallback_endpoint, *args, **kwargs):
     :rtype: str
     """
 
-    return request.args.get('next') or session.pop('next', None) or url_for(fallback_endpoint, *args, **kwargs)
+    return (
+        request.args.get("next")
+        or session.pop("next", None)
+        or url_for(fallback_endpoint, *args, **kwargs)
+    )

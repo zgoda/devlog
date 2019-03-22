@@ -8,10 +8,9 @@ def setup_filters(application):
 
 
 def setup_globals(application):
-    application.jinja_env.globals.update({
-        'format_date': format_date,
-        'url_for_other_page': url_for_other_page,
-    })
+    application.jinja_env.globals.update(
+        {"format_date": format_date, "url_for_other_page": url_for_other_page}
+    )
 
 
 def setup_template_extensions(application):

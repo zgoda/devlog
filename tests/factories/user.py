@@ -7,11 +7,11 @@ from devlog.models import User
 
 class UserFactory(SQLAlchemyModelFactory):
 
-    name = factory.Faker('name')
-    email = factory.Faker('email')
+    name = factory.Faker("name")
+    email = factory.Faker("email")
     public = True
 
     class Meta:
         model = User
         sqlalchemy_session = db.session
-        sqlalchemy_session_persistence = 'commit'
+        sqlalchemy_session_persistence = "commit"

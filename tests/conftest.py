@@ -13,17 +13,16 @@ register(BlogFactory)
 
 
 class TestResponse(Response):
-
     @cached_property
     def text(self):
-        if self.mimetype.startswith('text'):
+        if self.mimetype.startswith("text"):
             return self.data.decode(self.charset)
         return self.data
 
 
 @pytest.fixture
 def app():
-    app = make_app(env='test')
+    app = make_app(env="test")
     app.response_class = TestResponse
     with app.app_context():
         db.create_all()
