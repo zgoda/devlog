@@ -53,7 +53,9 @@ code is *too compact* and loses too much readability in two cases: rewriting
 they do not have vertical whitespace between class header and 1st method
 definition. But my overall impression is that in *community* projects this kind
 of code style unification may be invaluable, and this tool will make any admin
-of public Python project with large committer base happy.
+of public Python project with large committer base happy. But none of my
+projects is like that. In fact, flake8 with couple plugins and isort will do
+the same not getting in one's way in so intrusive way.
 
-I will continue using it in this project and who knows, maybe some day I will
-even like it.
+I will continue using it in this project, I don't like it but I am not
+desperate.

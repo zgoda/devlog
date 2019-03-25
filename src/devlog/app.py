@@ -67,6 +67,9 @@ def configure_blueprints(app, env):
     from .blog import blog_bp
 
     app.register_blueprint(blog_bp, url_prefix="/blog")
+    from .post import post_bp
+
+    app.register_blueprint(post_bp, url_prefix="/post")
 
 
 def configure_extensions(app, env):

@@ -30,8 +30,8 @@ Miscellanea
     tbc
     todo
 
-Deployment
-----------
+Practicalia
+-----------
 
 .. toctree::
     :maxdepth: 2

@@ -15,3 +15,10 @@ Resource Access Control
 Or prepare somethig that would be better suited for projects of this size
 because both RBAC and ABAC are big things that don't scale down well - there is
 large beginning processing overhead. Perhaps something losely resembling ABAC.
+
+Separation of logic
+-------------------
+
+* `Stories <https://pypi.org/project/stories/>`_ and
+  `Dependencies <https://pypi.org/project/dependencies/>`_ are interesting
+  libraries to implement business DSL and DI respectively

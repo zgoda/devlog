@@ -1,0 +1,10 @@
+{% extends "post/base.jinja" %}
+
+{% from 'macros/forms.jinja' import render_form %}
+
+{% block pagetitle %}{{ gettext('create new post').capitalize() }}{% endblock %}
+
+{% block widecontent %}
+<h1>{{ gettext('create new post').capitalize() }}</h1>
+{{ render_form(form, url_for('post.create', blog_id=blog.id)) }}
+{% endblock %}

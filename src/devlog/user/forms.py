@@ -1,6 +1,7 @@
 from flask_babel import lazy_gettext as gettext
 from wtforms import BooleanField, SelectField, StringField, TextAreaField
-from wtforms.validators import Email, Optional
+from wtforms.validators import Optional
+from wtforms_components import Email
 
 from ..models import User
 from ..utils.forms import ObjectForm

@@ -12,7 +12,7 @@ Create virtualenv and install application package (eg. wheel), remember to
 specify ``prod`` extra option. Create directory to store instance configuration
 and place local overrides there, in config files they're referred as
 ``config_local.py`` and ``secrets.py``. Create symlink to ``static``
-subdirectory in package installation dir so it's accessible under some
+subdirectory in package installation dir so it's accessible to Nginx under some
 convenient path.
 
 Nginx

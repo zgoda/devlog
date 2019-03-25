@@ -14,7 +14,7 @@
 <div class="collapse" id="owner-toolbox">
   <ul class="list-inline">
     <li class="list-inline-item"><a href="{{ url_for('blog.details', blog_id=blog.id) }}">{{ gettext('edit blog') }}</a></li>
-    <li class="list-inline-item"><a href="">{{ gettext('add post') }}</a></li>
+    <li class="list-inline-item"><a href="{{ url_for('post.create', blog_id=blog.id) }}">{{ gettext('add post') }}</a></li>
   </ul>
 </div>
 {% endif %}
