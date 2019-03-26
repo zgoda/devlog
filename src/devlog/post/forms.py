@@ -19,3 +19,8 @@ class PostForm(ObjectForm):
     public = BooleanField(gettext("public"), default=True)
     draft = BooleanField(gettext("draft"), default=True)
     pinned = BooleanField(gettext("pinned"), default=False)
+
+    def save(self, blog, obj=None, save=True):
+        if obj is None:
+            obj = Post(blog=blog)
+        return super().save(obj, save)

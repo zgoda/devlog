@@ -5,8 +5,9 @@ from flask import Flask, render_template, request, send_from_directory, session
 from flask_babel import gettext as _
 from werkzeug.utils import ImportStringError
 
-from .ext import babel, bootstrap, csrf, db, login_manager, oauth, pages, migrate
+from .ext import babel, bootstrap, csrf, db, login_manager, migrate, oauth, pages
 from .templates import setup_template_extensions
+from .utils.text import SUPPORTED_LANGUAGES
 
 
 def make_app(env=None):
@@ -98,7 +99,7 @@ def configure_extensions(app, env):
         def get_locale():
             lang = session.get("lang")
             if lang is None:
-                lang = request.accept_languages.best_match(["pl", "en"])
+                lang = request.accept_languages.best_match(SUPPORTED_LANGUAGES)
             return lang
 
     babel.init_app(app)

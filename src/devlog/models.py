@@ -3,7 +3,7 @@ import datetime
 from flask_login import UserMixin
 
 from .ext import db
-from .utils.models import TextProcessingMixin, MarkupField, SlugField
+from .utils.models import MarkupField, SlugField, TextProcessingMixin
 
 
 class User(db.Model, UserMixin, TextProcessingMixin):
@@ -144,7 +144,12 @@ class Post(db.Model, TextProcessingMixin):
     def pre_save(cls, mapper, connection, target):
         super().pre_save(mapper, connection, target)
         summary = target.text.split()[:10]
+        summary = " ".join(summary)
         target.summary_html = target.markup_to_html(summary, target.text_markup_type)
+        if target.draft:
+            target.published = datetime.datetime.utcnow()
+        else:
+            target.published = None
 
 
 @db.event.listens_for(Post, "before_insert")

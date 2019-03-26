@@ -3,7 +3,7 @@ from flask_babel import lazy_gettext as gettext
 from flask_login import current_user, login_required
 
 from . import post_bp
-from ..models import Blog
+from ..models import Blog, Post
 from .forms import PostForm
 
 
@@ -17,8 +17,17 @@ def create(blog_id):
     if request.method == "POST":
         form = PostForm()
         if form.validate_on_submit():
-            form.save()
+            form.save(blog)
             flash(gettext("your blog post has been saved"), category="success")
             return redirect(url_for("blog.display", blog_id=blog.id))
     context = {"blog": blog, "form": form or PostForm()}
     return render_template("post/create.jinja", **context)
+
+
+@post_bp.route("/<int:post_id>", methods=["POST", "GET"])
+def display(post_id):
+    post = Post.query.get_or_404(post_id)
+    if (not post.public or post.draft) and current_user != post.blog.user:
+        abort(404)
+    context = {"post": post}
+    return render_template("post/display.jinja", **context)

@@ -185,3 +185,33 @@ class TestBlogDeleteView(DevlogTests):
         self.login(user.email)
         rv = self.client.get(self.url(blog))
         assert rv.status_code == 404
+
+    def test_owner_get(self, blog_factory, user_factory):
+        user = user_factory(name="Ivory Tower")
+        blog = blog_factory(name="infernal Tendencies", user=user)
+        self.login(user.email)
+        url = self.url(blog)
+        rv = self.client.get(url)
+        assert f'action="{url}"' in rv.text
+
+    def test_anon_post(self, blog_factory):
+        blog = blog_factory(name="Infernal Tendencies")
+        rv = self.client.post(self.url(blog), data={"delete_it": True})
+        assert rv.status_code == 302
+        assert url_for("auth.select") in rv.headers["Location"]
+
+    def test_authenticated_post(self, blog_factory, user_factory):
+        user = user_factory(name="Ivory Tower")
+        blog = blog_factory(name="Infernal Tendencies")
+        self.login(user.email)
+        rv = self.client.post(self.url(blog), data={"delete_it": True})
+        assert rv.status_code == 404
+
+    def test_owner_post(self, blog_factory, user_factory):
+        user = user_factory(name="Ivory Tower")
+        blog = blog_factory(name="infernal Tendencies", user=user)
+        self.login(user.email)
+        url = self.url(blog)
+        rv = self.client.post(url, data={"delete_it": True})
+        assert rv.status_code == 302
+        assert url_for("home.index") in rv.headers["Location"]
