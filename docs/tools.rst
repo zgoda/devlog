@@ -57,5 +57,5 @@ of public Python project with large committer base happy. But none of my
 projects is like that. In fact, flake8 with couple plugins and isort will do
 the same not getting in one's way in so intrusive way.
 
-I will continue using it in this project, I don't like it but I am not
-desperate.
+I had Black in this project for about a week and could not stand it. This is
+very small project and I will clean Black artifacts for many months.
