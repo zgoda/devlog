@@ -13,6 +13,7 @@ register(BlogFactory)
 
 
 class TestResponse(Response):
+
     @cached_property
     def text(self):
         if self.mimetype.startswith("text"):

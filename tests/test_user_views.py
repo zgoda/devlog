@@ -7,29 +7,31 @@ from . import DevlogTests
 
 @pytest.mark.usefixtures("app")
 class UserViewsTests(DevlogTests):
+
     @pytest.fixture(autouse=True)
     def set_up(self):
-        self.account_url = url_for("user.account")
-        self.confirm_url = url_for("user.confirm_delete")
-        self.delete_url = url_for("user.delete")
+        self.ACCOUNT_URL = url_for("user.account")
+        self.CONFIRM_URL = url_for("user.confirm_delete")
+        self.DELETE_URL = url_for("user.delete")
 
 
 @pytest.mark.usefixtures("client_class")
 class TestAccountView(UserViewsTests):
+
     def test_user_account_anon_view(self):
-        rv = self.client.get(self.account_url)
+        rv = self.client.get(self.ACCOUNT_URL)
         assert rv.status_code == 302
         assert url_for("auth.select") in rv.headers["Location"]
 
     def test_user_account_authenticated_view(self, user_factory):
         user = user_factory(name="Ivory Tower")
         self.login(email=user.email)
-        rv = self.client.get(self.account_url)
+        rv = self.client.get(self.ACCOUNT_URL)
         assert f'value="{user.name}"' in rv.text
 
     def test_user_account_anon_update(self):
         data = {"name": "New Name"}
-        rv = self.client.post(self.account_url, data=data)
+        rv = self.client.post(self.ACCOUNT_URL, data=data)
         assert rv.status_code == 302
         assert url_for("auth.select") in rv.headers["Location"]
 
@@ -38,7 +40,7 @@ class TestAccountView(UserViewsTests):
         self.login(email=user.email)
         new_name = "Infernal Amendment"
         data = {"name": new_name}
-        rv = self.client.post(self.account_url, data=data, follow_redirects=True)
+        rv = self.client.post(self.ACCOUNT_URL, data=data, follow_redirects=True)
         assert f"Data for user {new_name} has been saved" in rv.text
 
     def test_user_account_authenticated_update_failure(self, user_factory):
@@ -46,36 +48,38 @@ class TestAccountView(UserViewsTests):
         self.login(email=user.email)
         new_email = "invalid&email:com"
         data = {"email": new_email}
-        rv = self.client.post(self.account_url, data=data, follow_redirects=True)
+        rv = self.client.post(self.ACCOUNT_URL, data=data, follow_redirects=True)
         assert f'value="{escape(new_email)}"' in rv.text
         assert "Invalid email address" in rv.text
 
 
 @pytest.mark.usefixtures("client_class")
 class TestDeleteViews(UserViewsTests):
+
     def test_user_confirm_delete_anon_view(self):
-        rv = self.client.get(self.confirm_url)
+        rv = self.client.get(self.CONFIRM_URL)
         assert rv.status_code == 302
         assert url_for("auth.select") in rv.headers["Location"]
 
     def test_user_confirm_delete_authenticated_view(self, user_factory):
         user = user_factory(name="Ivory Tower")
         self.login(email=user.email)
-        rv = self.client.get(self.confirm_url, follow_redirects=True)
-        assert f'action="{self.delete_url}"' in rv.text
+        rv = self.client.get(self.CONFIRM_URL, follow_redirects=True)
+        assert f'action="{self.DELETE_URL}"' in rv.text
 
     def test_user_delete_anon(self):
         rv = self.client.post(
-            self.delete_url, data={"delete_it": True}, follow_redirects=True
+            self.DELETE_URL, data={"delete_it": True}
         )
-        assert "elect login provider" in rv.text
+        assert rv.status_code == 302
+        assert url_for('auth.select') in rv.headers['Location']
 
     def test_user_delete_authenticated_confirm(self, user_factory):
         user_name = "Ivory Tower"
         user = user_factory(name=user_name)
         self.login(email=user.email)
         rv = self.client.post(
-            self.delete_url, data={"delete_it": True}, follow_redirects=True
+            self.DELETE_URL, data={"delete_it": True}, follow_redirects=True
         )
         assert f"for user {user_name} deleted" in rv.text
 
@@ -83,12 +87,13 @@ class TestDeleteViews(UserViewsTests):
         user_name = "Ivory Tower"
         user = user_factory(name=user_name)
         self.login(email=user.email)
-        rv = self.client.post(self.delete_url, data={}, follow_redirects=True)
-        assert f'action="{self.account_url}"' in rv.text
+        rv = self.client.post(self.DELETE_URL, data={}, follow_redirects=True)
+        assert f'action="{self.ACCOUNT_URL}"' in rv.text
 
 
 @pytest.mark.usefixtures("client_class")
 class TestProfileView(UserViewsTests):
+
     def url(self, user):
         return url_for("user.profile", user_id=user.id)
 
@@ -105,10 +110,11 @@ class TestProfileView(UserViewsTests):
         rv = self.client.get(self.url(user))
         assert "Profile page for Ivory Tower" in rv.text
 
-    @pytest.mark.parametrize(
-        "public,active",
-        [(False, True), (True, False), (False, False)],
-        ids=["private-active", "public-inactive", "private-inactive"],
+    @pytest.mark.parametrize("public,active", [
+            (False, True),
+            (True, False),
+            (False, False),
+        ], ids=["private-active", "public-inactive", "private-inactive"],
     )
     def test_authenticated_profile_inaccessible(self, public, active, user_factory):
         user = user_factory(name="Ivory Tower", public=public, active=active)
@@ -123,10 +129,11 @@ class TestProfileView(UserViewsTests):
         rv = self.client.get(self.url(user))
         assert "Profile page for Ivory Tower" in rv.text
 
-    @pytest.mark.parametrize(
-        "public,active",
-        [(False, True), (True, False), (False, False)],
-        ids=["private-active", "public-inactive", "private-inactive"],
+    @pytest.mark.parametrize("public,active", [
+            (False, True),
+            (True, False),
+            (False, False)
+        ], ids=["private-active", "public-inactive", "private-inactive"],
     )
     def test_owner_profile_inaccessible(self, public, active, user_factory):
         user = user_factory(name="Ivory Tower", public=public, active=active)

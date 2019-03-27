@@ -7,6 +7,7 @@ from . import DevlogTests
 
 @pytest.mark.usefixtures("app")
 class TestBlogService(DevlogTests):
+
     @pytest.fixture(autouse=True)
     def set_up(self, user_factory):
         self.public_user = user_factory()

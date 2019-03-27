@@ -8,6 +8,7 @@ from . import DevlogTests
 
 @pytest.mark.usefixtures("app")
 class TestUserObject(DevlogTests):
+
     def test_defaults(self):
         user = User(email="test.email@example.com", name="Ivory Tower")
         db.session.add(user)

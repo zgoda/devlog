@@ -11,10 +11,8 @@ class BlogForm(ObjectForm):
     name = StringField(gettext("name"), validators=[DataRequired()])
     blurb = TextAreaField(gettext("blurb"))
     blurb_markup_type = SelectField(
-        gettext("blurb markup processor"),
-        choices=Blog.SMP_CHOICES,
-        validators=[Optional()],
-        default=Blog.SMP_NONE,
+        gettext("blurb markup processor"), choices=Blog.SMP_CHOICES,
+        validators=[Optional()], default=Blog.SMP_NONE,
     )
     active = BooleanField(gettext("active"), default=True)
     public = BooleanField(gettext("public"), default=True)

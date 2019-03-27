@@ -23,7 +23,9 @@ def create():
                 category="success",
             )
             return redirect(url_for(".display", blog_id=blog.id))
-    context = {"form": form or BlogForm()}
+    context = {
+        "form": form or BlogForm(),
+    }
     return render_template("blog/create.jinja", **context)
 
 
@@ -37,7 +39,10 @@ def display(blog_id):
     if current_user != blog.user:
         query = query.filter(Post.public.is_(True), Post.published.isnot(None))
     pagination = query.order_by(db.desc(Post.updated)).paginate(page, 10)
-    context = {"blog": blog, "posts": pagination}
+    context = {
+        "blog": blog,
+        "posts": pagination,
+    }
     return render_template("blog/display.jinja", **context)
 
 
@@ -57,7 +62,10 @@ def details(blog_id):
                 category="success",
             )
             return redirect(url_for(".display", blog_id=blog.id))
-    context = {"blog": blog, "form": form or BlogForm(obj=blog)}
+    context = {
+        "blog": blog,
+        "form": form or BlogForm(obj=blog),
+    }
     return render_template("blog/details.jinja", **context)
 
 
@@ -83,5 +91,8 @@ def delete(blog_id):
     form.buttons = [
         Button(class_="danger", icon="skull-crossbones", text=gettext("confirm"))
     ]
-    context = {"form": form, "blog": blog}
+    context = {
+        "form": form,
+        "blog": blog,
+    }
     return render_template("blog/delete.jinja", **context)

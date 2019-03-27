@@ -55,7 +55,7 @@ definition. But my overall impression is that in *community* projects this kind
 of code style unification may be invaluable, and this tool will make any admin
 of public Python project with large committer base happy. But none of my
 projects is like that. In fact, flake8 with couple plugins and isort will do
-the same not getting in one's way in so intrusive way.
+the same wihile not being so intrusive.
 
 I had Black in this project for about a week and could not stand it. This is
 very small project and I will clean Black artifacts for many months.

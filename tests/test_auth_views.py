@@ -6,6 +6,7 @@ from . import DevlogTests
 
 @pytest.mark.usefixtures("client_class")
 class TestAuthViews(DevlogTests):
+
     def test_logout_view(self, user_factory):
         url = url_for("home.index")
         user = user_factory(name="Ivory Tower")

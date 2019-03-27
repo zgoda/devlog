@@ -4,6 +4,7 @@ from . import DevlogTests
 
 
 class TestUtilsPagination(DevlogTests):
+
     def test_url_for_other_page(self, mocker):
         fake_url_for = mocker.Mock()
         mocker.patch("devlog.utils.pagination.url_for", fake_url_for)

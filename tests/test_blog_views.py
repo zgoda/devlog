@@ -7,6 +7,7 @@ from . import DevlogTests
 
 @pytest.mark.usefixtures("client_class")
 class TestBlogCreateView(DevlogTests):
+
     @pytest.fixture(autouse=True)
     def set_up(self):
         self.url = url_for("blog.create")
@@ -50,6 +51,7 @@ class TestBlogCreateView(DevlogTests):
 
 @pytest.mark.usefixtures("client_class")
 class TestBlogDisplayView(DevlogTests):
+
     def url(self, blog):
         return url_for("blog.display", blog_id=blog.id)
 
@@ -60,9 +62,11 @@ class TestBlogDisplayView(DevlogTests):
         assert f"<h1>{blog.name}</h1>" in rv.text
         assert "edit blog</a></li>" not in rv.text
 
-    @pytest.mark.parametrize(
-        "public,active",
-        [(False, True), (True, False), (False, False)],
+    @pytest.mark.parametrize("public,active", [
+            (False, True),
+            (True, False),
+            (False, False)
+        ],
         ids=["private-active", "public-inactive", "private-inactive"],
     )
     def test_anon_get_non_public(self, blog_factory, public, active):
@@ -79,9 +83,11 @@ class TestBlogDisplayView(DevlogTests):
         assert f"<h1>{blog.name}</h1>" in rv.text
         assert "edit blog</a></li>" not in rv.text
 
-    @pytest.mark.parametrize(
-        "public,active",
-        [(False, True), (True, False), (False, False)],
+    @pytest.mark.parametrize("public,active", [
+            (False, True),
+            (True, False),
+            (False, False),
+        ],
         ids=["private-active", "public-inactive", "private-inactive"],
     )
     def test_authenticated_get_non_public(
@@ -93,9 +99,12 @@ class TestBlogDisplayView(DevlogTests):
         rv = self.client.get(self.url(blog))
         assert rv.status_code == 404
 
-    @pytest.mark.parametrize(
-        "public,active",
-        [(True, True), (False, True), (True, False), (False, False)],
+    @pytest.mark.parametrize("public,active", [
+            (True, True),
+            (False, True),
+            (True, False),
+            (False, False),
+        ],
         ids=["public-active", "private-active", "public-inactive", "private-inactive"],
     )
     def test_owner_get_non_own(self, user_factory, blog_factory, public, active):
@@ -112,6 +121,7 @@ class TestBlogDisplayView(DevlogTests):
 
 @pytest.mark.usefixtures("client_class")
 class TestBlogDetailsView(DevlogTests):
+
     def url(self, blog):
         return url_for("blog.details", blog_id=blog.id)
 
@@ -170,6 +180,7 @@ class TestBlogDetailsView(DevlogTests):
 
 @pytest.mark.usefixtures("client_class")
 class TestBlogDeleteView(DevlogTests):
+
     def url(self, blog):
         return url_for("blog.delete", blog_id=blog.id)
 

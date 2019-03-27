@@ -5,8 +5,13 @@ from flask import Flask, render_template, request, send_from_directory, session
 from flask_babel import gettext as _
 from werkzeug.utils import ImportStringError
 
-from .ext import babel, bootstrap, csrf, db, login_manager, migrate, oauth, pages
+from .auth import auth_bp
+from .blog import blog_bp
+from .ext import babel, bootstrap, csrf, db, login_manager, oauth, pages
+from .home import home_bp
+from .post import post_bp
 from .templates import setup_template_extensions
+from .user import user_bp
 from .utils.text import SUPPORTED_LANGUAGES
 
 
@@ -30,8 +35,7 @@ def configure_app(app, env):
         try:
             app.config.from_object(f"devlog.config_{env}")
         except ImportStringError:
-            # module is not importable
-            pass
+            app.logger.info(f'no environment config for {env}')
     config_local = os.environ.get("DEVLOG_CONFIG_LOCAL")
     if config_local:
         app.logger.info(f"local configuration loaded from {config_local}")
@@ -41,7 +45,6 @@ def configure_app(app, env):
         app.logger.info(f"secrets loaded from {config_secrets}")
         app.config.from_envvar("DEVLOG_CONFIG_SECRETS")
     if app.debug:
-
         @app.route("/favicon.ico")
         def favicon():
             return send_from_directory(
@@ -56,27 +59,15 @@ def configure_hooks(app, env):
 
 
 def configure_blueprints(app, env):
-    from .home import home_bp
-
     app.register_blueprint(home_bp)
-    from .auth import auth_bp
-
     app.register_blueprint(auth_bp, url_prefix="/auth")
-    from .user import user_bp
-
     app.register_blueprint(user_bp, url_prefix="/user")
-    from .blog import blog_bp
-
     app.register_blueprint(blog_bp, url_prefix="/blog")
-    from .post import post_bp
-
     app.register_blueprint(post_bp, url_prefix="/post")
 
 
 def configure_extensions(app, env):
     db.init_app(app)
-    if app.debug:
-        migrate.init_app(app, db)
     csrf.init_app(app)
     oauth.init_app(app)
     bootstrap.init_app(app)
@@ -90,11 +81,9 @@ def configure_extensions(app, env):
     @login_manager.user_loader
     def get_user(userid):
         from .models import User
-
         return User.query.get(userid)
 
     if not app.testing:
-
         @babel.localeselector
         def get_locale():
             lang = session.get("lang")
@@ -127,6 +116,7 @@ def configure_logging():
 
 
 def configure_error_handlers(app):
+
     @app.errorhandler(403)
     def forbidden_page(error):
         return render_template("errors/403.jinja"), 403
