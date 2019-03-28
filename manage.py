@@ -1,19 +1,12 @@
 import os
 
 from flask.cli import FlaskGroup
+from dotenv import load_dotenv, find_dotenv
 
 from devlog import make_app
 from devlog.models import db
 
 _here = os.path.abspath(os.path.dirname(__file__))
-
-os.environ['FLASK_ENV'] = 'development'
-os.environ['FLASK_RUN_PORT'] = '5000'
-os.environ['AUTHLIB_INSECURE_TRANSPORT'] = '1'
-os.environ['AUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
-os.environ['DEVLOG_CONFIG_LOCAL'] = os.path.join(_here, 'secrets/config_local.py')
-os.environ['DEVLOG_CONFIG_SECRETS'] = os.path.join(_here, 'secrets/secrets.py')
-os.environ['DEVLOG_SQLITE_DB_PATH'] = os.path.join(_here, 'db.sqlite3')
 
 
 def create_app(info):
@@ -41,4 +34,5 @@ def recreatedb():
 
 
 if __name__ == '__main__':
+    load_dotenv(find_dotenv())
     cli()

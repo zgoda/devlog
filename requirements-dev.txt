@@ -20,3 +20,4 @@ rope
 towncrier
 
 flask-shell-ipython
+python-dotenv
