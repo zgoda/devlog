@@ -25,8 +25,12 @@ class User(db.Model, UserMixin, TextProcessingMixin):
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     __table_args__ = (
-        db.Index("ix_users_user_remote_id", "oauth_service", "remote_user_id"),
+        db.Index('ix_users_user_remote_id', 'oauth_service', 'remote_user_id'),
     )
+
+    @property
+    def effective_public(self):
+        return self.public
 
     @classmethod
     def markup_fields(cls):
@@ -88,6 +92,10 @@ class Blog(db.Model, TextProcessingMixin):
 
     __table_args__ = (db.Index("ix_blog_active_public", "active", "public"),)
 
+    @property
+    def effective_public(self):
+        return self.public and self.user.public
+
     @classmethod
     def markup_fields(cls):
         return [
@@ -130,6 +138,10 @@ class Post(db.Model, TextProcessingMixin):
     draft = db.Column(db.Boolean, default=True)
     pinned = db.Column(db.Boolean, default=False)
 
+    @property
+    def effective_public(self):
+        return self.public and self.blog.effective_public
+
     @classmethod
     def markup_fields(cls):
         return [
@@ -166,3 +178,7 @@ class Activity(db.Model):
     obj_type = db.Column(db.String(200))
     obj_id = db.Column(db.Integer)
     description = db.Column(db.Text)
+
+    __table_args__ = (
+        db.Index('ix_activity_object', 'obj_type', 'obj_id'),
+    )

@@ -6,20 +6,17 @@ from ..blog.service import get_recent as recent_blogs
 from ..post.service import get_recent as recent_posts
 
 
-@home_bp.route("/")
+@home_bp.route('/')
 def index():
-    extra_user = None
+    kw = {
+        'limit': current_app.config.get('SHORT_LIST_LIMIT', 5),
+    }
     if current_user.is_authenticated:
-        extra_user = current_user
-    limit = current_app.config.get('SHORT_LIST_LIMIT', 5)
-    blogs = recent_blogs(
-        extra_user=extra_user, limit=limit,
-    )
-    posts = recent_posts(
-        extra_user=extra_user, limit=limit,
-    )
+        kw['extra_user'] = current_user
+    blogs = recent_blogs(**kw)
+    posts = recent_posts(**kw)
     context = {
         'blogs': blogs,
         'posts': posts,
     }
-    return render_template("index.jinja", **context)
+    return render_template('index.jinja', **context)
