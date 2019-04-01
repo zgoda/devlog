@@ -6,7 +6,8 @@
 
 {% block content %}
 <h1>{{ post.title }}</h1>
-<h3 class="text-muted small">{{ gettext('published').capitalize() }}: {{ post.published|datetimeformat('long') }}</h3>
+<h3 class="text-muted small">{% if post.published %}{{ gettext('published').capitalize() }}: {{ post.published|datetimeformat('long') }}{% else %}{{ gettext('draft') }}{% endif %}</h3>
+{% if post.mood %}<p class="text-muted">{{ gettext('mood: %(mood)s', mood=post.mood) }}</p>{% endif %}
 {% if post.text_html %}
 {{ post.text_html|safe }}
 {% else %}

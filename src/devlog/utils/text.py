@@ -4,8 +4,6 @@ from text_unidecode import unidecode
 
 _punctuation_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
 
-SUPPORTED_LANGUAGES = ['pl', 'en']
-
 
 def slugify(text, delim='-'):
     result = []

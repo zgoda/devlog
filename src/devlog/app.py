@@ -12,7 +12,7 @@ from .home import home_bp
 from .post import post_bp
 from .templates import setup_template_extensions
 from .user import user_bp
-from .utils.text import SUPPORTED_LANGUAGES
+from .utils.i18n import SUPPORTED_LANGUAGES
 
 
 def make_app(env=None):

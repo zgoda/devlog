@@ -1,4 +1,5 @@
 from flask import abort, flash, redirect, render_template, request, url_for
+from flask_babel import get_locale
 from flask_babel import lazy_gettext as gettext
 from flask_login import current_user, login_required, logout_user
 
@@ -6,6 +7,7 @@ from . import user_bp
 from ..ext import db
 from ..models import User
 from ..utils.forms import DeleteForm
+from ..utils.i18n import localized_timezone_choices
 from .forms import UserForm
 
 
@@ -24,6 +26,9 @@ def account():
                 category='success',
             )
             return redirect(request.path)
+    if form is None:
+        form = UserForm(obj=current_user)
+    form.timezone.choices = localized_timezone_choices(get_locale())
     context = {
         'form': form or UserForm(obj=current_user),
     }

@@ -10,6 +10,8 @@ Authlib
 WTForms-Alchemy
 attrs
 text-unidecode
+pytz
+babel
 
 # simplified markup processors
 docutils

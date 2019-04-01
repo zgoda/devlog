@@ -10,6 +10,8 @@ class UserFactory(SQLAlchemyModelFactory):
     name = factory.Faker('name')
     email = factory.Faker('email')
     public = True
+    default_language = 'en'
+    timezone = 'Europe/London'
 
     class Meta:
         model = User

@@ -1,6 +1,7 @@
 import datetime
 
 from flask_login import UserMixin
+from sqlalchemy_utils import observes
 
 from .ext import db
 from .utils.models import MarkupField, SlugField, TextProcessingMixin
@@ -23,6 +24,8 @@ class User(db.Model, UserMixin, TextProcessingMixin):
     active = db.Column(db.Boolean, default=True)
     public = db.Column(db.Boolean, default=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    default_language = db.Column(db.String(20), default='pl')
+    timezone = db.Column(db.String(80), default='Europe/Warsaw')
 
     __table_args__ = (
         db.Index('ix_users_user_remote_id', 'oauth_service', 'remote_user_id'),
@@ -89,12 +92,17 @@ class Blog(db.Model, TextProcessingMixin):
     active = db.Column(db.Boolean, default=True)
     public = db.Column(db.Boolean, default=True)
     default = db.Column(db.Boolean, default=False)
+    language = db.Column(db.String(20))
 
     __table_args__ = (db.Index('ix_blog_active_public', 'active', 'public'),)
 
     @property
     def effective_public(self):
         return self.public and self.user.public
+
+    @property
+    def effective_language(self):
+        return self.language or self.user.default_language
 
     @classmethod
     def markup_fields(cls):
@@ -137,10 +145,15 @@ class Post(db.Model, TextProcessingMixin):
     public = db.Column(db.Boolean, default=True, index=True)
     draft = db.Column(db.Boolean, default=True)
     pinned = db.Column(db.Boolean, default=False)
+    language = db.Column(db.String(20))
 
     @property
     def effective_public(self):
         return self.public and self.blog.effective_public
+
+    @observes('updated')
+    def update_observer(self, updated):
+        self.blog.updated = updated
 
     @classmethod
     def markup_fields(cls):
@@ -159,26 +172,15 @@ class Post(db.Model, TextProcessingMixin):
         summary = ' '.join(summary)
         target.summary_html = target.markup_to_html(summary, target.text_markup_type)
         if target.draft:
-            target.published = datetime.datetime.utcnow()
-        else:
             target.published = None
+        else:
+            if target.published is None:
+                target.published = datetime.datetime.utcnow()
+        if target.language is None:
+            target.language = target.blog.effective_language
 
 
 @db.event.listens_for(Post, 'before_insert')
 @db.event.listens_for(Post, 'before_update')
 def post_before_save(mapper, connection, target):
     Post.pre_save(mapper, connection, target)
-
-
-class Activity(db.Model):
-    __tablename__ = 'activity'
-    id = db.Column(db.Integer, primary_key=True)  # noqa: A003
-    user_id = db.Column(db.Integer, index=True)
-    activity_dt = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
-    obj_type = db.Column(db.String(200))
-    obj_id = db.Column(db.Integer)
-    description = db.Column(db.Text)
-
-    __table_args__ = (
-        db.Index('ix_activity_object', 'obj_type', 'obj_id'),
-    )

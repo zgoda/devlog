@@ -55,6 +55,8 @@ setup(
         'textile',
         'attrs',
         'text-unidecode',
+        'pytz',
+        'babel',
         # pinned
         'SQLAlchemy<1.3',
     ),
