@@ -1,15 +1,24 @@
 {% extends "post/base.jinja" %}
 
+{% from 'macros/forms.jinja' import render_form %}
+
 {% block pagetitle %}{{ post.title }}{% endblock %}
 
 {% block content %}
 <h1>{{ post.title }}</h1>
-<h3 class="text-muted small">{{ gettext('published').capitalize() }}: {{ post.published|datetimeformat('full') }}</h3>
+<h3 class="text-muted small">{{ gettext('published').capitalize() }}: {{ post.published|datetimeformat('long') }}</h3>
 {% if post.text_html %}
 {{ post.text_html|safe }}
 {% else %}
 {% for line in post.text.splitlines() %}
 <p>{{ line.strip() }}</p>
 {% endfor %}
+{% endif %}
+{% if current_user == post.blog.user %}
+<p><button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#edit-form" aria-expanded="false" aria-controls="contentId"><i class="fas fa-cog"></i>&nbsp;{{ gettext('edit') }}</button></p>
+<div class="collapse" id="edit-form">
+  <h3>{{ gettext('edit post').capitalize() }}</h3>
+  {{ render_form(form, request.path) }}
+</div>
 {% endif %}
 {% endblock %}

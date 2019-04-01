@@ -6,7 +6,7 @@ from . import DevlogTests
 
 
 @pytest.mark.usefixtures('client_class')
-class TestMainPage(DevlogTests):
+class TestMainPageAccountLinks(DevlogTests):
 
     @pytest.fixture(autouse=True)
     def set_up(self):

@@ -24,7 +24,9 @@ def account():
                 category='success',
             )
             return redirect(request.path)
-    context = {'form': form or UserForm(obj=current_user)}
+    context = {
+        'form': form or UserForm(obj=current_user),
+    }
     return render_template('user/details.jinja', **context)
 
 
@@ -34,14 +36,18 @@ def profile(user_id):
     user = User.query.get_or_404(user_id)
     if user != current_user and not (user.public and user.active):
         abort(404)
-    context = {'user': user}
+    context = {
+        'user': user,
+    }
     return render_template('user/profile.jinja', **context)
 
 
 @user_bp.route('/remove')
 @login_required
 def confirm_delete():
-    context = {'delete_form': DeleteForm()}
+    context = {
+        'delete_form': DeleteForm(),
+    }
     return render_template('user/remove.jinja', **context)
 
 

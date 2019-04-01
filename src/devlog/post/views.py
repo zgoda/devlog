@@ -33,7 +33,15 @@ def display(post_id, slug):
     post = Post.query.get_or_404(post_id)
     if (not post.public or post.draft) and current_user != post.blog.user:
         abort(404)
+    form = None
+    if request.method == 'POST':
+        form = PostForm()
+        if form.validate_on_submit():
+            form.save(post.blog, obj=post)
+            flash(gettext('your blog post has been saved'), category='success')
+            return redirect(request.path)
     context = {
-        'post': post
+        'post': post,
+        'form': form or PostForm(obj=post),
     }
     return render_template('post/display.jinja', **context)

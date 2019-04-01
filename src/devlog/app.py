@@ -1,7 +1,7 @@
 import os
 from logging.config import dictConfig
 
-from flask import Flask, render_template, request, send_from_directory, session
+from flask import Flask, render_template, request, session
 from flask_babel import gettext as _
 from werkzeug.utils import ImportStringError
 
@@ -44,14 +44,6 @@ def configure_app(app, env):
     if config_secrets:
         app.logger.info(f'secrets loaded from {config_secrets}')
         app.config.from_envvar('DEVLOG_CONFIG_SECRETS')
-    if app.debug:
-        @app.route('/favicon.ico')
-        def favicon():
-            return send_from_directory(
-                os.path.join(app.root_path, 'static'),
-                'favicon.ico',
-                mimetype='image/vnd.microsoft.icon',
-            )
 
 
 def configure_hooks(app, env):
@@ -95,24 +87,25 @@ def configure_extensions(app, env):
 
 
 def configure_logging():
-    dictConfig(
-        {
-            'version': 1,
-            'formatters': {
-                'default': {
-                    'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s'
-                }
-            },
-            'handlers': {
-                'wsgi': {
-                    'class': 'logging.StreamHandler',
-                    'stream': 'ext://flask.logging.wsgi_errors_stream',
-                    'formatter': 'default',
-                }
-            },
-            'root': {'level': 'INFO', 'handlers': ['wsgi']},
-        }
-    )
+    dictConfig({
+        'version': 1,
+        'formatters': {
+            'default': {
+                'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s'
+            }
+        },
+        'handlers': {
+            'wsgi': {
+                'class': 'logging.StreamHandler',
+                'stream': 'ext://flask.logging.wsgi_errors_stream',
+                'formatter': 'default',
+            }
+        },
+        'root': {
+            'level': 'INFO',
+            'handlers': ['wsgi'],
+        },
+    })
 
 
 def configure_error_handlers(app):
