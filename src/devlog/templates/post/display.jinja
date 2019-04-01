@@ -1,3 +1,15 @@
 {% extends "post/base.jinja" %}
 
 {% block pagetitle %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ post.title }}</h1>
+<h3 class="text-muted small">{{ gettext('published').capitalize() }}: {{ post.published|datetimeformat('full') }}</h3>
+{% if post.text_html %}
+{{ post.text_html|safe }}
+{% else %}
+{% for line in post.text.splitlines() %}
+<p>{{ line.strip() }}</p>
+{% endfor %}
+{% endif %}
+{% endblock %}

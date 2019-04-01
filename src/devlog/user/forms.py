@@ -8,14 +8,14 @@ from ..utils.forms import ObjectForm
 
 
 class UserForm(ObjectForm):
-    name = StringField(gettext("name"))
-    blurb = TextAreaField(gettext("blurb"))
+    name = StringField(gettext('name'))
+    blurb = TextAreaField(gettext('blurb'))
     blurb_markup_type = SelectField(
-        gettext("blurb markup processor"),
+        gettext('blurb markup processor'),
         choices=User.SMP_CHOICES,
         validators=[Optional()],
         default=User.SMP_NONE,
     )
-    email = StringField(gettext("email"), validators=[Email(), Optional()])
-    active = BooleanField(gettext("active"), default=True)
-    public = BooleanField(gettext("public"), default=False)
+    email = StringField(gettext('email'), validators=[Email(), Optional()])
+    active = BooleanField(gettext('active'), default=True)
+    public = BooleanField(gettext('public'), default=False)

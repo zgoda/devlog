@@ -10,6 +10,8 @@ from .blog import BlogFactory
 class PostFactory(SQLAlchemyModelFactory):
 
     blog = factory.SubFactory(BlogFactory)
+    title = factory.Faker('sentence')
+    text = factory.Faker('text')
     public = True
     draft = True
     pinned = False
@@ -17,4 +19,4 @@ class PostFactory(SQLAlchemyModelFactory):
     class Meta:
         model = Post
         sqlalchemy_session = db.session
-        sqlalchemy_session_persistence = "commit"
+        sqlalchemy_session_persistence = 'commit'

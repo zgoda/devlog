@@ -5,7 +5,7 @@ from devlog.blog.service import get_recent
 from . import DevlogTests
 
 
-@pytest.mark.usefixtures("app")
+@pytest.mark.usefixtures('app')
 class TestBlogService(DevlogTests):
 
     @pytest.fixture(autouse=True)

@@ -7,18 +7,18 @@ from ..utils.forms import ObjectForm
 
 
 class PostForm(ObjectForm):
-    title = StringField(gettext("title"), validators=[DataRequired()])
-    text = TextAreaField(gettext("text"))
+    title = StringField(gettext('title'), validators=[DataRequired()])
+    text = TextAreaField(gettext('text'))
     text_markup_type = SelectField(
-        gettext("blurb markup processor"),
+        gettext('blurb markup processor'),
         choices=Post.SMP_CHOICES,
         validators=[Optional()],
         default=Post.SMP_NONE,
     )
-    mood = StringField(gettext("mood"))
-    public = BooleanField(gettext("public"), default=True)
-    draft = BooleanField(gettext("draft"), default=True)
-    pinned = BooleanField(gettext("pinned"), default=False)
+    mood = StringField(gettext('mood'))
+    public = BooleanField(gettext('public'), default=True)
+    draft = BooleanField(gettext('draft'), default=True)
+    pinned = BooleanField(gettext('pinned'), default=False)
 
     def save(self, blog, obj=None, save=True):
         if obj is None:

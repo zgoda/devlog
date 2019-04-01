@@ -8,15 +8,15 @@ from ..utils.forms import ObjectForm
 
 
 class BlogForm(ObjectForm):
-    name = StringField(gettext("name"), validators=[DataRequired()])
-    blurb = TextAreaField(gettext("blurb"))
+    name = StringField(gettext('name'), validators=[DataRequired()])
+    blurb = TextAreaField(gettext('blurb'))
     blurb_markup_type = SelectField(
-        gettext("blurb markup processor"), choices=Blog.SMP_CHOICES,
+        gettext('blurb markup processor'), choices=Blog.SMP_CHOICES,
         validators=[Optional()], default=Blog.SMP_NONE,
     )
-    active = BooleanField(gettext("active"), default=True)
-    public = BooleanField(gettext("public"), default=True)
-    default = BooleanField(gettext("default"), default=False)
+    active = BooleanField(gettext('active'), default=True)
+    public = BooleanField(gettext('public'), default=True)
+    default = BooleanField(gettext('default'), default=False)
 
     def save(self, obj=None, save=True):
         if obj is None:

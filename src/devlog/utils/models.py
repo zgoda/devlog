@@ -11,11 +11,13 @@ from .text import slugify
 
 class MappedModelMixin:
 
-    __mapper_args__ = {"confirm_deleted_rows": False}
+    __mapper_args__ = {
+        'confirm_deleted_rows': False
+    }
 
 
-MarkupField = collections.namedtuple("MarkupField", "source,dest,processor")
-SlugField = collections.namedtuple("SlugField", "source,dest")
+MarkupField = collections.namedtuple('MarkupField', 'source,dest,processor')
+SlugField = collections.namedtuple('SlugField', 'source,dest')
 
 
 class TextProcessingMixin:
