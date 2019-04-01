@@ -87,40 +87,74 @@ class TestPostDisplayView(DevlogTests):
 
     @pytest.fixture(autouse=True)
     def set_up(self, user_factory):
-        self.public_user = user_factory(name='Public User')
-        self.nonpublic_user = user_factory(name='Nonpublic User', public=False)
+        self.user = user_factory(name='Public User')
 
     def url(self, post):
         return url_for('post.display', post_id=post.id)
 
     def test_anon_get_public(self, post_factory, blog_factory):
-        blog = blog_factory(user=self.public_user, public=True)
+        blog = blog_factory(user=self.user, public=True)
         title = 'First post'
         post = post_factory(blog=blog, public=True, draft=False, title=title)
         url = self.url(post)
         rv = self.client.get(url)
         assert f'<h1>{title}</h1>' in rv.text
 
-    def test_anon_get_public_draft(self, post_factory, blog_factory):
-        blog = blog_factory(user=self.public_user, public=True)
+    @pytest.mark.parametrize('public,draft', [
+        (True, True),
+        (False, False),
+        (False, True)
+    ], ids=['public-draft', 'nonpublic-nondraft', 'nonpublic-draft'])
+    def test_anon_get_no_access(self, public, draft, post_factory, blog_factory):
+        blog = blog_factory(user=self.user, public=True)
         title = 'First post'
-        post = post_factory(blog=blog, public=True, draft=True, title=title)
+        post = post_factory(blog=blog, public=public, draft=draft, title=title)
         url = self.url(post)
         rv = self.client.get(url)
         assert rv.status_code == 404
 
-    def test_anon_get_nonpublic(self, post_factory, blog_factory):
-        blog = blog_factory(user=self.public_user, public=True)
+    def test_authenticated_get_public(self, post_factory, blog_factory, user_factory):
+        user = user_factory(name='Ivory Tower')
+        blog = blog_factory(user=self.user, public=True)
         title = 'First post'
-        post = post_factory(blog=blog, public=False, draft=False, title=title)
+        post = post_factory(blog=blog, public=True, draft=False, title=title)
+        self.login(user.email)
+        url = self.url(post)
+        rv = self.client.get(url)
+        assert f'<h1>{title}</h1>' in rv.text
+
+    @pytest.mark.parametrize('public,draft', [
+        (True, True),
+        (False, False),
+        (False, True)
+    ], ids=['public-draft', 'nonpublic-nondraft', 'nonpublic-draft'])
+    def test_authenticated_get_no_access(self, public, draft, post_factory,
+                                         blog_factory, user_factory):
+        user = user_factory(name='Ivory Tower')
+        blog = blog_factory(user=self.user, public=True)
+        title = 'First post'
+        post = post_factory(blog=blog, public=public, draft=draft, title=title)
+        self.login(user.email)
         url = self.url(post)
         rv = self.client.get(url)
         assert rv.status_code == 404
 
-    def test_anon_get_nonpublic_draft(self, post_factory, blog_factory):
-        blog = blog_factory(user=self.public_user, public=True)
+    @pytest.mark.parametrize('public,draft', [
+        (True, False),
+        (True, True),
+        (False, False),
+        (False, True),
+    ], ids=[
+        'public-nondraft',
+        'public-draft',
+        'nonpublic-nondraft',
+        'nonpublic-draft',
+    ])
+    def test_owner_get(self, public, draft, post_factory, blog_factory):
+        blog = blog_factory(user=self.user, public=True)
         title = 'First post'
-        post = post_factory(blog=blog, public=False, draft=True, title=title)
+        post = post_factory(blog=blog, public=True, draft=False, title=title)
+        self.login(self.user.email)
         url = self.url(post)
         rv = self.client.get(url)
-        assert rv.status_code == 404
+        assert f'<h1>{title}</h1>' in rv.text
