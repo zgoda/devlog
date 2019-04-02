@@ -3,7 +3,6 @@ language: python
 cache: pip
 python:
   - "3.7"
-  - "3.6"
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
@@ -16,7 +15,7 @@ install:
 script:
   - pytest --cov-branch --cov-report xml --cov=devlog tests
   - make -C docs -f Makefile html
-  - python setup.py bdist_wheel
+  - python setup.py sdist bdist_wheel
 after_script:
   - ./cc-test-reporter after-build -t coverage.py --exit-code $TRAVIS_TEST_RESULT
 after_success:
@@ -30,12 +29,10 @@ deploy:
     keep-history: true
     on:
       branch: master
-      python: "3.7"
   - provider: releases
     api_key: $GH_TOKEN
     skip_cleanup: true
     file_glob: true
-    file: dist/*.whl
+    file: dist/*
     on:
-      python: "3.7"
       tags: true
