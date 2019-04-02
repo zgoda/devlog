@@ -3,7 +3,9 @@ import operator
 import pytz
 from babel import Locale
 from babel.dates import get_timezone, get_timezone_location
+from flask import session, request
 from flask_babel import lazy_gettext as gettext
+from flask_login import current_user
 
 LANGUAGE_POLISH = 'pl'
 LANGUAGE_ENGLISH = 'en'
@@ -30,3 +32,23 @@ def localized_timezone_choices(locale_name):
         choices.append((tzname, loc_name))
     choices.sort(key=operator.itemgetter(-1))
     return choices
+
+
+def get_user_language():
+    lang = None
+    if current_user.is_authenticated:
+        lang = current_user.default_language
+    if not lang:
+        lang = session.get('lang')
+    if lang is None:
+        lang = request.accept_languages.best_match(SUPPORTED_LANGUAGES)
+    return lang
+
+
+def get_user_timezone():
+    tzname = None
+    if current_user.is_authenticated:
+        tzname = current_user.timezone
+    if not tzname:
+        tzname = DEFAULT_TIMEZONE
+    return tzname

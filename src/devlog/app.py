@@ -1,7 +1,7 @@
 import os
 from logging.config import dictConfig
 
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template
 from flask_babel import gettext as _
 from werkzeug.utils import ImportStringError
 
@@ -12,7 +12,7 @@ from .home import home_bp
 from .post import post_bp
 from .templates import setup_template_extensions
 from .user import user_bp
-from .utils.i18n import SUPPORTED_LANGUAGES
+from .utils.i18n import get_user_language, get_user_timezone
 
 
 def make_app(env=None):
@@ -78,10 +78,11 @@ def configure_extensions(app, env):
     if not app.testing:
         @babel.localeselector
         def get_locale():
-            lang = session.get('lang')
-            if lang is None:
-                lang = request.accept_languages.best_match(SUPPORTED_LANGUAGES)
-            return lang
+            return get_user_language()
+
+        @babel.timezoneselector
+        def get_timezone():
+            return get_user_timezone()
 
     babel.init_app(app)
 
