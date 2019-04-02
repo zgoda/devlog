@@ -2,8 +2,10 @@ from ..ext import db
 from ..models import Blog, Post
 
 
-def get_recent(public_only=True, extra_user=None, limit=None):
+def get_recent(public_only=True, extra_user=None, limit=None, drafts=False):
     query = Post.query.join(Blog)
+    if not drafts:
+        query = query.filter(Post.draft.is_(False))
     if public_only:
         if extra_user is None:
             query = query.filter(
