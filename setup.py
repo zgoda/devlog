@@ -71,7 +71,10 @@ setup(
         'pytest-factoryboy',
     ),
     extras_require={
-        'prod': ['psycopg2', 'uwsgi']
+        'prod': [
+            'psycopg2-binary',
+            'uwsgi',
+        ]
     },
     python_requires='~=3.6',
 )

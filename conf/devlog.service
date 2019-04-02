@@ -3,13 +3,13 @@ Description=uWSGI launcher for Devlog
 After=network.target
 
 [Service]
-User=jarek
+User=devlog
 Group=www-data
-WorkingDirectory=/home/jarek/devlog
-Environment="PATH=/home/jarek/devlog/_venv/bin"
-Environment="DEVLOG_CONFIG_LOCAL=/home/jarek/devlog/config/config_local.py"
-Environment="DEVLOG_CONFIG_SECRETS=/home/jarek/devlog/config/secrets.py"
-ExecStart=/home/jarek/devlog/_venv/bin/uwsgi --ini config/devlog.ini
+WorkingDirectory=/home/devlog/devlog
+Environment="PATH=/home/devlog/devlog/_venv/bin"
+Environment="DEVLOG_CONFIG_LOCAL=/home/devlog/devlog/config/config_local.py"
+Environment="DEVLOG_CONFIG_SECRETS=/home/devlog/devlog/config/secrets.py"
+ExecStart=/home/devlog/devlog/_venv/bin/uwsgi --ini config/devlog.ini
 
 [Install]
 WantedBy=multi-user.target
