@@ -30,8 +30,9 @@ def create():
     return render_template('blog/create.jinja', **context)
 
 
-@blog_bp.route('/<int:blog_id>')
-def display(blog_id):
+@blog_bp.route('/<int:blog_id>', defaults={'slug': None})
+@blog_bp.route('/<int:blog_id>/<slug>')
+def display(blog_id, slug):
     blog = Blog.query.get_or_404(blog_id)
     if not (blog.active and blog.public) and (current_user != blog.user):
         abort(404)
