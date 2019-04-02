@@ -3,9 +3,9 @@
 ipython
 ipdb
 
-wheel
 pip
 setuptools
+wheel
 
 flake8
 flake8-builtins
@@ -19,6 +19,7 @@ doc8
 rope
 
 towncrier
+Sphinx
 
 flask-shell-ipython
 python-dotenv

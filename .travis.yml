@@ -9,23 +9,33 @@ before_script:
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 install:
-  - pip install -e .
   - pip install -U -r requirements-test.txt
+  - pip install -U Sphinx wheel
+  - pip install -e .
   - pip install -U codacy-coverage
 script:
   - pytest --cov-branch --cov-report xml --cov=devlog tests
   - make -C docs -f Makefile html
+  - python setup.py bdist_wheel
 after_script:
   - ./cc-test-reporter after-build -t coverage.py --exit-code $TRAVIS_TEST_RESULT
 after_success:
   - python-codacy-coverage -r coverage.xml
 deploy:
-  local-dir: docs/_build/html
-  committer-from-gh: true
-  provider: pages
-  skip-cleanup: true
-  github-token: $GH_TOKEN
-  keep-history: true
-  on:
-    branch: master
-    python: "3.7"
+  - provider: pages
+    local-dir: docs/_build/html
+    committer-from-gh: true
+    skip-cleanup: true
+    github-token: $GH_TOKEN
+    keep-history: true
+    on:
+      branch: master
+      python: "3.7"
+  - provider: releases
+    api_key: $GH_TOKEN
+    skip_cleanup: true
+    file_glob: true
+    file: dist/*.whl
+    on:
+      python: "3.7"
+      tags: true
