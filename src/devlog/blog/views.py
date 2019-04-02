@@ -7,6 +7,7 @@ from ..ext import db
 from ..models import Blog, Post
 from ..utils.forms import DeleteForm, Button
 from ..utils.pagination import get_page
+from ..post.service import get_recent as recent_posts
 from .forms import BlogForm
 
 
@@ -35,9 +36,17 @@ def display(blog_id):
     if not (blog.active and blog.public) and (current_user != blog.user):
         abort(404)
     page = get_page()
-    query = blog.posts
-    if current_user != blog.user:
-        query = query.filter(Post.public.is_(True), Post.published.isnot(None))
+    public_only = True
+    with_drafts = False
+    extra_user = None
+    if current_user == blog.user:
+        public_only = False
+        with_drafts = True
+        extra_user = blog.user
+    query = recent_posts(
+        blog=blog, public_only=public_only, drafts=with_drafts,
+        extra_user=extra_user,
+    )
     pagination = query.order_by(db.desc(Post.updated)).paginate(page, 10)
     context = {
         'blog': blog,
