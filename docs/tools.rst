@@ -59,3 +59,8 @@ the same wihile not being so intrusive.
 
 I had Black in this project for about a week and could not stand it. This is
 very small project and I will clean Black artifacts for many months.
+
+Automated logging (Sentry)
+--------------------------
+
+Stay tuned.

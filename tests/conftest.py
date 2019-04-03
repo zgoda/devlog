@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from flask.wrappers import Response
 from pytest_factoryboy import register
@@ -24,6 +26,7 @@ class TestResponse(Response):
 
 @pytest.fixture
 def app():
+    os.environ['FLASK_ENV'] = 'test'
     app = make_app(env='test')
     app.response_class = TestResponse
     with app.app_context():

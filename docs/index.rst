@@ -3,14 +3,15 @@ Devlog files
 
 Devlog is my personal project done mostly as a playground for different things
 related to web application development with Flask and architecting software in
-general.
+general. Other goal is to make *ideal package* of Flask based web application,
+with clean structure and modern tooling. I'm almost there with that.
 
 Speaking of functionality, the application implements or aims to implement
 *simple blog*:
 
 * authentication
 * authorization
-* inline content management
+* inline content management (no *admin interface*)
 * strict and extensible content access management
 
 Please note this application does not strive to be neither complete nor even

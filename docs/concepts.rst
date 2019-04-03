@@ -46,4 +46,5 @@ Development requirements specification
 
 For a long time I insisted on keeping PIP requirements files only slightly
 organized in project root. Now I decided to put them aside, since they don't
-have any use besides development and CI. This makes project root much cleaner.
+have any use besides development and CI. This makes project root much cleaner
+at the cost of bit more convoluted Docker setup.
