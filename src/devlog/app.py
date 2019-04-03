@@ -3,7 +3,7 @@ from logging.config import dictConfig
 
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
-from flask import Flask, render_template
+from flask import render_template
 from flask_babel import gettext as _
 from werkzeug.utils import ImportStringError
 
@@ -14,6 +14,7 @@ from .home import home_bp
 from .post import post_bp
 from .templates import setup_template_extensions
 from .user import user_bp
+from .utils.app import Devlog
 from .utils.i18n import get_user_language, get_user_timezone
 
 
@@ -28,7 +29,7 @@ def make_app(env=None):
                 dsn=f'https://{sentry_pubkey}@sentry.io/{sentry_project}',
                 integrations=[FlaskIntegration()],
             )
-    app = Flask(__name__.split('.')[0])
+    app = Devlog(__name__.split('.')[0])
     configure_app(app, env)
     configure_extensions(app, env)
     with app.app_context():

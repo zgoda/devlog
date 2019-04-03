@@ -1,5 +1,5 @@
 import attr
-from flask import render_template_string
+from flask import Markup, render_template_string
 from flask_babel import lazy_gettext as gettext
 from flask_wtf import FlaskForm
 from wtforms.fields import BooleanField
@@ -10,7 +10,7 @@ from ..ext import db
 class Renderable:
 
     def render(self):
-        return render_template_string(self.template, obj=self)
+        return Markup(render_template_string(self.template, obj=self))
 
 
 @attr.s
