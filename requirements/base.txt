@@ -13,6 +13,8 @@ text-unidecode
 pytz
 babel
 
+sentry-sdk[flask]
+
 # simplified markup processors
 docutils
 textile

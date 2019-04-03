@@ -23,6 +23,3 @@ Sphinx
 
 flask-shell-ipython
 python-dotenv
-
-# only to make intellisense happy
-sentry-sdk[flask]
