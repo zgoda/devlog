@@ -35,6 +35,8 @@ def display(post_id, slug):
         abort(404)
     form = None
     if request.method == 'POST':
+        if current_user != post.blog.user:
+            abort(404)
         form = PostForm()
         if form.validate_on_submit():
             form.save(post.blog, obj=post)

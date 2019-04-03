@@ -2,7 +2,7 @@
 
 {% block pagetitle %}{{ gettext('Profile page for %(user_name)s', user_name=user.name) }}{% endblock %}
 
-{% block content %}
+{% block widecontent %}
 <h1>{{ gettext('Profile page for %(user_name)s', user_name=user.name) }}</h1>
 {% if user == current_user and not (user.active and user.public) %}
 <p class="lead">{{ gettext('Your account is inactive or set as private (or both), no one except you can see this page') }}.</p>
@@ -17,3 +17,5 @@
 {{ user.blurb_html|safe }}
 {% endif %}
 {% endblock %}
+
+{% block sidebar %}{% endblock %}

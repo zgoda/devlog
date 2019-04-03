@@ -158,3 +158,102 @@ class TestPostDisplayView(DevlogTests):
         url = self.url(post)
         rv = self.client.get(url)
         assert f'<h1>{title}</h1>' in rv.text
+
+    @pytest.mark.parametrize('public,draft', [
+        (True, False),
+        (True, True),
+        (False, False),
+        (False, True),
+    ], ids=[
+        'public-nondraft',
+        'public-draft',
+        'nonpublic-nondraft',
+        'nonpublic-draft',
+    ])
+    def test_anon_post_no_access(self, public, draft, post_factory, blog_factory):
+        blog = blog_factory(user=self.user, public=True)
+        title = 'First post'
+        post = post_factory(blog=blog, public=public, draft=draft, title=title)
+        url = self.url(post)
+        data = {
+            'title': 'New name',
+        }
+        rv = self.client.post(url, data=data)
+        assert rv.status_code == 404
+
+    @pytest.mark.parametrize('public,draft', [
+        (True, False),
+        (True, True),
+        (False, False),
+        (False, True),
+    ], ids=[
+        'public-nondraft',
+        'public-draft',
+        'nonpublic-nondraft',
+        'nonpublic-draft',
+    ])
+    def test_authenticated_post_no_access(self, public, draft, post_factory,
+                                          blog_factory, user_factory):
+        blog = blog_factory(user=self.user, public=True)
+        title = 'First post'
+        post = post_factory(blog=blog, public=public, draft=draft, title=title)
+        user = user_factory(name='Ivory Tower')
+        url = self.url(post)
+        self.login(user.email)
+        data = {
+            'title': 'New name',
+        }
+        rv = self.client.post(url, data=data)
+        assert rv.status_code == 404
+
+    @pytest.mark.parametrize('public,draft', [
+        (True, False),
+        (True, True),
+        (False, False),
+        (False, True),
+    ], ids=[
+        'public-nondraft',
+        'public-draft',
+        'nonpublic-nondraft',
+        'nonpublic-draft',
+    ])
+    def test_owner_post_ok(self, public, draft, post_factory, blog_factory):
+        blog = blog_factory(user=self.user, public=True)
+        title = 'First post'
+        post = post_factory(blog=blog, public=public, draft=draft, title=title)
+        url = self.url(post)
+        self.login(self.user.email)
+        new_title = 'New name'
+        data = {
+            'title': new_title,
+        }
+        rv = self.client.post(url, data=data, follow_redirects=True)
+        assert 'post has been saved' in rv.text
+        assert f'value="{new_title}"' in rv.text
+
+    @pytest.mark.parametrize('public,draft', [
+        (True, False),
+        (True, True),
+        (False, False),
+        (False, True),
+    ], ids=[
+        'public-nondraft',
+        'public-draft',
+        'nonpublic-nondraft',
+        'nonpublic-draft',
+    ])
+    def test_owner_post_fail(self, public, draft, post_factory, blog_factory):
+        blog = blog_factory(user=self.user, public=True)
+        title = 'First post'
+        post = post_factory(blog=blog, public=public, draft=draft, title=title)
+        url = self.url(post)
+        self.login(self.user.email)
+        new_title = None
+        data = {
+            'title': new_title,
+        }
+        rv = self.client.post(url, data=data, follow_redirects=True)
+        assert 'post has been saved' not in rv.text
+        assert 'field is required' in rv.text
+        assert 'invalid-feedback' in rv.text
+        assert 'is-invalid' in rv.text

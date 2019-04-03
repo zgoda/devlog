@@ -18,3 +18,7 @@ class TestAuthViews(DevlogTests):
         rv = self.client.get(url)
         assert 'sign out' not in rv.text
         assert 'sign in' in rv.text
+
+    def test_select_view(self):
+        rv = self.client.get(url_for('auth.select'))
+        assert 'Select login provider' in rv.text
