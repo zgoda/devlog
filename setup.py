@@ -31,9 +31,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: POSIX',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
         'Natural Language :: English',
         'Natural Language :: Polish',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
@@ -57,6 +55,7 @@ setup(
         'text-unidecode',
         'pytz',
         'babel',
+        'sentry_sdk[flask]',
         # pinned
         'SQLAlchemy<1.3',
     ),
@@ -81,5 +80,5 @@ setup(
             'devlog=devlog.cli:main',
         ],
     },
-    python_requires='~=3.6',
+    python_requires='~=3.7',
 )
