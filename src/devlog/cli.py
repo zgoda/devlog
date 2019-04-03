@@ -3,8 +3,8 @@ import os
 from flask.cli import FlaskGroup
 from dotenv import load_dotenv, find_dotenv
 
-from devlog import make_app
-from devlog.models import db
+from . import make_app
+from .models import db
 
 _here = os.path.abspath(os.path.dirname(__file__))
 
@@ -33,6 +33,6 @@ def recreatedb():
     db.create_all()
 
 
-if __name__ == '__main__':
+def main():
     load_dotenv(find_dotenv())
     cli()

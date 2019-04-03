@@ -76,5 +76,10 @@ setup(
             'uwsgi',
         ]
     },
+    entry_points={
+        'console_scripts': [
+            'devlog=devlog.cli:main',
+        ],
+    },
     python_requires='~=3.6',
 )

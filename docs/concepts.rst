@@ -31,3 +31,12 @@ Was this worth the hassle?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Yes, definitely. Highly recommended.
+
+Wheel packaging
+---------------
+
+To push things a bit I decided to package the application as wheel (apart of
+usual ``sdist``) and deploy it as artifact in Github release. This made
+deployment a bit simpler: grab a package from known place and install it in
+virtualenv. Next step could be private PyPi and distribution but this is still
+cumbersome.
