@@ -31,6 +31,14 @@ Miscellanea
     tbc
     todo
 
+Caveats
+-------
+
+.. toctree::
+    :maxdepth: 2
+
+    flask
+
 Practicalia
 -----------
 
