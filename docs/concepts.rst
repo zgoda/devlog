@@ -40,3 +40,10 @@ usual ``sdist``) and deploy it as artifact in Github release. This made
 deployment a bit simpler: grab a package from known place and install it in
 virtualenv. Next step could be private PyPi and distribution but this is still
 cumbersome.
+
+Development requirements specification
+--------------------------------------
+
+For a long time I insisted on keeping PIP requirements files only slightly
+organized in project root. Now I decided to put them aside, since they don't
+have any use besides development and CI. This makes project root much cleaner.

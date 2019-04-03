@@ -9,6 +9,7 @@ exclude_paths:
   - '**/config*'
   - '**/_version.py'
   - '**/app.py'
+  - '**/cli.py'
   - '*.py'
   - '*.md'
   - '*.yml'

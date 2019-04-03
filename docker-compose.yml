@@ -17,7 +17,7 @@ services:
       - /bin/sh
       - -c
       - |
-          python manage.py initdb
+          rundevlog initdb
           gunicorn --access-logfile - --reload devlog.wsgi:application --bind=0.0.0.0:5000
     depends_on:
       - db

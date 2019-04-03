@@ -4,14 +4,15 @@ RUN apk --no-cache add \
     bash build-base \
     libffi-dev postgresql-dev
 
-ADD src/devlog /app/devlog/
-COPY requirements*.txt manage.py /app/
+ADD src/devlog /app/
+COPY requirements/*.txt /app/
 
 WORKDIR /app
 
-RUN pip install -U pip && \
+RUN pip install -U pip wheel && \
+    pip install -e . \
     pip install -U gunicorn psycopg2 && \
-    pip install -U -r requirements-dev.txt
+    pip install -U -r dev.txt
 
 ENV IN_CONTAINER=yes
 ENV FLASK_ENV=development
