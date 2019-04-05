@@ -1,19 +1,35 @@
+import codecs
+import re
 from os import path
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
-import versioneer
-
-
+# parts below shamelessly stolen from pypa/pip
 here = path.abspath(path.dirname(__file__))
 
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
+
+def read(*parts):
+    with codecs.open(path.join(here, *parts), 'r') as fp:
+        return fp.read()
+
+
+def find_version(*file_paths):
+    version_file = read(*file_paths)
+    version_match = re.search(
+        r"^__version__ = ['\"]([^'\"]*)['\"]",
+        version_file,
+        re.M,
+    )
+    if version_match:
+        return version_match.group(1)
+    raise RuntimeError('Unable to find version string.')
+
+
+long_description = read('README.md')
 
 setup(
     name='devlog',
-    version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass(),
+    version=find_version('src', 'devlog', '_version.py'),
     author='Jarek Zgoda',
     author_email='jarek.zgoda@gmail.com',
     long_description=long_description,
