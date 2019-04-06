@@ -64,3 +64,16 @@ Automated logging (Sentry)
 --------------------------
 
 Stay tuned.
+
+Automated version management
+----------------------------
+
+At work we use `Versioneer <https://github.com/warner/python-versioneer>`_
+which works... most of the time. Unless you want be really modern and use this
+or that feature that wasn't there when Versioneer was born. And this package
+has many serious bugs that no one is willing to fix.
+
+At the beginning I used Versioneer too, but as my package became more and more
+modern, I found it sometimes breaks. So I started looking for any alternative,
+yet none was appealing (and not many are there in fact). I switched to manual
+operation and will update version in Python module. Should be fun.

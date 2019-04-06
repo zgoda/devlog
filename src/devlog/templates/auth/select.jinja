@@ -9,14 +9,36 @@
 {% block widecontent %}
 <h1>{{ gettext('select login provider').capitalize() }}</h1>
 <p>{{ gettext('Select site to authenticate with') }}.</p>
-<div class="card">
-  <div class="card-body">
-    <a class="btn btn-social btn-github" href="{{ url_for('auth.login', provider='github') }}"><span class="fab fa-github"></span>&nbsp;Github</a>
-  </div>  
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body mx-auto">
+        <a class="btn btn-social btn-facebook" href="{{ url_for('auth.login', provider='facebook') }}"><span class="fab fa-facebook"></span>&nbsp;Facebook</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body mx-auto">
+        <a class="btn btn-social btn-github" href="{{ url_for('auth.login', provider='github') }}"><span class="fab fa-github"></span>&nbsp;Github</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body mx-auto">
+        <a class="btn btn-social btn-google" href="{{ url_for('auth.login', provider='google') }}"><span class="fab fa-google"></span>&nbsp;Google</a>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="card">
-  <div class="card-body">
-    <a class="btn btn-primary" href="{{ url_for('auth.login', provider='local') }}"><span class="far fa-compass"></span>&nbsp;Local</a>
-  </div>  
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body mx-auto">
+        <a class="btn btn-primary" href="{{ url_for('auth.login', provider='local') }}"><span class="far fa-compass"></span>&nbsp;{{ gettext('local').capitalize() }}</a>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

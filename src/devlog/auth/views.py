@@ -51,6 +51,27 @@ def github_login_callback():  # pragma: nocover
     return redirect(url_for('.select'))
 
 
+@auth_bp.route('/facebook/callback', endpoint='callback-facebook')
+def facebook_login_callback():  # pragma: nocover
+    token_data = oauth.facebook.authorize_access_token()
+    if token_data:
+        access_token = token_data.get('access_token')
+        session['access_token'] = token_data, ''
+        resp = oauth.facebook.get(
+            '/me', params={'fields': 'id,email,first_name,last_name'}
+        )
+        if resp.ok:
+            user_data = resp.json()
+            email = user_data.get('email')
+            first_name = user_data.get('first_name', '')
+            last_name = user_data.get('last_name', '')
+            name = f'{first_name} {last_name}'.strip()
+            return login_success(
+                email, access_token, user_data['id'], 'facebook', name=name,
+            )
+    return redirect(url_for('.select'))
+
+
 @auth_bp.route('/logout')
 @login_required
 def logout():

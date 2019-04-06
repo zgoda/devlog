@@ -28,9 +28,9 @@ def account():
             return redirect(request.path)
     if form is None:
         form = UserForm(obj=current_user)
-    form.timezone.choices = localized_timezone_choices(get_locale())
+        form.timezone.choices = localized_timezone_choices(get_locale())
     context = {
-        'form': form or UserForm(obj=current_user),
+        'form': form,
     }
     return render_template('user/details.jinja', **context)
 

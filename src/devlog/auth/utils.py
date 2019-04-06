@@ -20,6 +20,8 @@ def login_success(email, access_token, remote_id, service, **kwargs):
     kwargs.pop('id', None)
     for k, v in kwargs.items():
         setattr(user, k, v)
+    if email is None:
+        user.active = False
     db.session.add(user)
     db.session.commit()
     login_user(user)

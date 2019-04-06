@@ -30,3 +30,14 @@ class UserForm(ObjectForm):
     )
     active = BooleanField(gettext('active'), default=True)
     public = BooleanField(gettext('public'), default=False)
+
+    def validate(self):
+        if not super().validate():
+            return False
+        result = True
+        if self.active.data and not self.email.data:
+            self.email.errors.append(
+                gettext('user can not be activated without email'),
+            )
+            result = False
+        return result

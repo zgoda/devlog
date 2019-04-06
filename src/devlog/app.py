@@ -7,6 +7,7 @@ from flask import render_template
 from flask_babel import gettext as _
 from werkzeug.utils import ImportStringError
 
+from ._version import __version__
 from .auth import auth_bp
 from .blog import blog_bp
 from .ext import babel, bootstrap, csrf, db, login_manager, oauth, pages
@@ -27,6 +28,7 @@ def make_app(env=None):
         if all([sentry_pubkey, sentry_project]):
             sentry_sdk.init(
                 dsn=f'https://{sentry_pubkey}@sentry.io/{sentry_project}',
+                release=f'devlog@{__version__}',
                 integrations=[FlaskIntegration()],
             )
     app = Devlog(__name__.split('.')[0])
