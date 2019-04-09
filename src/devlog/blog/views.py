@@ -5,15 +5,18 @@ from flask_login import current_user, login_required
 from . import blog_bp
 from ..ext import db
 from ..models import Blog, Post
-from ..utils.forms import DeleteForm, Button
-from ..utils.pagination import get_page
 from ..post.service import get_recent as recent_posts
+from ..utils.forms import Button, DeleteForm
+from ..utils.pagination import get_page
 from .forms import BlogForm
 
 
 @blog_bp.route('/create', methods=['POST', 'GET'])
 @login_required
 def create():
+    if not current_user.active:
+        flash(gettext('your account is inactive'), category='warning')
+        return redirect(url_for('user.account'))
     form = None
     if request.method == 'POST':
         form = BlogForm()

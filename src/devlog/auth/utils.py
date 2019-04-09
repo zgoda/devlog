@@ -34,4 +34,9 @@ def login_success(email, access_token, remote_id, service, **kwargs):
         ),
         category='success',
     )
+    if not user.active:
+        flash(
+            gettext('your account is inactive, you must activate it to create content'),
+            category='warning'
+        )
     return redirect(next_redirect('home.index'))

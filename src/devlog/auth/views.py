@@ -72,6 +72,23 @@ def facebook_login_callback():  # pragma: nocover
     return redirect(url_for('.select'))
 
 
+@auth_bp.route('/google/callback', endpoint='callback-google')
+def google_login_callback():  # pragma: nocover
+    token_data = oauth.google.authorize_access_token()
+    if token_data:
+        access_token = token_data.get('access_token')
+        session['access_token'] = token_data, ''
+        resp = oauth.google.get('/oauth2/v3/userinfo')
+        if resp.ok:
+            user_data = resp.json()
+            email = user_data.pop('email', None)
+            user_id = user_data.pop('sub', None)
+            return login_success(
+                email, access_token, user_id, 'google', **user_data,
+            )
+    return redirect(url_for('.select'))
+
+
 @auth_bp.route('/logout')
 @login_required
 def logout():

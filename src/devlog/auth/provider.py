@@ -9,3 +9,4 @@ def get_access_token():  # pragma: nocover
 
 github = oauth.register('github', fetch_token=get_access_token)
 facebook = oauth.register('facebook', fetch_token=get_access_token)
+google = oauth.register('google', fetch_token=get_access_token)
