@@ -8,20 +8,14 @@ from ..utils.views import next_redirect
 
 
 def login_success(email, access_token, remote_id, service, **kwargs):
-    if email is None:
-        user = User.get_by_remote_auth(service, remote_id)
-        ident = kwargs.get('name')
-    else:
-        user = User.get_by_email(email)
-        ident = email
+    user = User.get_by_email(email)
+    ident = email
     if user is None:
         user = User(email=email, remote_user_id=remote_id, oauth_service=service)
     user.access_token = access_token
     kwargs.pop('id', None)
     for k, v in kwargs.items():
         setattr(user, k, v)
-    if email is None:
-        user.active = False
     db.session.add(user)
     db.session.commit()
     login_user(user)
@@ -34,9 +28,4 @@ def login_success(email, access_token, remote_id, service, **kwargs):
         ),
         category='success',
     )
-    if not user.active:
-        flash(
-            gettext('your account is inactive, you must activate it to create content'),
-            category='warning'
-        )
     return redirect(next_redirect('home.index'))

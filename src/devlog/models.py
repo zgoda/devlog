@@ -17,7 +17,7 @@ class User(db.Model, UserMixin, TextProcessingMixin):
     blurb = db.Column(db.Text)
     blurb_html = db.Column(db.Text)
     blurb_markup_type = db.Column(db.String(50))
-    email = db.Column(db.String(200), index=True)
+    email = db.Column(db.String(200), unique=True)
     access_token = db.Column(db.Text)
     oauth_service = db.Column(db.String(50))
     remote_user_id = db.Column(db.Text)
@@ -53,12 +53,6 @@ class User(db.Model, UserMixin, TextProcessingMixin):
     @classmethod
     def get_by_email(cls, email):
         return cls.query.filter_by(email=email).first()
-
-    @classmethod
-    def get_by_remote_auth(cls, service, user_id):
-        return cls.query.filter(
-            cls.oauth_service == service, cls.remote_user_id == user_id
-        ).first()
 
     def has_blogs(self):
         return self.blogs.count() > 0

@@ -9,11 +9,8 @@ from devlog.auth.utils import login_success
 @pytest.mark.usefixtures('app')
 class TestLoginSuccess:
 
-    @pytest.mark.parametrize('email', [
-        'ivory@tower.com',
-        None,
-    ], ids=['email', 'authinfo'])
-    def test_existing(self, email, user_factory):
+    def test_existing(self, user_factory):
+        email = 'ivory@tower.com'
         orig_name = 'Ivory Tower'
         token = 'token1'
         user_id = 'user_1'
@@ -26,14 +23,11 @@ class TestLoginSuccess:
         ret = login_success(email, token, user_id, service, name=name)
         assert ret.status_code == 302
         assert url_for('home.index') in ret.headers['Location']
-        user = User.get_by_remote_auth(service, user_id)
+        user = User.get_by_email(email)
         assert user.name == name
 
-    @pytest.mark.parametrize('email', [
-        'ivory@tower.com',
-        None,
-    ], ids=['email', 'authinfo'])
-    def test_nonexisting(self, email):
+    def test_nonexisting(self):
+        email = 'ivory@tower.com'
         name = 'Ivory Tower'
         token = 'token1'
         user_id = 'user_1'
@@ -41,5 +35,5 @@ class TestLoginSuccess:
         ret = login_success(email, token, user_id, service, name=name)
         assert ret.status_code == 302
         assert url_for('home.index') in ret.headers['Location']
-        user = User.get_by_remote_auth(service, user_id)
+        user = User.get_by_email(email)
         assert user.name == name
