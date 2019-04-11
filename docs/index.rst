@@ -60,6 +60,15 @@ Practicalia
 
     uwsgi
 
+Project documentation
+
+.. toctree::
+    :maxdepth: 2
+
+    coc
+    contributing
+
+
 Indices and tables
 ==================
 

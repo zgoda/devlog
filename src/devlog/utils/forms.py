@@ -34,7 +34,7 @@ class Button(Renderable):
     text = attr.ib('ok')
     link = attr.ib(default=False)
 
-    template = "".join(
+    template = ''.join(
         [
             '<button type="{{ obj.type_ }}" class="btn btn-{{ obj.class_ }}">',
             '<i class="{{ obj.icon_type }} fa-{{ obj.icon }}"></i>',

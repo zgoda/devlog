@@ -8,8 +8,8 @@ Free form documentation is on [my github pages](https://zgoda.github.io/devlog).
 
 ## Habla habla
 
-* [code of conduct](CODE_OF_CONDUCT.md)
-* [contributing guidelines](CONTRIBUTING.md)
+* [code of conduct](docs/coc.rst)
+* [contributing guidelines](docs/contributing.rst)
 
 Apparently the COC document does not boost this project's _community status_ because it does not conform to Github _community standard_. Although they seem to be fine with my contributing guidelines.
 

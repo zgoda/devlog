@@ -1,12 +1,8 @@
-import os
-
 from flask.cli import FlaskGroup
 from dotenv import load_dotenv, find_dotenv
 
 from . import make_app
 from .models import db
-
-_here = os.path.abspath(os.path.dirname(__file__))
 
 
 def create_app(info):
