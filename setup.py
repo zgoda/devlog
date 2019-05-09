@@ -72,8 +72,6 @@ setup(
         'pytz',
         'babel',
         'sentry_sdk[flask]',
-        # pinned
-        'SQLAlchemy<1.3',
     ),
     setup_requires=(
         'pytest-runner',
@@ -84,6 +82,7 @@ setup(
         'pytest-cov',
         'pytest-flask',
         'pytest-factoryboy',
+        'behave',
     ),
     extras_require={
         'prod': [

@@ -1,8 +1,12 @@
 -r base.txt
 
+# unit tests
 pytest
 pytest-mock
 pytest-cov
 pytest-runner
 pytest-factoryboy
 pytest-flask
+
+# behavioral tests
+behave

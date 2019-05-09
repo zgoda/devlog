@@ -19,6 +19,3 @@ sentry-sdk[flask]
 docutils
 textile
 markdown2
-
-# pinned
-SQLAlchemy<1.3

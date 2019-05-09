@@ -35,7 +35,6 @@ def make_app(env=None):
     configure_app(app, env)
     configure_extensions(app, env)
     with app.app_context():
-        configure_hooks(app, env)
         configure_blueprints(app, env)
         configure_error_handlers(app)
         setup_template_extensions(app)
@@ -57,10 +56,6 @@ def configure_app(app, env):
     if config_secrets:
         app.logger.info(f'secrets loaded from {config_secrets}')
         app.config.from_envvar('DEVLOG_CONFIG_SECRETS')
-
-
-def configure_hooks(app, env):
-    pass
 
 
 def configure_blueprints(app, env):
