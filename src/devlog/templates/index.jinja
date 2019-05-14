@@ -3,8 +3,8 @@
 {% block pagetitle %}Devlog {{ gettext('and other logs') }}{% endblock %}
 
 {% block widecontent %}
-<div class="row">
-  <div class="col-md-4 px-2">
+<div class="columns">
+  <div class="column is-one-third">
     <h4>{{ gettext('recent posts').capitalize() }}</h4>
     {%- if posts %}
     <ul class="list-unstyled">
@@ -17,7 +17,7 @@
     <p>{{ gettext('no posts yet').capitalize() }}...</p>
     {% endif -%}
   </div>
-  <div class="col-md-4 px-2">
+  <div class="column is-one-third">
     <h4>{{ gettext('recent blogs').capitalize() }}</h4>
     {%- if blogs %}
     <ul class="list-unstyled">
@@ -30,7 +30,7 @@
     <p>{{ gettext('no blogs yet').capitalize() }}...</p>
     {% endif -%}
   </div>
-  <div class="col-md-4 px-2">
+  <div class="column is-one-third">
     <h4>{{ gettext('recently active').capitalize() }}</h4>
   </div>
 </div>
