@@ -5,7 +5,7 @@
 {% block widecontent %}
 <div class="columns">
   <div class="column is-one-third">
-    <h4>{{ gettext('recent posts').capitalize() }}</h4>
+    <h4 class="title is-4">{{ gettext('recent posts').capitalize() }}</h4>
     {%- if posts %}
     <ul class="list-unstyled">
       {%- for post in posts %}
@@ -18,7 +18,7 @@
     {% endif -%}
   </div>
   <div class="column is-one-third">
-    <h4>{{ gettext('recent blogs').capitalize() }}</h4>
+    <h4 class="title is-4">{{ gettext('recent blogs').capitalize() }}</h4>
     {%- if blogs %}
     <ul class="list-unstyled">
       {%- for blog in blogs %}
@@ -31,7 +31,7 @@
     {% endif -%}
   </div>
   <div class="column is-one-third">
-    <h4>{{ gettext('recently active').capitalize() }}</h4>
+    <h4 class="title is-4">{{ gettext('recently active').capitalize() }}</h4>
   </div>
 </div>
 {% endblock %}

@@ -3,15 +3,15 @@
 {% block pagetitle %}{{ gettext('Profile page for %(user_name)s', user_name=user.name) }}{% endblock %}
 
 {% block widecontent %}
-<h1>{{ gettext('Profile page for %(user_name)s', user_name=user.name) }}</h1>
+<h1 class="title is-1">{{ gettext('Profile page for %(user_name)s', user_name=user.name) }}</h1>
 {% if user == current_user and not (user.active and user.public) %}
-<p class="lead">{{ gettext('Your account is inactive or set as private (or both), no one except you can see this page') }}.</p>
+<p>{{ gettext('Your account is inactive or set as private (or both), no one except you can see this page') }}.</p>
 {% endif %}
-<dl class="row">
-  <dt class="col-sm-3">{{ gettext('user name') }}</dt>
-  <dd class="col-sm-9">{{ user.name }}</dd>
-  <dt class="col-sm-3">{{ gettext('date joined') }}</dt>
-  <dd class="col-sm-9">{{ user.created|datetimeformat('medium') }}</dd>
+<dl>
+  <dt>{{ gettext('user name') }}</dt>
+  <dd>{{ user.name }}</dd>
+  <dt>{{ gettext('date joined') }}</dt>
+  <dd>{{ user.created|datetimeformat('medium') }}</dd>
 </dl>
 {% if user.blurb_html %}
 {{ user.blurb_html|safe }}
