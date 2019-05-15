@@ -50,7 +50,7 @@
       <div class="container">
         {% with flashes = get_flashed_messages(with_categories=True) %}
         {% for category, flash in flashes %}
-          <div class="notification is-{{ category }} role="alert">
+          <div class="notification is-{{ category }}" role="alert">
             <button class="delete"></button>
             {{ flash }}
           </div>
