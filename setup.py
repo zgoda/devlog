@@ -60,7 +60,6 @@ setup(
         'Flask-FlatPages',
         'Flask-SQLAlchemy',
         'Flask-WTF',
-        'Bootstrap-Flask',
         'SQLAlchemy-Utils',
         'Authlib',
         'WTForms-Alchemy',
