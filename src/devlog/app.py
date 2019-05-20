@@ -10,7 +10,7 @@ from werkzeug.utils import ImportStringError
 from ._version import __version__
 from .auth import auth_bp
 from .blog import blog_bp
-from .ext import babel, bootstrap, csrf, db, login_manager, oauth, pages
+from .ext import babel, csrf, db, login_manager, oauth, pages
 from .home import home_bp
 from .post import post_bp
 from .templates import setup_template_extensions
@@ -70,7 +70,6 @@ def configure_extensions(app, env):
     db.init_app(app)
     csrf.init_app(app)
     oauth.init_app(app)
-    bootstrap.init_app(app)
     pages.init_app(app)
     pages.get('foo')  # preload all static pages
     login_manager.init_app(app)
