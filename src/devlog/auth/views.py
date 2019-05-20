@@ -32,7 +32,7 @@ def login(provider):  # pragma: nocover
 
 @auth_bp.route('/local/callback', endpoint='callback-local')
 def local_login_callback(email):
-    return login_success(email, 'local', 'local', 'local handler', name='example user')
+    return login_success(email, 'local', 'local', 'local handler')
 
 
 @auth_bp.route('/facebook/callback', endpoint='callback-facebook')
