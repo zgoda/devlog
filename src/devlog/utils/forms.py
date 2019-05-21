@@ -32,7 +32,6 @@ class Button(Renderable):
     icon = attr.ib(default='check')
     icon_type = attr.ib(default='fas')
     text = attr.ib('ok')
-    link = attr.ib(default=False)
 
     template = ''.join(
         [
