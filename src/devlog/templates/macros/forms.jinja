@@ -6,7 +6,7 @@
   <div class="field is-horizontal">
     <div class="field-label">
       {% if field.widget.input_type not in ('checkbox', 'radio') %}
-      <label class="label">{{ field.label.text|safe }}</label>
+      <label class="label">{{ field.label.text|safe }}{% if field.flags.required %} <span class="has-text-danger has-text-weight-bold">*</span>{% endif %}</label>
       {% endif %}
     </div>
     <div class="field-body">
@@ -87,7 +87,7 @@
 {%- endmacro %}
 
 {% macro render_form(form, action) %}
-<form method="post" action="{{ action }}" role="form">
+<form method="post" action="{{ action }}" role="form" novalidate>
 {{ render_form_fields(form) }}
 {{ render_form_buttons(form.buttons) }}
 </form>
