@@ -1,0 +1,22 @@
+{% macro tool_dropdown(title, items, menu_id) %}
+<div class="dropdown">
+  <div class="dropdown-trigger">
+    <button class="button" aria-haspopup="true" aria-controls="{{ menu_id }}">
+      <span class="icon is-small">
+        <i class="fas fa-cog"></i>
+      </span>
+      <span>{{ title }}</span>
+      <span class="icon is-small">
+        <i class="fas fa-angle-down" aria-hidden="true"></i>
+      </span>
+    </button>
+  </div>
+  <div class="dropdown-menu" id="{{ menu_id }}" role="menu">
+    <div class="dropdown-content">
+      {% for url, link_title in items %}
+      <a href="{{ url }}" class="dropdown-item">{{ link_title }}</a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endmacro %}

@@ -2,9 +2,9 @@ import os
 from logging.config import dictConfig
 
 import sentry_sdk
-from sentry_sdk.integrations.flask import FlaskIntegration
 from flask import render_template
 from flask_babel import gettext as _
+from sentry_sdk.integrations.flask import FlaskIntegration
 from werkzeug.utils import ImportStringError
 
 from ._version import __version__

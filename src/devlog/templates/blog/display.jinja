@@ -1,6 +1,7 @@
 {% extends "blog/base.jinja" %}
 
 {% from "macros/blog.jinja" import render_post_headline %}
+{% from "macros/menus.jinja" import tool_dropdown %}
 
 {% block pagetitle %}{{ blog.name }}{% endblock %}
 
@@ -12,25 +13,11 @@
 </div>
 {% endif %}
 {% if current_user == blog.user %}
-<div class="dropdown">
-  <div class="dropdown-trigger">
-    <button class="button" aria-haspopup="true" aria-controls="owner-tools-menu">
-      <span class="icon is-small">
-        <i class="fas fa-cog"></i>
-      </span>
-      <span>{{ gettext('tools') }}</span>
-      <span class="icon is-small">
-        <i class="fas fa-angle-down" aria-hidden="true"></i>
-      </span>
-    </button>
-  </div>
-  <div class="dropdown-menu" id="owner-tools-menu" role="menu">
-    <div class="dropdown-content">
-      <a href="{{ url_for('blog.details', blog_id=blog.id) }}" class="dropdown-item">{{ gettext('edit blog') }}</a>
-      <a href="{{ url_for('post.create', blog_id=blog.id) }}" class="dropdown-item">{{ gettext('add post') }}</a>
-    </div>
-  </div>
-</div>
+{% set menu_items = [
+  (url_for('blog.details', blog_id=blog.id), gettext('edit blog')),
+  (url_for('post.create', blog_id=blog.id), gettext('add post')),
+] %}
+{{ tool_dropdown(gettext('tools'), menu_items, 'owner-tools-menu') }}
 {% endif %}
 {% for post in posts.items %}
 {{ render_post_headline(post) }}
