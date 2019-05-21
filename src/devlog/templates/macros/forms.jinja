@@ -4,18 +4,24 @@
     {% set kwargs = dict(required=True, **kwargs) %}
   {% endif %}
   <div class="field is-horizontal">
-    {% if field.widget.input_type not in ('checkbox', 'radio') %}
     <div class="field-label">
+      {% if field.widget.input_type not in ('checkbox', 'radio') %}
       <label class="label">{{ field.label.text|safe }}</label>
+      {% endif %}
     </div>
-    {% endif %}
     <div class="field-body">
-      {% if field.widget.input_type in ('checkbox', 'radio') %}
+      {% if field.widget.input_type in ('checkbox', 'radio') or field.type == 'SelectField' %}
       <div class="field is-narrow">
         <div class="control">
+          {% if field.type == 'SelectField' %}
+          <div class="select is-fullwidth">
+            {{ field(**kwargs) }}
+          </div>
+          {% else %}
           <label class="{{ field.widget.input_type }}">
             {{ field(**kwargs) }} {{ field.label.text|safe }}
           </label>
+          {% endif %}
         </div>
         {% if field.errors %}
         {% for error in field.errors %}
@@ -26,7 +32,11 @@
       {% else %}
       <div class="field">
         <div class="control">
+          {% if field.type == 'TextAreaField' %}
+          {{ field(class_='textarea') }}
+          {% else %}
           {{ field(class_='input', **kwargs) }}
+          {% endif %}
         </div>
         {% if field.errors %}
         {% for error in field.errors %}
