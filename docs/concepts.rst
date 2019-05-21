@@ -46,5 +46,11 @@ Development requirements specification
 
 For a long time I insisted on keeping PIP requirements files only slightly
 organized in project root. Now I decided to put them aside, since they don't
-have any use besides development and CI. This makes project root much cleaner
-at the cost of bit more convoluted Docker setup.
+have any use besides development and CI. This makes project root much cleaner.
+
+Bulma and other CSS frameworks
+------------------------------
+
+`Bootstrap <https://getbootstrap.com/>`_ is usually 1st choice when it comes
+to CSS framework selection. It's proven, it has all the docs, it's widely
+used. It has its drawbacks but not many and most people can live with that.
