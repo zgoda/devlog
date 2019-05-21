@@ -5,17 +5,31 @@
 {% block pagetitle %}{{ blog.name }}{% endblock %}
 
 {% block content %}
-<h1>{{ blog.name }}</h1>
+<h1 class="title is-1">{{ blog.name }}</h1>
 {% if blog.blurb_html %}
-{{ blog.blurb_html|safe }}
+<div class="content">
+  {{ blog.blurb_html|safe }}
+</div>
 {% endif %}
 {% if current_user == blog.user %}
-<p><button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#owner-toolbox" aria-expanded="false" aria-controls="owner-toolbox"><i class="fas fa-cog"></i>&nbsp;{{ gettext('tools') }}</button></p>
-<div class="collapse" id="owner-toolbox">
-  <ul class="list-inline">
-    <li class="list-inline-item"><a href="{{ url_for('blog.details', blog_id=blog.id) }}">{{ gettext('edit blog') }}</a></li>
-    <li class="list-inline-item"><a href="{{ url_for('post.create', blog_id=blog.id) }}">{{ gettext('add post') }}</a></li>
-  </ul>
+<div class="dropdown">
+  <div class="dropdown-trigger">
+    <button class="button" aria-haspopup="true" aria-controls="owner-tools-menu">
+      <span class="icon is-small">
+        <i class="fas fa-cog"></i>
+      </span>
+      <span>{{ gettext('tools') }}</span>
+      <span class="icon is-small">
+        <i class="fas fa-angle-down" aria-hidden="true"></i>
+      </span>
+    </button>
+  </div>
+  <div class="dropdown-menu" id="owner-tools-menu" role="menu">
+    <div class="dropdown-content">
+      <a href="{{ url_for('blog.details', blog_id=blog.id) }}" class="dropdown-item">{{ gettext('edit blog') }}</a>
+      <a href="{{ url_for('post.create', blog_id=blog.id) }}" class="dropdown-item">{{ gettext('add post') }}</a>
+    </div>
+  </div>
 </div>
 {% endif %}
 {% for post in posts.items %}

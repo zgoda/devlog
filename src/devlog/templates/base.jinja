@@ -32,7 +32,7 @@
             <a class="navbar-item" href="#">Link</a>
           </div>
           <div class="navbar-end">
-            <div class="navbar-item has-dropdown is-hoverable">
+            <div class="navbar-item has-dropdown">
               <a class="navbar-link"><span class="fas fa-user-alt"></span>&nbsp;{{ gettext('account tools') }}</a>
               <div class="navbar-dropdown">
                   {% if current_user.is_authenticated %}
@@ -93,7 +93,7 @@
         });
         const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
         if ($navbarBurgers.length > 0) {
-          $navbarBurgers.forEach( el => {
+          $navbarBurgers.forEach(el => {
             el.addEventListener('click', () => {
               const target = el.dataset.target;
               const $target = document.getElementById(target);
@@ -102,6 +102,15 @@
             });
           });
         }
+        const $dropdowns = Array.prototype.slice.call(document.querySelectorAll('.dropdown, .has-dropdown'), 0);
+        if ($dropdowns.length > 0) {
+          $dropdowns.forEach(el => {
+            el.addEventListener('click', function(event) {
+              event.stopPropagation();
+              el.classList.toggle('is-active');
+            });
+          });
+        };
       });
     </script>
 
