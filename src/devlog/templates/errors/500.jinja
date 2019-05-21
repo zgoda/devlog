@@ -3,6 +3,8 @@
 {% block pagetitle %}{{ gettext('server error').capitalize() }}{% endblock %}
 
 {% block widecontent %}
-<h1>{{ gettext('server error').capitalize() }}</h1>
-<p>{% trans %}The server encountered condition it was not able to handle. This is unrecoverable.{% endtrans %}</p>
+<h1 class="title is-1">{{ gettext('server error').capitalize() }}</h1>
+<div class="content">
+  <p>{% trans %}The server encountered condition it was not able to handle. This is unrecoverable.{% endtrans %}</p>
+</div>
 {% endblock %}
