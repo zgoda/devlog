@@ -5,21 +5,24 @@
 {% block pagetitle %}{{ post.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ post.title }}</h1>
-<h3 class="text-muted small">{% if post.published %}{{ gettext('published').capitalize() }}: {{ post.published|datetimeformat('long') }}{% else %}{{ gettext('draft') }}{% endif %}</h3>
-{% if post.mood %}<p class="text-muted">{{ gettext('mood: %(mood)s', mood=post.mood) }}</p>{% endif %}
-{% if post.text_html %}
-{{ post.text_html|safe }}
-{% else %}
-{% for line in post.text.splitlines() %}
-<p>{{ line.strip() }}</p>
-{% endfor %}
-{% endif %}
+<h1 class="title is-1">{{ post.title }}</h1>
+<h3 class="subtitle is-3">{% if post.published %}{{ gettext('published').capitalize() }}: {{ post.published|datetimeformat('long') }}{% else %}{{ gettext('draft') }}{% endif %}</h3>
+<div class="content">
+  {% if post.mood %}<p>{{ gettext('mood: %(mood)s', mood=post.mood) }}</p>{% endif %}
+  {% if post.text_html %}
+  {{ post.text_html|safe }}
+  {% else %}
+  {% for line in post.text.splitlines() %}
+  <p>{{ line.strip() }}</p>
+  {% endfor %}
+  {% endif %}
+</div>
 {% if current_user == post.blog.user %}
-<p><button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#edit-form" aria-expanded="false" aria-controls="contentId"><i class="fas fa-cog"></i>&nbsp;{{ gettext('edit') }}</button></p>
-<div class="collapse" id="edit-form">
-  <h3>{{ gettext('edit post').capitalize() }}</h3>
-  {{ render_form(form, request.path) }}
+<h3 class="title is-3">{{ gettext('edit post').capitalize() }}</h3>
+<div class="card">
+  <div class="card-content">
+    {{ render_form(form, request.path) }}
+  </div>
 </div>
 {% endif %}
 {% endblock %}

@@ -6,6 +6,8 @@
 
 {% block widecontent %}
 <h1 class="title is-1">{{ gettext('confirm blog delete').capitalize() }}</h1>
-<p class="subtitle">{{ gettext('Please confirm that you really want your blog %(blog_name)s to be removed. This operation is irreversible and all content will be deleted along with your blog.', blog_name=blog.name) }}</p>
+<div class="content">
+  <p>{{ gettext('Please confirm that you really want your blog %(blog_name)s to be removed. This operation is irreversible and all content will be deleted along with your blog.', blog_name=blog.name) }}</p>
+</div>
 {{ render_form(form, action=url_for('blog.delete', blog_id=blog.id)) }}
 {% endblock %}

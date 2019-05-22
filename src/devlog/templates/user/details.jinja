@@ -7,8 +7,12 @@
 {% block content %}
 <h1 class="title is-1">{{ gettext('account details').capitalize() }}</h1>
 {{ render_form(form, url_for('user.account')) }}
-<p class="content"><a href="{{ url_for('user.profile', user_id=current_user.id) }}">{{ gettext('view your profile page').capitalize() }}</a></p>
+<div class="content">
+  <p><a href="{{ url_for('user.profile', user_id=current_user.id) }}">{{ gettext('view your profile page').capitalize() }}</a></p>
+</div>
 <h2 class="title is-2">{{ gettext('remove account').capitalize() }}</h2>
-<p class="content">{% trans %}You may temporarily deactivate your account using the form above. To completely remove your account click the button below to get to confirmation page. We will miss you.{% endtrans %}</p>
-<p class="content"><a href="{{ url_for('user.confirm_delete') }}" class="button is-danger"><span class="icon"><i class="fas fa-skull-crossbones"></i></span>&nbsp;{{ gettext('delete') }}</a></p>
+<div class="content">
+  <p>{% trans %}You may temporarily deactivate your account using the form above. To completely remove your account click the button below to get to confirmation page. We will miss you.{% endtrans %}</p>
+  <p><a href="{{ url_for('user.confirm_delete') }}" class="button is-danger"><span class="icon"><i class="fas fa-skull-crossbones"></i></span>&nbsp;{{ gettext('delete') }}</a></p>
+</div>
 {% endblock %}
