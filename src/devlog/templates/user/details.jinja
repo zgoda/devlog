@@ -13,6 +13,6 @@
 <h2 class="title is-2">{{ gettext('remove account').capitalize() }}</h2>
 <div class="content">
   <p>{% trans %}You may temporarily deactivate your account using the form above. To completely remove your account click the button below to get to confirmation page. We will miss you.{% endtrans %}</p>
-  <p><a href="{{ url_for('user.confirm_delete') }}" class="button is-danger"><span class="icon"><i class="fas fa-skull-crossbones"></i></span>&nbsp;{{ gettext('delete') }}</a></p>
+  <p class="has-text-centered"><a href="{{ url_for('user.confirm_delete') }}" class="button is-danger"><span class="icon"><i class="fas fa-skull-crossbones"></i></span>&nbsp;<span>{{ gettext('delete') }}</span></a></p>
 </div>
 {% endblock %}

@@ -16,6 +16,14 @@
   <p>{{ line.strip() }}</p>
   {% endfor %}
   {% endif %}
+  <dl>
+    <dt><strong>{{ gettext('created') }}:</strong></dt>
+    <dd>{{ post.created|datetimeformat('short') }}</dd>
+    <dt><strong>{{ gettext('updated') }}:</strong></dt>
+    <dd>{{ post.updated|datetimeformat('short') }}</dd>
+    <dt><strong>{{ gettext('published') }}:</strong></dt>
+    <dd>{{ post.published|datetimeformat('short') }}</dd>
+  </dl>
 </div>
 {% if current_user == post.blog.user %}
 <h3 class="title is-3">{{ gettext('edit post').capitalize() }}</h3>

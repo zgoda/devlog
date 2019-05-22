@@ -18,7 +18,7 @@
       {% else %}
       <p>{{ gettext('no blogs yet') }}</p>
       {% endif %}
-      <p class="has-text-centered"><a href="{{ url_for('blog.create') }}" class="button is-primary"><span class="icon"><i class="fas fa-plus"></i></span>&nbsp;{{ gettext('create new') }}</a></p>
+      <p class="has-text-centered"><a href="{{ url_for('blog.create') }}" class="button is-primary"><span class="icon"><i class="fas fa-plus"></i></span> <span>{{ gettext('create new') }}</span></a></p>
     </div>
   </div>
 </div>

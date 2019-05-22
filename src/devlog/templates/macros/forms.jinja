@@ -1,74 +1,70 @@
 {% macro render_field(field) %}
-  {# this is a workaround hack for the more straightforward-code of just passing required=required parameter. older versions of wtforms do not have the necessary fix for required=False attributes, but will also not set the required flag in the first place. we skirt the issue using the code below #}
-  {% if field.flags.required and not required in kwargs %}
-    {% set kwargs = dict(required=True, **kwargs) %}
-  {% endif %}
-  <div class="field is-horizontal">
-    <div class="field-label">
-      {% if field.widget.input_type not in ('checkbox', 'radio') %}
-      <label class="label">{{ field.label.text|safe }}{% if field.flags.required %} <span class="has-text-danger has-text-weight-bold">*</span>{% endif %}</label>
-      {% endif %}
-    </div>
-    <div class="field-body">
-      {% if field.widget.input_type in ('checkbox', 'radio') or field.type == 'SelectField' %}
-      <div class="field is-narrow">
-        <div class="control">
-          {% if field.type == 'SelectField' %}
-          <div class="select is-fullwidth">
-            {{ field(**kwargs) }}
-          </div>
-          {% else %}
-          <label class="{{ field.widget.input_type }}">
-            {{ field(**kwargs) }} {{ field.label.text|safe }}
-          </label>
-          {% endif %}
-        </div>
-        {% if field.errors %}
-        {% for error in field.errors %}
-        <p class="help is-danger">{{ error }}</p>
-        {% endfor %}
-        {% endif %}
-      </div>
-      {% else %}
-      <div class="field">
-        <div class="control">
-          {% if field.type == 'TextAreaField' %}
-          {{ field(class_='textarea') }}
-          {% else %}
-          {{ field(class_='input', **kwargs) }}
-          {% endif %}
-        </div>
-        {% if field.errors %}
-        {% for error in field.errors %}
-        <p class="help is-danger">{{ error }}</p>
-        {% endfor %}
-        {% endif %}
-      </div>
-      {% endif %}
-    </div>
+<div class="field is-horizontal">
+  <div class="field-label">
+    {% if field.widget.input_type not in ('checkbox', 'radio') %}
+    <label class="label">{{ field.label.text|safe }}{% if field.flags.required %} <span class="has-text-danger has-text-weight-bold">*</span>{% endif %}</label>
+    {% endif %}
   </div>
+  <div class="field-body">
+    {% if field.widget.input_type in ('checkbox', 'radio') or field.type == 'SelectField' %}
+    <div class="field is-narrow">
+      <div class="control">
+        {% if field.type == 'SelectField' %}
+        <div class="select is-fullwidth">
+          {{ field(**kwargs) }}
+        </div>
+        {% else %}
+        <label class="{{ field.widget.input_type }}">
+          {{ field(**kwargs) }} {{ field.label.text|safe }}
+        </label>
+        {% endif %}
+      </div>
+      {% if field.errors %}
+      {% for error in field.errors %}
+      <p class="help is-danger">{{ error }}</p>
+      {% endfor %}
+      {% endif %}
+    </div>
+    {% else %}
+    <div class="field">
+      <div class="control">
+        {% if field.type == 'TextAreaField' %}
+        {{ field(class_='textarea') }}
+        {% else %}
+        {{ field(class_='input', **kwargs) }}
+        {% endif %}
+      </div>
+      {% if field.errors %}
+      {% for error in field.errors %}
+      <p class="help is-danger">{{ error }}</p>
+      {% endfor %}
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
 {% endmacro %}
 
 {% macro form_errors(form, hiddens=True) %}
-  {%- if form.errors %}
-    {%- for fieldname, errors in form.errors.items() %}
-      {%- if (is_hidden_field(form[fieldname]) and hiddens) or (not is_hidden_field(form[fieldname]) and hiddens != 'only') %}
-        {%- for error in errors %}
-          <div class="help is-danger">{{ error }}</div>
-        {%- endfor %}
-      {%- endif %}
-    {%- endfor %}
-  {%- endif %}
+{%- if form.errors %}
+  {%- for fieldname, errors in form.errors.items() %}
+    {%- if (is_hidden_field(form[fieldname]) and hiddens) or (not is_hidden_field(form[fieldname]) and hiddens != 'only') %}
+      {%- for error in errors %}
+        <div class="help is-danger">{{ error }}</div>
+      {%- endfor %}
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
 {%- endmacro %}
 
 {% macro render_form_fields(form) %}
-  {{ form.hidden_tag() }}
-  {{ form_errors(form, hiddens='only') }}
-  {%- for field in form %}
-    {% if not is_hidden_field(field) -%}
-      {{ render_field(field) }}
-    {%- endif %}
-  {%- endfor %}
+{{ form.hidden_tag() }}
+{{ form_errors(form, hiddens='only') }}
+{%- for field in form %}
+  {% if not is_hidden_field(field) -%}
+    {{ render_field(field) }}
+  {%- endif %}
+{%- endfor %}
 {%- endmacro %}
 
 {% macro render_form_buttons(buttons) %}

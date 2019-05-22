@@ -36,9 +36,11 @@ class Button(Renderable):
     template = ''.join(
         [
             '<button type="{{ obj.type_ }}" class="button is-{{ obj.class_ }}">',
+            '<span class="icon">',
             '<i class="{{ obj.icon_type }} fa-{{ obj.icon }}"></i>',
+            '</span>',
             '&nbsp;',
-            '{{ obj.text }}',
+            '<span>{{ obj.text }}</span>',
             '</button>',
         ]
     )

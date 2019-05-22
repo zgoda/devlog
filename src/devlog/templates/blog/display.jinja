@@ -19,10 +19,15 @@
 ] %}
 {{ tool_dropdown(gettext('tools'), menu_items, 'owner-tools-menu') }}
 {% endif %}
+<hr class="is-large">
 <div class="box">
   <h2 class="title is-2">{{ gettext('recent posts').capitalize() }}</h2>
   {% for post in posts.items %}
   {{ render_post_headline(post) }}
+  {% else %}
+  <div class="content">
+    <p>{{ gettext('no posts yet').capitalize() }}.</p>
+  </div>
   {% endfor %}
 </div>
 {% endblock %}
