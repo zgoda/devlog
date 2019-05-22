@@ -4,7 +4,7 @@ from wtforms.fields import (
 )
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import Optional, Required
-from wtforms_components import Email
+from wtforms_components.validators import Email
 
 from ..models import User
 from ..utils.forms import ObjectForm

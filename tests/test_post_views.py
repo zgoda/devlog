@@ -28,14 +28,14 @@ class TestPostCreateView(DevlogTests):
     def test_authenticated_get(self, blog_factory, user_factory):
         blog = blog_factory(name='Infernal Tendencies')
         user = user_factory(name='Ivory Tower')
-        self.login(user.email)
+        self.login(user.email, name=user.name)
         rv = self.client.get(self.url(blog))
         assert rv.status_code == 404
 
     def test_owner_get(self, blog_factory, user_factory):
         user = user_factory(name='Ivory Tower')
         blog = blog_factory(name='Infernal Tendencies', user=user)
-        self.login(user.email)
+        self.login(user.email, name=user.name)
         url = self.url(blog)
         rv = self.client.get(url)
         assert f'action="{url}"' in rv.text
@@ -55,21 +55,21 @@ class TestPostCreateView(DevlogTests):
     def test_authenticated_post_data_ok(self, blog_factory, user_factory):
         blog = blog_factory(name='Infernal Tendencies')
         user = user_factory(name='Ivory Tower')
-        self.login(user.email)
+        self.login(user.email, name=user.name)
         rv = self.client.post(self.url(blog), data=self.DATA_OK)
         assert rv.status_code == 404
 
     def test_authenticated_post_data_incomplete(self, blog_factory, user_factory):
         blog = blog_factory(name='Infernal Tendencies')
         user = user_factory(name='Ivory Tower')
-        self.login(user.email)
+        self.login(user.email, name=user.name)
         rv = self.client.post(self.url(blog), data=self.DATA_INCOMPLETE)
         assert rv.status_code == 404
 
     def test_owner_post_data_ok(self, blog_factory, user_factory):
         user = user_factory(name='Ivory Tower')
         blog = blog_factory(name='Infernal Tendencies', user=user)
-        self.login(user.email)
+        self.login(user.email, name=user.name)
         rv = self.client.post(self.url(blog), data=self.DATA_OK)
         assert rv.status_code == 302
         assert url_for('blog.display', blog_id=blog.id) in rv.headers['Location']
@@ -77,7 +77,7 @@ class TestPostCreateView(DevlogTests):
     def test_owner_post_data_incomplete(self, blog_factory, user_factory):
         user = user_factory(name='Ivory Tower')
         blog = blog_factory(name='Infernal Tendencies', user=user)
-        self.login(user.email)
+        self.login(user.email, name=user.name)
         rv = self.client.post(self.url(blog), data=self.DATA_INCOMPLETE)
         assert 'field is required' in rv.text
 
@@ -98,7 +98,7 @@ class TestPostDisplayView(DevlogTests):
         post = post_factory(blog=blog, public=True, draft=False, title=title)
         url = self.url(post)
         rv = self.client.get(url)
-        assert f'<h1>{title}</h1>' in rv.text
+        assert f'>{title}</h1>' in rv.text
 
     @pytest.mark.parametrize('public,draft', [
         (True, True),
@@ -118,10 +118,10 @@ class TestPostDisplayView(DevlogTests):
         blog = blog_factory(user=self.user, public=True)
         title = 'First post'
         post = post_factory(blog=blog, public=True, draft=False, title=title)
-        self.login(user.email)
+        self.login(user.email, name=user.name)
         url = self.url(post)
         rv = self.client.get(url)
-        assert f'<h1>{title}</h1>' in rv.text
+        assert f'>{title}</h1>' in rv.text
 
     @pytest.mark.parametrize('public,draft', [
         (True, True),
@@ -134,7 +134,7 @@ class TestPostDisplayView(DevlogTests):
         blog = blog_factory(user=self.user, public=True)
         title = 'First post'
         post = post_factory(blog=blog, public=public, draft=draft, title=title)
-        self.login(user.email)
+        self.login(user.email, name=user.name)
         url = self.url(post)
         rv = self.client.get(url)
         assert rv.status_code == 404
@@ -154,10 +154,10 @@ class TestPostDisplayView(DevlogTests):
         blog = blog_factory(user=self.user, public=True)
         title = 'First post'
         post = post_factory(blog=blog, public=True, draft=False, title=title)
-        self.login(self.user.email)
+        self.login(self.user.email, name=self.user.name)
         url = self.url(post)
         rv = self.client.get(url)
-        assert f'<h1>{title}</h1>' in rv.text
+        assert f'>{title}</h1>' in rv.text
 
     @pytest.mark.parametrize('public,draft', [
         (True, False),
@@ -199,7 +199,7 @@ class TestPostDisplayView(DevlogTests):
         post = post_factory(blog=blog, public=public, draft=draft, title=title)
         user = user_factory(name='Ivory Tower')
         url = self.url(post)
-        self.login(user.email)
+        self.login(user.email, name=user.name)
         data = {
             'title': 'New name',
         }
@@ -222,7 +222,7 @@ class TestPostDisplayView(DevlogTests):
         title = 'First post'
         post = post_factory(blog=blog, public=public, draft=draft, title=title)
         url = self.url(post)
-        self.login(self.user.email)
+        self.login(self.user.email, name=self.user.name)
         new_title = 'New name'
         data = {
             'title': new_title,
@@ -247,7 +247,7 @@ class TestPostDisplayView(DevlogTests):
         title = 'First post'
         post = post_factory(blog=blog, public=public, draft=draft, title=title)
         url = self.url(post)
-        self.login(self.user.email)
+        self.login(self.user.email, name=self.user.name)
         new_title = None
         data = {
             'title': new_title,
@@ -255,5 +255,3 @@ class TestPostDisplayView(DevlogTests):
         rv = self.client.post(url, data=data, follow_redirects=True)
         assert 'post has been saved' not in rv.text
         assert 'field is required' in rv.text
-        assert 'invalid-feedback' in rv.text
-        assert 'is-invalid' in rv.text
