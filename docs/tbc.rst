@@ -16,6 +16,14 @@ Or prepare somethig that would be better suited for projects of this size
 because both RBAC and ABAC are big things that don't scale down well - there is
 large beginning processing overhead. Perhaps something losely resembling ABAC.
 
+Unfortunately the access control implementations at object level are rather
+scarce in Python. Specifically for Flask there is
+`Flask-Principal <https://pypi.org/project/Flask-Principal/>`_ and more general
+approach with `Permission <https://pypi.org/project/permission/>`_ but both
+require writing tons of code. Permission seems to be more approachable but
+lacks any tests which is quite unusual these days. Most of other
+libraries/extensions are request handler oriented and do not fit my vision.
+
 Separation of concern
 ---------------------
 

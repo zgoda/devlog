@@ -19,7 +19,7 @@ class Link(Renderable):
     text = attr.ib(default='click')
 
     template = ''.join([
-        '<a href="{{ obj.href }}">',
+        '<a href="{{ obj.href }}" class="button">',
         '{{ obj.text }}',
         '</a>',
     ])
@@ -32,11 +32,10 @@ class Button(Renderable):
     icon = attr.ib(default='check')
     icon_type = attr.ib(default='fas')
     text = attr.ib('ok')
-    link = attr.ib(default=False)
 
     template = ''.join(
         [
-            '<button type="{{ obj.type_ }}" class="btn btn-{{ obj.class_ }}">',
+            '<button type="{{ obj.type_ }}" class="button is-{{ obj.class_ }}">',
             '<i class="{{ obj.icon_type }} fa-{{ obj.icon }}"></i>',
             '&nbsp;',
             '{{ obj.text }}',

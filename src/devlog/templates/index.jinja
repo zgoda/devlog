@@ -3,35 +3,41 @@
 {% block pagetitle %}Devlog {{ gettext('and other logs') }}{% endblock %}
 
 {% block widecontent %}
-<div class="row">
-  <div class="col-md-4 px-2">
-    <h4>{{ gettext('recent posts').capitalize() }}</h4>
-    {%- if posts %}
-    <ul class="list-unstyled">
-      {%- for post in posts %}
-      <li><a href="{{ url_for('post.display', post_id=post.id, slug=post.slug) }}">{{ post.title }}</a></li>
-      {% endfor -%}
-    </ul>
-    <p><a href="">{{ gettext('see more') }}</a></p>
-    {% else %}
-    <p>{{ gettext('no posts yet').capitalize() }}...</p>
-    {% endif -%}
+<div class="columns">
+  <div class="column is-one-third">
+    <h4 class="title is-4">{{ gettext('recent posts').capitalize() }}</h4>
+    <div class="content">
+      {%- if posts %}
+      <ul class="list-unstyled">
+        {%- for post in posts %}
+        <li><a href="{{ url_for('post.display', post_id=post.id, slug=post.slug) }}">{{ post.title }}</a></li>
+        {% endfor -%}
+      </ul>
+      <p><a href="">{{ gettext('see more') }}</a></p>
+      {% else %}
+      <p>{{ gettext('no posts yet').capitalize() }}...</p>
+      {% endif -%}
+    </div>
   </div>
-  <div class="col-md-4 px-2">
-    <h4>{{ gettext('recent blogs').capitalize() }}</h4>
-    {%- if blogs %}
-    <ul class="list-unstyled">
-      {%- for blog in blogs %}
-      <li><a href="{{ url_for('blog.display', blog_id=blog.id) }}">{{ blog.name }}</a></li>
-      {% endfor -%}
-    </ul>
-    <p><a href="">{{ gettext('see more') }}</a></p>
-    {% else %}
-    <p>{{ gettext('no blogs yet').capitalize() }}...</p>
-    {% endif -%}
+  <div class="column is-one-third">
+    <h4 class="title is-4">{{ gettext('recent blogs').capitalize() }}</h4>
+    <div class="content">
+      {%- if blogs %}
+      <ul class="list-unstyled">
+        {%- for blog in blogs %}
+        <li><a href="{{ url_for('blog.display', blog_id=blog.id) }}">{{ blog.name }}</a></li>
+        {% endfor -%}
+      </ul>
+      <p><a href="">{{ gettext('see more') }}</a></p>
+      {% else %}
+      <p>{{ gettext('no blogs yet').capitalize() }}...</p>
+      {% endif -%}
+    </div>
   </div>
-  <div class="col-md-4 px-2">
-    <h4>{{ gettext('recently active').capitalize() }}</h4>
+  <div class="column is-one-third">
+    <h4 class="title is-4">{{ gettext('recently active').capitalize() }}</h4>
+    <div class="content">
+    </div>
   </div>
 </div>
 {% endblock %}

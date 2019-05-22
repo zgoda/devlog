@@ -2,35 +2,43 @@
 
 {% block sidebar %}
 {% if current_user.is_authenticated %}
-<div class="card mb-4">
-  <div class="card-body">
-    <h2 class="card-title">{{ gettext('blogs').capitalize() }}</h2>
-    {% if recent_blogs and recent_blogs.count() %}
-    <ul class="list-group list-group-flush">
-      {% for blog in recent_blogs %}
-      <li class="list-group-item"><a href="{{ url_for('blog.display', blog_id=blog.id, slug=blog.slug) }}">{{ blog.name }}</a> <em><small>({{ blog.updated|datetimeformat('short') }})</small></em></li>
-      {% endfor %}
-    </ul>
-    <p class="card-text mt-4"><a href="">{{ gettext('see more') }}</a></p>
-    {% else %}
-    <p class="card-text mt-4"><a href="">{{ gettext('no blogs yet') }}</a></p>
-    {% endif %}
-    <p class="card-text mt-4 text-center"><a href="{{ url_for('blog.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>&nbsp;{{ gettext('create new') }}</a></p>
+<div class="card">
+  <div class="card-header">
+    <h2 class="card-header-title">{{ gettext('blogs').capitalize() }}</h2>
+  </div>
+  <div class="card-content">
+    <div class="content">
+      {% if recent_blogs and recent_blogs.count() %}
+      <ul>
+        {% for blog in recent_blogs %}
+        <li><a href="{{ url_for('blog.display', blog_id=blog.id, slug=blog.slug) }}">{{ blog.name }}</a> <em><small>({{ blog.updated|datetimeformat('short') }})</small></em></li>
+        {% endfor %}
+      </ul>
+      <p><a href="">{{ gettext('see more') }}</a></p>
+      {% else %}
+      <p>{{ gettext('no blogs yet') }}</p>
+      {% endif %}
+      <p class="has-text-centered"><a href="{{ url_for('blog.create') }}" class="button is-primary"><span class="icon"><i class="fas fa-plus"></i></span>&nbsp;{{ gettext('create new') }}</a></p>
+    </div>
   </div>
 </div>
-<div class="card mb-4">
-  <div class="card-body">
-    <h2 class="card-title">{{ gettext('recent posts').capitalize() }}</h2>
-    {% if recent_posts and recent_posts.count() %}
-    <ul class="list-group list-group-flush">
-      {% for post in recent_posts %}
-      <li class="list-group-item"><a href="{{ url_for('post.display', post_id=post.id, slug=post.slug) }}">{{ post.title }}</a> <em><small>({{ post.updated|datetimeformat('short') }})</small></em></li>
-      {% endfor %}
-    </ul>
-    <p class="card-text mt-4"><a href="">{{ gettext('see more') }}</a></p>
-    {% else %}
-    <p class="card-text mt-4"><a href="">{{ gettext('no posts yet') }}</a></p>
-    {% endif %}
+<div class="card">
+  <div class="card-header">
+    <h2 class="card-header-title">{{ gettext('recent posts').capitalize() }}</h2>
+  </div>
+  <div class="card-content">
+    <div class="content">
+      {% if recent_posts and recent_posts.count() %}
+      <ul>
+        {% for post in recent_posts %}
+        <li><a href="{{ url_for('post.display', post_id=post.id, slug=post.slug) }}">{{ post.title }}</a> <em><small>({{ post.updated|datetimeformat('short') }})</small></em></li>
+        {% endfor %}
+      </ul>
+      <p><a href="">{{ gettext('see more') }}</a></p>
+      {% else %}
+      <p>{{ gettext('no posts yet') }}</p>
+      {% endif %}
+    </div>
   </div>
 </div>
 {% endif %}

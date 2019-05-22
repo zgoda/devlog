@@ -5,11 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block pagetitle %}{% endblock %}</title>
-    {% if config.get('SITE_THEME') %}
-    <link rel="stylesheet" href="/static/themes/{{ config.get('SITE_THEME') }}.bootstrap.min.css">
-    {% else %}
-    <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
-    {% endif %}
+    <link rel="stylesheet" href="/static/vendor/bulma.min.css">
     <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.min.css">
     {% block extracss %}
     {% endblock %}
@@ -21,79 +17,103 @@
   </head>
   <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
       <div class="container">
-        <a class="navbar-brand" href="/">DevLog</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-toggler" aria-controls="navbar-toggler" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbar-toggler">
-          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-          </ul>
-          <form class="form-inline mr-auto my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search">
-            <button class="btn btn-outline-default my-2 my-sm-0" type="submit">Search</button>
-          </form>
-          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbar-dropdown-menu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-user-alt"></span>&nbsp;{{ gettext('account tools') }}</a>
-              <div class="dropdown-menu" aria-labelledby="navbar-dropdown-menu">
-                {% if current_user.is_authenticated %}
-                <a class="dropdown-item" href="{{ url_for('user.account') }}"><span class="fas fa-user-cog"></span>&nbsp;{{ gettext('account') }}</a>
-                <a class="dropdown-item" href="{{ url_for('auth.logout') }}"><span class="fas fa-sign-out-alt"></span>&nbsp;{{ gettext('sign out') }}</a>
-                {% else %}
-                <a class="dropdown-item" href="{{ url_for('auth.select') }}"><span class="fas fa-sign-in-alt"></span>&nbsp;{{ gettext('sign in') }}</a>
-                {% endif %}
+        <div class="navbar-brand">
+          <a class="navbar-item" href="/">Devlog</a>
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="navbar-menu" id="navMenu">
+          <div class="navbar-start">
+            <a class="navbar-item" href="#">Link</a>
+          </div>
+          <div class="navbar-end">
+            <div class="navbar-item has-dropdown">
+              <a class="navbar-link"><span class="fas fa-user-alt"></span>&nbsp;{{ gettext('account tools') }}</a>
+              <div class="navbar-dropdown">
+                  {% if current_user.is_authenticated %}
+                  <a class="navbar-item" href="{{ url_for('user.account') }}"><span class="icon"><i class="fas fa-user-cog"></i></span>&nbsp;{{ gettext('account') }}</a>
+                  <a class="navbar-item" href="{{ url_for('auth.logout') }}"><span class="icon"><i class="fas fa-sign-out-alt"></i></span>&nbsp;{{ gettext('sign out') }}</a>
+                  {% else %}
+                  <a class="navbar-item" href="{{ url_for('auth.select') }}"><span class="icon"><i class="fas fa-sign-in-alt"></i></span>&nbsp;{{ gettext('sign in') }}</a>
+                  {% endif %}              
               </div>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
 
-    <div class="container mt-4">
-      <div class="row">
-        <div class="col-12" id="flash-container">
+    <section class="section">
+      <div class="container">
         {% with flashes = get_flashed_messages(with_categories=True) %}
         {% for category, flash in flashes %}
-          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          <div class="notification is-{{ category }}" role="alert">
+            <button class="delete"></button>
             {{ flash }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
         {% endfor %}
         {% endwith %}
+        <div class="columns">
+          <div class="column is-full">
+          {% block widecontent %}
+          {% endblock %}
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-three-quarters">
+          {% block content %}
+          {% endblock %}
+          </div>
+          <div class="column is-one-quarter">
+          {% block sidebar %}
+          {% endblock %}
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
-        {% block widecontent %}
-        {% endblock %}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 col-md-8">
-        {% block content %}
-        {% endblock %}
-        </div>
-        <div class="col-6 col-md-4">
-        {% block sidebar %}
-        {% endblock %}
-        </div>
-      </div>
-      <div class="row">
-        <footer class="col-12">
-          <hr>
-          <p>Copyright: &copy; 2019 Jarek Zgoda, version {{ version }}</p>
-        </footer>
-      </div>
-    </div>
+    </section>
 
-    <script src="/static/vendor/jquery-3.3.1.slim.min.js"></script>
-    <script src="/static/vendor/popper.min.js"></script>
-    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p>Copyright: &copy; 2019 Jarek Zgoda, version {{ version }}</p>
+      </div>
+    </footer>
+
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+        (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+          $notification = $delete.parentNode;
+          $delete.addEventListener('click', () => {
+            $notification.parentNode.removeChild($notification);
+          });
+        });
+        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+        if ($navbarBurgers.length > 0) {
+          $navbarBurgers.forEach(el => {
+            el.addEventListener('click', () => {
+              const target = el.dataset.target;
+              const $target = document.getElementById(target);
+              el.classList.toggle('is-active');
+              $target.classList.toggle('is-active');
+            });
+          });
+        }
+        const $dropdowns = Array.prototype.slice.call(document.querySelectorAll('.dropdown, .has-dropdown'), 0);
+        if ($dropdowns.length > 0) {
+          $dropdowns.forEach(el => {
+            el.addEventListener('click', function(event) {
+              event.stopPropagation();
+              el.classList.toggle('is-active');
+            });
+          });
+        };
+      });
+    </script>
+
     {% block extrajs %}
     {% endblock %}
   </body>

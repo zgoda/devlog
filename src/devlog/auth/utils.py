@@ -15,7 +15,8 @@ def login_success(email, access_token, remote_id, service, **kwargs):
     user.access_token = access_token
     kwargs.pop('id', None)
     for k, v in kwargs.items():
-        setattr(user, k, v)
+        if v:
+            setattr(user, k, v)
     db.session.add(user)
     db.session.commit()
     login_user(user)

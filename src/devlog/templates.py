@@ -1,4 +1,5 @@
 from flask_babel import format_date
+from wtforms.fields import HiddenField
 
 from ._version import __version__
 from .utils.pagination import url_for_other_page
@@ -13,6 +14,7 @@ def setup_globals(application):
         'format_date': format_date,
         'url_for_other_page': url_for_other_page,
         'version': __version__,
+        'is_hidden_field': lambda x: isinstance(x, HiddenField),
     })
 
 

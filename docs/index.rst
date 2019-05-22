@@ -21,8 +21,8 @@ Changes are deployed with every tag.
 
 Why that? I already have a pet project that I use on daily basis, the
 `Brewlog project <https://github.com/zgoda/brewlog>`_. It's running fine but I
-started it in 2013 **(!)**, did not throw much work on it and now it just
-looks outdated. I did not touch it for quite a long time, and issues
+started it in 2012 **(!)**, did not throw much work on it recently and now it
+just looks outdated. I did not touch it for quite a long time, and issues
 stockpiled. In 2019 I will be doing a general revamp of the project, partially
 because it's running on outdated VPS that can't be upgraded to newer OS
 version, but more important is that the tools made grat leap forward in last
@@ -56,14 +56,23 @@ Practicalia
 -----------
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     uwsgi
 
-Project documentation
+Rants
+-----
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
+
+    rants/cssframeworks
+
+Project documentation
+---------------------
+
+.. toctree::
+    :maxdepth: 1
 
     coc
     contributing

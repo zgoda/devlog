@@ -4,7 +4,6 @@ Flask-FlatPages
 Flask-Babel
 Flask-WTF
 Flask-SQLAlchemy
-Bootstrap-Flask
 SQLAlchemy-Utils
 Authlib
 WTForms-Alchemy

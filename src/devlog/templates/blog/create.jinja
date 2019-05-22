@@ -7,7 +7,9 @@
 {% block pagetitle %}{{ gettext('create new blog').capitalize() }}{% endblock %}
 
 {% block content %}
-<h1>{{ gettext('create new blog').capitalize() }}</h1>
-<p>{% trans %}Fill out the form below to create new blog{% endtrans %}.</p>
+<h1 class="title is-1">{{ gettext('create new blog').capitalize() }}</h1>
+<div class="content">
+  <p>{% trans %}Fill out the form below to create new blog{% endtrans %}.</p>
+</div>
 {{ render_form(form, form_url) }}
 {% endblock %}
