@@ -10,13 +10,13 @@ install:
   - pip install -U codacy-coverage
 script:
   - pytest --cov-branch --cov-report xml --cov=devlog tests
-  - make -C docs -f Makefile html
+  - python setup.py build_sphinx
   - python setup.py sdist bdist_wheel
 after_success:
   - python-codacy-coverage -r coverage.xml
 deploy:
   - provider: pages
-    local-dir: docs/_build/html
+    local-dir: build/sphinx/html
     committer-from-gh: true
     skip-cleanup: true
     github-token: $GH_TOKEN
