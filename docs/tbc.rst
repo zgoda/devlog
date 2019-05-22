@@ -30,17 +30,3 @@ Separation of concern
 * `Stories <https://pypi.org/project/stories/>`_ and
   `Dependencies <https://pypi.org/project/dependencies/>`_ are interesting
   libraries to implement business DSL and DI respectively
-
-WTForms + Jinja2 + CSS glue
----------------------------
-
-For both rapid protoryping and full fledged web app development CSS frameworks
-are code packages that relieve software developer from much of unwelcome visual
-side development. While Bootstrap is supported pretty good, there are other CSS
-frameworks which don't get much attention and provide some value Bootstrap is
-missing.
-
-This may come later into fruition as general purpose WTForms rendering
-extension with pluggable visualisation engines for different frameworks,
-although from a quick glance over form structuring in different frameworks it
-does not look promising.
