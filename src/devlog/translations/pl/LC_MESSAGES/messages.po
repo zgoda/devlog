@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  1.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-04-02 09:46+0200\n"
+"POT-Creation-Date: 2019-05-27 20:45+0200\n"
 "PO-Revision-Date: 2019-03-12 23:18+0100\n"
 "Last-Translator: Jarek Zgoda <jarek.zgoda@gmail.com>\n"
 "Language: pl\n"
@@ -17,13 +17,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
+"Generated-By: Babel 2.7.0\n"
 
-#: src/devlog/app.py:70
+#: src/devlog/app.py:78
 msgid "Please log in to access this page"
 msgstr "Zaloguj się by otworzyć tę stronę"
 
-#: src/devlog/auth/utils.py:28
+#: src/devlog/auth/utils.py:25
 #, python-format
 msgid "you have been signed in as %(ident)s using %(service)s"
 msgstr "zalogowany przy użyciu %(service)s jako %(ident)s"
@@ -33,25 +33,25 @@ msgstr "zalogowany przy użyciu %(service)s jako %(ident)s"
 msgid "service %(provider)s is not supported"
 msgstr "usługa %(provider)s nie jest obsługiwana"
 
-#: src/devlog/blog/forms.py:11 src/devlog/user/forms.py:15
+#: src/devlog/blog/forms.py:11 src/devlog/user/forms.py:18
 msgid "name"
 msgstr "nazwa"
 
-#: src/devlog/blog/forms.py:12 src/devlog/user/forms.py:16
+#: src/devlog/blog/forms.py:12 src/devlog/user/forms.py:19
 msgid "blurb"
 msgstr "parę słów"
 
 #: src/devlog/blog/forms.py:14 src/devlog/post/forms.py:13
-#: src/devlog/user/forms.py:18
+#: src/devlog/user/forms.py:21
 msgid "blurb markup processor"
 msgstr "procesor tekstu dla paru słów"
 
-#: src/devlog/blog/forms.py:17 src/devlog/user/forms.py:31
+#: src/devlog/blog/forms.py:17 src/devlog/user/forms.py:34
 msgid "active"
 msgstr "aktywny"
 
 #: src/devlog/blog/forms.py:18 src/devlog/post/forms.py:19
-#: src/devlog/user/forms.py:32
+#: src/devlog/user/forms.py:35
 msgid "public"
 msgstr "publiczny"
 
@@ -59,23 +59,27 @@ msgstr "publiczny"
 msgid "default"
 msgstr "domyślny"
 
-#: src/devlog/blog/views.py:22
+#: src/devlog/blog/views.py:18
+msgid "your account is inactive"
+msgstr "twoje konto nie jest aktywne"
+
+#: src/devlog/blog/views.py:26
 #, python-format
 msgid "Your blog %(name)s has been created"
 msgstr "Twój blog %(name)s został utworzony"
 
-#: src/devlog/blog/views.py:61
+#: src/devlog/blog/views.py:74
 #, python-format
 msgid "blog %(name)s has been modified"
 msgstr "blog %(name)s został zmodyfikowany"
 
-#: src/devlog/blog/views.py:84
+#: src/devlog/blog/views.py:97
 #, python-format
 msgid "your blog %(blog_name)s has been completely removed from the site"
 msgstr "blog %(blog_name)s został usunięty"
 
-#: src/devlog/blog/views.py:92 src/devlog/utils/forms.py:49
-#: src/devlog/utils/forms.py:51
+#: src/devlog/blog/views.py:105 src/devlog/utils/forms.py:50
+#: src/devlog/utils/forms.py:52
 msgid "confirm"
 msgstr "potwierdź"
 
@@ -99,23 +103,23 @@ msgstr "szkic"
 msgid "pinned"
 msgstr "przypięty"
 
-#: src/devlog/post/views.py:21 src/devlog/post/views.py:41
+#: src/devlog/post/views.py:21 src/devlog/post/views.py:43
 msgid "your blog post has been saved"
-msgstr "blog został zapisany"
+msgstr "twój post został zapisany"
 
-#: src/devlog/templates/base.jinja:42
+#: src/devlog/templates/base.jinja:36
 msgid "account tools"
 msgstr "narzędzia konta"
 
-#: src/devlog/templates/base.jinja:45
+#: src/devlog/templates/base.jinja:39
 msgid "account"
 msgstr "konto"
 
-#: src/devlog/templates/base.jinja:46
+#: src/devlog/templates/base.jinja:40
 msgid "sign out"
 msgstr "wylogowanie"
 
-#: src/devlog/templates/base.jinja:48
+#: src/devlog/templates/base.jinja:42
 msgid "sign in"
 msgstr "zaloguj się"
 
@@ -123,27 +127,31 @@ msgstr "zaloguj się"
 msgid "and other logs"
 msgstr "i inne logi"
 
-#: src/devlog/templates/index.jinja:8 src/devlog/templates/user/base.jinja:20
+#: src/devlog/templates/blog/display.jinja:24
+#: src/devlog/templates/index.jinja:8 src/devlog/templates/user/base.jinja:27
 msgid "recent posts"
 msgstr "ostatnie posty"
 
-#: src/devlog/templates/index.jinja:15 src/devlog/templates/index.jinja:28
+#: src/devlog/templates/index.jinja:16 src/devlog/templates/index.jinja:31
+#: src/devlog/templates/user/base.jinja:17
+#: src/devlog/templates/user/base.jinja:37
 msgid "see more"
 msgstr "zobacz więcej"
 
-#: src/devlog/templates/index.jinja:17
+#: src/devlog/templates/blog/display.jinja:29
+#: src/devlog/templates/index.jinja:18 src/devlog/templates/user/base.jinja:39
 msgid "no posts yet"
 msgstr "nie ma jeszcze postów"
 
-#: src/devlog/templates/index.jinja:21
+#: src/devlog/templates/index.jinja:23
 msgid "recent blogs"
 msgstr "ostatnie blogi"
 
-#: src/devlog/templates/index.jinja:30
+#: src/devlog/templates/index.jinja:33 src/devlog/templates/user/base.jinja:19
 msgid "no blogs yet"
 msgstr "nie ma jeszcze blogów"
 
-#: src/devlog/templates/index.jinja:34
+#: src/devlog/templates/index.jinja:38
 msgid "recently active"
 msgstr "ostatnio aktywne"
 
@@ -152,16 +160,20 @@ msgstr "ostatnio aktywne"
 msgid "select login provider"
 msgstr "wybierz serwis logowania"
 
-#: src/devlog/templates/auth/select.jinja:11
+#: src/devlog/templates/auth/select.jinja:12
 msgid "Select site to authenticate with"
 msgstr "Wybierz usługę żeby się zalogować"
+
+#: src/devlog/templates/auth/select.jinja:34
+msgid "local"
+msgstr "lokalne"
 
 #: src/devlog/templates/blog/create.jinja:7
 #: src/devlog/templates/blog/create.jinja:10
 msgid "create new blog"
 msgstr "utwórz nowy blog"
 
-#: src/devlog/templates/blog/create.jinja:11
+#: src/devlog/templates/blog/create.jinja:12
 msgid "Fill out the form below to create new blog"
 msgstr "Wypełnij formularz by utworzyć nowy blog"
 
@@ -170,15 +182,15 @@ msgstr "Wypełnij formularz by utworzyć nowy blog"
 msgid "confirm blog delete"
 msgstr "potwierdź usunięcie bloga"
 
-#: src/devlog/templates/blog/delete.jinja:9
+#: src/devlog/templates/blog/delete.jinja:10
 #, python-format
 msgid ""
 "Please confirm that you really want your blog %(blog_name)s to be "
 "removed. This operation is irreversible and all content will be deleted "
 "along with your blog."
 msgstr ""
-"Potwierdź że na pewno chcesz usunąć bloga %(blog_name)s. Jest to operacja "
-"nieodwracalna i cała zawartość zostanie usunięta."
+"Potwierdź że na pewno chcesz usunąć bloga %(blog_name)s. Jest to operacja"
+" nieodwracalna i cała zawartość zostanie usunięta."
 
 #: src/devlog/templates/blog/details.jinja:8
 #: src/devlog/templates/blog/details.jinja:11
@@ -186,49 +198,68 @@ msgstr ""
 msgid "Details for blog %(name)s"
 msgstr "Szczegóły bloga %(name)s"
 
-#: src/devlog/templates/blog/details.jinja:13
+#: src/devlog/templates/blog/details.jinja:14
 msgid "display blog"
 msgstr "wyświetl bloga"
 
-#: src/devlog/templates/blog/details.jinja:14
+#: src/devlog/templates/blog/details.jinja:16
 msgid "blog removal"
 msgstr "usuwanie bloga"
 
-#: src/devlog/templates/blog/details.jinja:15
+#: src/devlog/templates/blog/details.jinja:18
 msgid ""
 "The above form allows to hide your blog or temporarily to make it "
 "inactive. Click the button below to go to blog deletion confirmation page"
 " if you want to completely delete your blog with all the content."
 msgstr ""
 "Formularz powyżej umożliwia czasowe ukrycie bloga lub oznaczenie go jako "
-"nieaktywny. Kliknij przycisk poniżej aby ostatecznie usunąć bloga. Wymagane "
-"będzie dodatkowe potwierdzenie tej czynności."
+"nieaktywny. Kliknij przycisk poniżej aby ostatecznie usunąć bloga. "
+"Wymagane będzie dodatkowe potwierdzenie tej czynności."
 
-#: src/devlog/templates/blog/details.jinja:16
-#: src/devlog/templates/user/details.jinja:13
+#: src/devlog/templates/blog/details.jinja:19
+#: src/devlog/templates/user/details.jinja:16
 msgid "delete"
 msgstr "usuń"
 
-#: src/devlog/templates/blog/display.jinja:13
-msgid "tools"
-msgstr "narzędzia"
-
-#: src/devlog/templates/blog/display.jinja:16
+#: src/devlog/templates/blog/display.jinja:17
 msgid "edit blog"
 msgstr "edytuj bloga"
 
-#: src/devlog/templates/blog/display.jinja:17
+#: src/devlog/templates/blog/display.jinja:18
 msgid "add post"
 msgstr "dodaj post"
+
+#: src/devlog/templates/blog/display.jinja:20
+msgid "tools"
+msgstr "narzędzia"
+
+#: src/devlog/templates/errors/403.jinja:6
+msgid "access forbidden"
+msgstr "brak dostępu"
+
+#: src/devlog/templates/errors/403.jinja:8
+msgid "Access to the page you're trying to open is forbidden."
+msgstr "Nie masz dostępu do tej strony"
 
 #: src/devlog/templates/errors/404.jinja:3
 #: src/devlog/templates/errors/404.jinja:6
 msgid "page not found"
 msgstr "strony nie znaleziono"
 
-#: src/devlog/templates/errors/404.jinja:7
+#: src/devlog/templates/errors/404.jinja:8
 msgid "The page you requested could not be found"
 msgstr "Podana strona nie istnieje"
+
+#: src/devlog/templates/errors/500.jinja:3
+#: src/devlog/templates/errors/500.jinja:6
+msgid "server error"
+msgstr "błąd serwera"
+
+#: src/devlog/templates/errors/500.jinja:8
+msgid ""
+"The server encountered condition it was not able to handle. This is "
+"unrecoverable."
+msgstr "Serwer napotkał błąd którego nie był w stanie obsłużyć"
 
 #: src/devlog/templates/macros/blog.jinja:7
 msgid "read more"
@@ -239,20 +270,30 @@ msgstr "czytaj więcej"
 msgid "create new post"
 msgstr "utwórz nowy post"
 
+#: src/devlog/templates/post/create.jinja:10
+#, python-format
+msgid "Fill out the form below to create new post in blog %(name)s"
+msgstr "Wypełnij formularz by utworzyć nowy post w blogu %(name)s"
+
 #: src/devlog/templates/post/display.jinja:9
+#: src/devlog/templates/post/display.jinja:24
 msgid "published"
 msgstr "opublikowany"
 
-#: src/devlog/templates/post/display.jinja:10
+#: src/devlog/templates/post/display.jinja:11
 #, python-format
 msgid "mood: %(mood)s"
 msgstr "nastrój: %(mood)s"
 
-#: src/devlog/templates/post/display.jinja:19
-msgid "edit"
-msgstr "edytuj"
+#: src/devlog/templates/post/display.jinja:20
+msgid "created"
+msgstr "utworzony"
 
-#: src/devlog/templates/post/display.jinja:21
+#: src/devlog/templates/post/display.jinja:22
+msgid "updated"
+msgstr "zaktualizowany"
+
+#: src/devlog/templates/post/display.jinja:29
 msgid "edit post"
 msgstr "edytuj post"
 
@@ -260,7 +301,7 @@ msgstr "edytuj post"
 msgid "blogs"
 msgstr "blogi"
 
-#: src/devlog/templates/user/base.jinja:14
+#: src/devlog/templates/user/base.jinja:21
 msgid "create new"
 msgstr "utwórz nowy"
 
@@ -269,17 +310,17 @@ msgstr "utwórz nowy"
 msgid "account details"
 msgstr "szczegóły konta"
 
-#: src/devlog/templates/user/details.jinja:10
+#: src/devlog/templates/user/details.jinja:11
 msgid "view your profile page"
 msgstr "zobacz swój profil"
 
-#: src/devlog/templates/user/details.jinja:11
+#: src/devlog/templates/user/details.jinja:13
 #: src/devlog/templates/user/remove.jinja:5
 #: src/devlog/templates/user/remove.jinja:8
 msgid "remove account"
 msgstr "usuń konto"
 
-#: src/devlog/templates/user/details.jinja:12
+#: src/devlog/templates/user/details.jinja:15
 msgid ""
 "You may temporarily deactivate your account using the form above. To "
 "completely remove your account click the button below to get to "
@@ -295,23 +336,23 @@ msgstr ""
 msgid "Profile page for %(user_name)s"
 msgstr "Profil użytkownika %(user_name)s"
 
-#: src/devlog/templates/user/profile.jinja:8
+#: src/devlog/templates/user/profile.jinja:9
 msgid ""
 "Your account is inactive or set as private (or both), no one except you "
 "can see this page"
 msgstr ""
-"Twoje konto jest oznaczone jako prywatne lub nie jest aktywne, nikt oprócz "
-"ciebie nie może zobaczyć tej strony"
+"Twoje konto jest oznaczone jako prywatne lub nie jest aktywne, nikt "
+"oprócz ciebie nie może zobaczyć tej strony"
 
-#: src/devlog/templates/user/profile.jinja:11
+#: src/devlog/templates/user/profile.jinja:12
 msgid "user name"
 msgstr "nazwa użytkownika"
 
-#: src/devlog/templates/user/profile.jinja:13
+#: src/devlog/templates/user/profile.jinja:14
 msgid "date joined"
 msgstr "data dołączenia"
 
-#: src/devlog/templates/user/remove.jinja:9
+#: src/devlog/templates/user/remove.jinja:10
 msgid ""
 "Deleting account is destructive process. It can not be reverted. All your"
 " content will be deleted and if you decide to rejoin us later, it will be"
@@ -321,21 +362,25 @@ msgstr ""
 "zawartość zostanie usunięta. Jeżeli zdecydujesz się dołączyć ponownie, "
 "będziesz zaczynać zupełnie od zera, więc się zastanów jeszcze raz."
 
-#: src/devlog/templates/user/remove.jinja:10
+#: src/devlog/templates/user/remove.jinja:11
 msgid "You will be logged out and redirected to site home page."
 msgstr "Nastąpi wylogowanie i przeniesienie na stronę główną serwisu."
 
-#: src/devlog/user/forms.py:23
+#: src/devlog/user/forms.py:26
 msgid "email"
 msgstr "email"
 
-#: src/devlog/user/forms.py:25
+#: src/devlog/user/forms.py:28
 msgid "default language"
 msgstr "domyślny język"
 
-#: src/devlog/user/forms.py:29
+#: src/devlog/user/forms.py:32
 msgid "timezone"
 msgstr "strefa czasowa"
+
+#: src/devlog/user/forms.py:43
+msgid "user can not be activated without email"
+msgstr "nie można aktywować konta bez podania adresu email"
 
 #: src/devlog/user/views.py:23
 #, python-format
@@ -351,11 +396,11 @@ msgstr "bez nazwy"
 msgid "Account for user %(name)s deleted"
 msgstr "Konto użytkownika %(name)s zostało usunięte"
 
-#: src/devlog/utils/forms.py:62
+#: src/devlog/utils/forms.py:63
 msgid "save"
 msgstr "zapisz"
 
-#: src/devlog/utils/forms.py:63
+#: src/devlog/utils/forms.py:64
 msgid "go back"
 msgstr "powrót"
 
@@ -376,4 +421,7 @@ msgstr "Żaden"
 
 #~ msgid "bye!"
 #~ msgstr "bywaj!"
+
+#~ msgid "edit"
+#~ msgstr "edytuj"
 
