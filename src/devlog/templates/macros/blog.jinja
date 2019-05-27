@@ -9,3 +9,23 @@
   </div>
 </div>
 {% endmacro %}
+
+{% macro render_post_pubinfo(post) %}
+<div class="columns">
+  <div class="column">
+    <div class="content">
+      <p><strong>{{ gettext('created') }}:</strong>&nbsp;{{ post.created|datetimeformat('short') }}</p>
+    </div>
+  </div>
+  <div class="column">
+    <div class="content">
+      <p><strong>{{ gettext('updated') }}:</strong>&nbsp;{{ post.updated|datetimeformat('short') }}</p>
+    </div>
+  </div>
+  <div class="column">
+    <div class="content">
+      <p><strong>{{ gettext('published') }}:</strong>&nbsp;{{ post.published|datetimeformat('short') }}</p>
+    </div>
+  </div>
+</div>
+{% endmacro %}
