@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: devlog 0.0.5.dev0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-05-27 20:45+0200\n"
+"POT-Creation-Date: 2019-05-29 17:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,7 +93,7 @@ msgstr ""
 msgid "mood"
 msgstr ""
 
-#: src/devlog/post/forms.py:20 src/devlog/templates/post/display.jinja:9
+#: src/devlog/post/forms.py:20 src/devlog/templates/post/display.jinja:10
 msgid "draft"
 msgstr ""
 
@@ -103,6 +103,14 @@ msgstr ""
 
 #: src/devlog/post/views.py:21 src/devlog/post/views.py:43
 msgid "your blog post has been saved"
+msgstr ""
+
+#: src/devlog/templates/base.jinja:20
+msgid "main navigation"
+msgstr ""
+
+#: src/devlog/templates/base.jinja:24
+msgid "top menu"
 msgstr ""
 
 #: src/devlog/templates/base.jinja:36
@@ -119,6 +127,11 @@ msgstr ""
 
 #: src/devlog/templates/base.jinja:42
 msgid "sign in"
+msgstr ""
+
+#: src/devlog/templates/base.jinja:82
+#, python-format
+msgid "version %(ver)s"
 msgstr ""
 
 #: src/devlog/templates/index.jinja:3
@@ -255,6 +268,19 @@ msgstr ""
 msgid "read more"
 msgstr ""
 
+#: src/devlog/templates/macros/blog.jinja:17
+msgid "created"
+msgstr ""
+
+#: src/devlog/templates/macros/blog.jinja:22
+msgid "updated"
+msgstr ""
+
+#: src/devlog/templates/macros/blog.jinja:27
+#: src/devlog/templates/post/display.jinja:10
+msgid "published"
+msgstr ""
+
 #: src/devlog/templates/post/create.jinja:5
 #: src/devlog/templates/post/create.jinja:8
 msgid "create new post"
@@ -265,25 +291,12 @@ msgstr ""
 msgid "Fill out the form below to create new post in blog %(name)s"
 msgstr ""
 
-#: src/devlog/templates/post/display.jinja:9
-#: src/devlog/templates/post/display.jinja:24
-msgid "published"
-msgstr ""
-
-#: src/devlog/templates/post/display.jinja:11
+#: src/devlog/templates/post/display.jinja:12
 #, python-format
 msgid "mood: %(mood)s"
 msgstr ""
 
-#: src/devlog/templates/post/display.jinja:20
-msgid "created"
-msgstr ""
-
-#: src/devlog/templates/post/display.jinja:22
-msgid "updated"
-msgstr ""
-
-#: src/devlog/templates/post/display.jinja:29
+#: src/devlog/templates/post/display.jinja:23
 msgid "edit post"
 msgstr ""
 

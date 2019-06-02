@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ get_locale() }}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,11 +17,11 @@
   </head>
   <body>
 
-    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-dark" role="navigation" aria-label="{{ gettext('main navigation') }}">
       <div class="container">
         <div class="navbar-brand">
           <a class="navbar-item" href="/">Devlog</a>
-          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+          <a role="button" class="navbar-burger" aria-label="{{ gettext('top menu') }}" aria-expanded="false" data-target="navMenu">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -79,7 +79,7 @@
 
     <footer class="footer">
       <div class="content has-text-centered">
-        <p>Copyright: &copy; 2019 Jarek Zgoda, version {{ version }}</p>
+        <p>Copyright: &copy; 2019 Jarek Zgoda, {{ gettext('version %(ver)s', ver=version) }}</p>
       </div>
     </footer>
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  1.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-05-27 20:45+0200\n"
+"POT-Creation-Date: 2019-05-29 17:57+0200\n"
 "PO-Revision-Date: 2019-03-12 23:18+0100\n"
 "Last-Translator: Jarek Zgoda <jarek.zgoda@gmail.com>\n"
 "Language: pl\n"
@@ -95,7 +95,7 @@ msgstr "tekst"
 msgid "mood"
 msgstr "nastrój"
 
-#: src/devlog/post/forms.py:20 src/devlog/templates/post/display.jinja:9
+#: src/devlog/post/forms.py:20 src/devlog/templates/post/display.jinja:10
 msgid "draft"
 msgstr "szkic"
 
@@ -106,6 +106,14 @@ msgstr "przypięty"
 #: src/devlog/post/views.py:21 src/devlog/post/views.py:43
 msgid "your blog post has been saved"
 msgstr "twój post został zapisany"
+
+#: src/devlog/templates/base.jinja:20
+msgid "main navigation"
+msgstr "główna nawigacja"
+
+#: src/devlog/templates/base.jinja:24
+msgid "top menu"
+msgstr "menu"
 
 #: src/devlog/templates/base.jinja:36
 msgid "account tools"
@@ -122,6 +130,11 @@ msgstr "wylogowanie"
 #: src/devlog/templates/base.jinja:42
 msgid "sign in"
 msgstr "zaloguj się"
+
+#: src/devlog/templates/base.jinja:82
+#, python-format
+msgid "version %(ver)s"
+msgstr "wersja %(ver)s"
 
 #: src/devlog/templates/index.jinja:3
 msgid "and other logs"
@@ -265,6 +278,19 @@ msgstr "Serwer napotkał błąd którego nie był w stanie obsłużyć"
 msgid "read more"
 msgstr "czytaj więcej"
 
+#: src/devlog/templates/macros/blog.jinja:17
+msgid "created"
+msgstr "utworzony"
+
+#: src/devlog/templates/macros/blog.jinja:22
+msgid "updated"
+msgstr "zaktualizowany"
+
+#: src/devlog/templates/macros/blog.jinja:27
+#: src/devlog/templates/post/display.jinja:10
+msgid "published"
+msgstr "opublikowany"
+
 #: src/devlog/templates/post/create.jinja:5
 #: src/devlog/templates/post/create.jinja:8
 msgid "create new post"
@@ -275,25 +301,12 @@ msgstr "utwórz nowy post"
 msgid "Fill out the form below to create new post in blog %(name)s"
 msgstr "Wypełnij formularz by utworzyć nowy post w blogu %(name)s"
 
-#: src/devlog/templates/post/display.jinja:9
-#: src/devlog/templates/post/display.jinja:24
-msgid "published"
-msgstr "opublikowany"
-
-#: src/devlog/templates/post/display.jinja:11
+#: src/devlog/templates/post/display.jinja:12
 #, python-format
 msgid "mood: %(mood)s"
 msgstr "nastrój: %(mood)s"
 
-#: src/devlog/templates/post/display.jinja:20
-msgid "created"
-msgstr "utworzony"
-
-#: src/devlog/templates/post/display.jinja:22
-msgid "updated"
-msgstr "zaktualizowany"
-
-#: src/devlog/templates/post/display.jinja:29
+#: src/devlog/templates/post/display.jinja:23
 msgid "edit post"
 msgstr "edytuj post"
 
