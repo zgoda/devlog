@@ -33,23 +33,21 @@ class Button(Renderable):
     icon_type = attr.ib(default='fas')
     text = attr.ib('ok')
 
-    template = ''.join(
-        [
-            '<button type="{{ obj.type_ }}" class="button is-{{ obj.class_ }}">',
-            '<span class="icon">',
-            '<i class="{{ obj.icon_type }} fa-{{ obj.icon }}"></i>',
-            '</span>',
-            '&nbsp;',
-            '<span>{{ obj.text }}</span>',
-            '</button>',
-        ]
-    )
+    template = ''.join([
+        '<button type="{{ obj.type_ }}" class="button is-{{ obj.class_ }}">',
+        '<span class="icon">',
+        '<i class="{{ obj.icon_type }} fa-{{ obj.icon }}"></i>',
+        '</span>',
+        '&nbsp;',
+        '<span>{{ obj.text }}</span>',
+        '</button>',
+    ])
 
 
 class DeleteForm(FlaskForm):
     delete_it = BooleanField(gettext('confirm'), default=False)
 
-    buttons = [Button(text=gettext('confirm'))]
+    buttons = [Button(text=gettext('confirm'), icon='trash-alt')]
 
     def confirm(self):
         if self.delete_it.data:
