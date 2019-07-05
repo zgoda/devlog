@@ -48,3 +48,19 @@ soon as application is configured, and this may be too late for many so the
 most reliable way to overcome this limitation is to subclass ``Flask`` and
 set the options as you see fit. Originally this is plain instance variable
 but you may make it to ``property`` and extend original ``jinja_options``.
+
+Werkzeug goodies
+----------------
+
+During development application is usually running with reloader to quickly
+reflect changes in code. Werkzeug allows specifying reloading engine by
+providing backend name to server function but Flask does not expose this.
+Using ``stat`` reloader may be specially painful to laptop users so it would
+be great if we could switch to ``inotify``-based. Fortunately Werkzeug is nice
+and uses the best available so it is enough to install
+`watchdog <https://pypi.org/project/watchdog/>`_ package.
+
+The same applies to colored terminal output, just install
+`termcolor <https://pypi.org/project/termcolor/>`_ package.
+
+Add these two to dev requirements.
