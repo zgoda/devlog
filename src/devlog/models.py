@@ -7,7 +7,7 @@ from .ext import db
 from .utils.models import MarkupField, SlugField, TextProcessingMixin
 
 
-class User(db.Model, UserMixin, TextProcessingMixin):
+class User(db.Model, UserMixin, TextProcessingMixin):  # noqa: H601
 
     __tablename__ = 'users'
 
@@ -67,7 +67,7 @@ def user_brefore_save(mapper, connection, target):
     User.pre_save(mapper, connection, target)
 
 
-class Blog(db.Model, TextProcessingMixin):
+class Blog(db.Model, TextProcessingMixin):  # noqa: H601
 
     __tablename__ = 'blog'
 
@@ -117,7 +117,7 @@ def blog_before_save(mapper, connection, target):
     Blog.pre_save(mapper, connection, target)
 
 
-class Post(db.Model, TextProcessingMixin):
+class Post(db.Model, TextProcessingMixin):  # noqa: H601
 
     __tablename__ = 'post'
 
