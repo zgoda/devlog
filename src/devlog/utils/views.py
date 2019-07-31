@@ -4,7 +4,9 @@ from flask import request, session, url_for
 
 
 def is_redirect_safe(target):
-    """Check if redirect is safe, that is using HTTP protocol and is pointing
+    """Check if redirect is safe.
+
+    Safety is assumed if redirect is using HTTP(S) protocol and is pointing
     to the same site.
 
     :param target: redirect target url
@@ -21,7 +23,9 @@ def is_redirect_safe(target):
 
 
 def next_redirect(fallback_endpoint, *args, **kwargs):
-    '''Find redirect url. The order of search is request params, session and
+    """Find redirect url.
+
+    The order of search is request params, session and
     finally url for fallback endpoint is returned if none found. Args and
     kwargs are passed intact to endpoint.
 
@@ -29,7 +33,7 @@ def next_redirect(fallback_endpoint, *args, **kwargs):
     :type fallback_endpoint: str
     :return: HTTP path to redirect to
     :rtype: str
-    '''
+    """
 
     return is_redirect_safe(request.args.get('next')) \
         or is_redirect_safe(session.pop('next', None)) \
