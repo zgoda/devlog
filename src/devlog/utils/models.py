@@ -9,7 +9,7 @@ from flask_sqlalchemy.model import Model as BaseModel
 from .text import slugify
 
 
-class MappedModelMixin:  # noqa: H601
+class MappedModelMixin:
 
     __mapper_args__ = {
         'confirm_deleted_rows': False
@@ -20,7 +20,7 @@ MarkupField = collections.namedtuple('MarkupField', 'source,dest,processor')
 SlugField = collections.namedtuple('SlugField', 'source,dest')
 
 
-class TextProcessingMixin:  # noqa: H601
+class TextProcessingMixin:
 
     SMP_NONE = ''
     SMP_TEXTTILE = 'textile'
@@ -77,5 +77,5 @@ class TextProcessingMixin:  # noqa: H601
                 setattr(target, field.dest, value)
 
 
-class Model(BaseModel, MappedModelMixin):  # noqa: H601
+class Model(BaseModel, MappedModelMixin):
     pass

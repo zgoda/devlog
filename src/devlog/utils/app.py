@@ -1,7 +1,7 @@
 from flask import Flask
 
 
-class Devlog(Flask):  # noqa: H601
+class Devlog(Flask):
 
     @property
     def jinja_options(self):

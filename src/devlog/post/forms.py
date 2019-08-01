@@ -6,7 +6,7 @@ from ..models import Post
 from ..utils.forms import ObjectForm
 
 
-class PostForm(ObjectForm):  # noqa: H601
+class PostForm(ObjectForm):
     title = StringField(gettext('title'), validators=[DataRequired()])
     text = TextAreaField(gettext('text'))
     text_markup_type = SelectField(

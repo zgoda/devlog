@@ -13,7 +13,7 @@ class Renderable:
         return Markup(render_template_string(self.template, obj=self))
 
 
-@attr.s  # noqa: H601
+@attr.s
 class Link(Renderable):
     href = attr.ib()
     text = attr.ib(default='click')
@@ -25,7 +25,7 @@ class Link(Renderable):
     ])
 
 
-@attr.s  # noqa: H601
+@attr.s
 class Button(Renderable):
     type_ = attr.ib(default='submit')
     class_ = attr.ib(default='primary')
@@ -44,7 +44,7 @@ class Button(Renderable):
     ])
 
 
-class DeleteForm(FlaskForm):  # noqa: H601
+class DeleteForm(FlaskForm):
     delete_it = BooleanField(gettext('confirm'), default=False)
 
     buttons = [Button(text=gettext('confirm'), icon='trash-alt')]
@@ -55,7 +55,7 @@ class DeleteForm(FlaskForm):  # noqa: H601
         return False
 
 
-class ObjectForm(FlaskForm):  # noqa: H601
+class ObjectForm(FlaskForm):
 
     buttons = [
         Button(text=gettext('save')),

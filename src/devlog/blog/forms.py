@@ -7,7 +7,7 @@ from ..models import Blog
 from ..utils.forms import ObjectForm
 
 
-class BlogForm(ObjectForm):  # noqa: H601
+class BlogForm(ObjectForm):
     name = StringField(gettext('name'), validators=[DataRequired()])
     blurb = TextAreaField(gettext('blurb'))
     blurb_markup_type = SelectField(

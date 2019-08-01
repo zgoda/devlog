@@ -14,7 +14,7 @@ from ..utils.i18n import (
 )
 
 
-class UserForm(ObjectForm):  # noqa: H601
+class UserForm(ObjectForm):
     name = StringField(gettext('name'), validators=[Required()])
     blurb = TextAreaField(gettext('blurb'))
     blurb_markup_type = SelectField(

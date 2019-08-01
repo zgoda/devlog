@@ -1,3 +1,16 @@
+{% macro field_description(field) %}
+{% if field.errors %}
+{% for error in field.errors %}
+<p class="help is-danger">{{ error }}</p>
+{% endfor %}
+{% else %}
+{% if field.description %}
+<p class="help is-italic">{{ field.description }}</p>
+{% endif %}
+{% endif %}
+{% endmacro %}
+
+
 {% macro render_field(field) %}
 <div class="field is-horizontal">
   <div class="field-label">
@@ -19,11 +32,7 @@
         </label>
         {% endif %}
       </div>
-      {% if field.errors %}
-      {% for error in field.errors %}
-      <p class="help is-danger">{{ error }}</p>
-      {% endfor %}
-      {% endif %}
+      {{ field_description(field) }}
     </div>
     {% else %}
     <div class="field">
@@ -34,11 +43,7 @@
         {{ field(class_='input', **kwargs) }}
         {% endif %}
       </div>
-      {% if field.errors %}
-      {% for error in field.errors %}
-      <p class="help is-danger">{{ error }}</p>
-      {% endfor %}
-      {% endif %}
+      {{ field_description(field) }}
     </div>
     {% endif %}
   </div>
@@ -82,9 +87,15 @@
 </div>
 {%- endmacro %}
 
-{% macro render_form(form, action) %}
-<form method="post" action="{{ action }}" role="form" novalidate>
-{{ render_form_fields(form) }}
-{{ render_form_buttons(form.buttons) }}
-</form>
+{% macro render_form(form, action, width=6, box=True) %}
+<div class="container">
+  <div class="columns is-centered">
+    <div class="column{% if width %} is-{{ width }}"{% endif %}>
+      <form method="post" action="{{ action }}" role="form" novalidate{% if box %} class="box"{% endif %}>
+        {{ render_form_fields(form) }}
+        {{ render_form_buttons(form.buttons) }}
+      </form>
+    </div>
+  </div>
+</div>
 {%- endmacro %}

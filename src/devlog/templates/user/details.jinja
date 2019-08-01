@@ -6,7 +6,7 @@
 
 {% block content %}
 <h1 class="title is-1">{{ gettext('account details').capitalize() }}</h1>
-{{ render_form(form, url_for('user.account')) }}
+{{ render_form(form, url_for('user.account'), width=None) }}
 <div class="content">
   <p><a href="{{ url_for('user.profile', user_id=current_user.id) }}">{{ gettext('view your profile page').capitalize() }}</a></p>
 </div>
