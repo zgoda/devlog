@@ -1,8 +1,15 @@
+from typing import Optional
+
+from flask_sqlalchemy import BaseQuery
+
 from ..ext import db
-from ..models import Blog
+from ..models import Blog, User
 
 
-def get_recent(public_only=True, extra_user=None, limit=None):
+def get_recent(
+            public_only: bool = True, extra_user: Optional[User] = None,
+            limit: Optional[int] = None,
+        ) -> BaseQuery:
     query = Blog.query
     if public_only:
         if extra_user is None:

@@ -1,18 +1,20 @@
-from flask_babel import lazy_gettext as gettext
-from wtforms.fields import SelectField, StringField, TextAreaField, BooleanField
-from wtforms.validators import DataRequired, Optional
+from typing import Optional
 
-from ..models import Post
+from flask_babel import lazy_gettext as gettext
+from wtforms import validators
+from wtforms.fields import BooleanField, SelectField, StringField, TextAreaField
+
+from ..models import Blog, Post
 from ..utils.forms import ObjectForm
 
 
 class PostForm(ObjectForm):
-    title = StringField(gettext('title'), validators=[DataRequired()])
+    title = StringField(gettext('title'), validators=[validators.InputRequired()])
     text = TextAreaField(gettext('text'))
     text_markup_type = SelectField(
         gettext('blurb markup processor'),
         choices=Post.SMP_CHOICES,
-        validators=[Optional()],
+        validators=[validators.Optional()],
         default=Post.SMP_NONE,
     )
     mood = StringField(gettext('mood'))
@@ -20,7 +22,7 @@ class PostForm(ObjectForm):
     draft = BooleanField(gettext('draft'), default=True)
     pinned = BooleanField(gettext('pinned'), default=False)
 
-    def save(self, blog, obj=None, save=True):
+    def save(self, blog: Blog, obj: Optional[Post] = None, save: bool = True) -> Post:
         if obj is None:
             obj = Post(blog=blog)
         return super().save(obj, save)

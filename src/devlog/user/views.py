@@ -1,19 +1,18 @@
-from flask import abort, flash, redirect, render_template, request, url_for
-from flask_babel import get_locale
-from flask_babel import lazy_gettext as gettext
+from flask import Response, abort, flash, redirect, render_template, request, url_for
+from flask_babel import get_locale, lazy_gettext as gettext
 from flask_login import current_user, login_required, logout_user
 
-from . import user_bp
 from ..ext import db
 from ..models import User
 from ..utils.forms import DeleteForm
 from ..utils.i18n import localized_timezone_choices
+from . import user_bp
 from .forms import UserForm
 
 
 @user_bp.route('', methods=['POST', 'GET'])
 @login_required
-def account():
+def account() -> Response:
     form = None
     if request.method == 'POST':
         form = UserForm()
@@ -37,7 +36,7 @@ def account():
 
 @user_bp.route('/<int:user_id>')
 @login_required
-def profile(user_id):
+def profile(user_id: int) -> Response:
     user = User.query.get_or_404(user_id)
     if user != current_user and not (user.public and user.active):
         abort(404)
@@ -49,7 +48,7 @@ def profile(user_id):
 
 @user_bp.route('/remove')
 @login_required
-def confirm_delete():
+def confirm_delete() -> Response:
     context = {
         'delete_form': DeleteForm(),
     }
@@ -58,7 +57,7 @@ def confirm_delete():
 
 @user_bp.route('/delete', methods=['POST'])
 @login_required
-def delete():
+def delete() -> Response:
     form = DeleteForm()
     if form.confirm():
         user_name = current_user.name or current_user.email or gettext('no name')

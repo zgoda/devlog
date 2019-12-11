@@ -1,19 +1,21 @@
-from flask import abort, flash, redirect, render_template, request, url_for
+from typing import Optional
+
+from flask import Response, abort, flash, redirect, render_template, request, url_for
 from flask_babel import lazy_gettext as gettext
 from flask_login import current_user, login_required
 
-from . import blog_bp
 from ..ext import db
 from ..models import Blog, Post
 from ..post.service import get_recent as recent_posts
 from ..utils.forms import Button, DeleteForm
 from ..utils.pagination import get_page
+from . import blog_bp
 from .forms import BlogForm
 
 
 @blog_bp.route('/create', methods=['POST', 'GET'])
 @login_required
-def create():
+def create() -> Response:
     if not current_user.active:
         flash(gettext('your account is inactive'), category='warning')
         return redirect(url_for('user.account'))
@@ -35,7 +37,7 @@ def create():
 
 @blog_bp.route('/<int:blog_id>', defaults={'slug': None})
 @blog_bp.route('/<int:blog_id>/<slug>')
-def display(blog_id, slug):
+def display(blog_id: int, slug: Optional[str]) -> Response:
     blog = Blog.query.get_or_404(blog_id)
     if not (blog.active and blog.public) and (current_user != blog.user):
         abort(404)
@@ -61,7 +63,7 @@ def display(blog_id, slug):
 
 @blog_bp.route('/<int:blog_id>/details', methods=['POST', 'GET'])
 @login_required
-def details(blog_id):
+def details(blog_id: int) -> Response:
     blog = Blog.query.get_or_404(blog_id)
     if current_user != blog.user:
         abort(404)
@@ -84,7 +86,7 @@ def details(blog_id):
 
 @blog_bp.route('/<int:blog_id>/delete', methods=['POST', 'GET'])
 @login_required
-def delete(blog_id):
+def delete(blog_id: int) -> Response:
     blog = Blog.query.get_or_404(blog_id)
     if current_user != blog.user:
         abort(404)

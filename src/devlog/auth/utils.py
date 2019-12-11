@@ -1,4 +1,4 @@
-from flask import session, flash, redirect
+from flask import Response, flash, redirect, session
 from flask_babel import lazy_gettext as gettext
 from flask_login import login_user
 
@@ -7,7 +7,9 @@ from ..models import User
 from ..utils.views import next_redirect
 
 
-def login_success(email, access_token, remote_id, service, **kwargs):
+def login_success(
+            email: str, access_token: str, remote_id: str, service: str, **kwargs
+        ) -> Response:
     user = User.get_by_email(email)
     ident = email
     if user is None:

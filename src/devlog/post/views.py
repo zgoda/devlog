@@ -1,15 +1,17 @@
-from flask import abort, flash, redirect, render_template, request, url_for
+from typing import Optional
+
+from flask import Response, abort, flash, redirect, render_template, request, url_for
 from flask_babel import lazy_gettext as gettext
 from flask_login import current_user, login_required
 
-from . import post_bp
 from ..models import Blog, Post
+from . import post_bp
 from .forms import PostForm
 
 
 @post_bp.route('/inblog/<int:blog_id>', methods=['POST', 'GET'])
 @login_required
-def create(blog_id):
+def create(blog_id: int) -> Response:
     blog = Blog.query.get_or_404(blog_id)
     if blog.user != current_user:
         abort(404)
@@ -29,7 +31,7 @@ def create(blog_id):
 
 @post_bp.route('/<int:post_id>', methods=['POST', 'GET'], defaults={'slug': None})
 @post_bp.route('/<int:post_id>/<slug>', methods=['POST', 'GET'])
-def display(post_id, slug):
+def display(post_id: int, slug: Optional[str]) -> Response:
     post = Post.query.get_or_404(post_id)
     if (not post.public or post.draft) and current_user != post.blog.user:
         abort(404)
