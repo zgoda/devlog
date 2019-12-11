@@ -1,9 +1,10 @@
 import operator
+from typing import List, Optional, Tuple
 
 import pytz
 from babel import Locale
 from babel.dates import get_timezone, get_timezone_location
-from flask import session, request
+from flask import request, session
 from flask_babel import lazy_gettext as gettext
 from flask_login import current_user
 
@@ -20,7 +21,7 @@ TIMEZONE_CHOICES = [(tz, tz) for tz in pytz.common_timezones]
 DEFAULT_TIMEZONE = 'Europe/Warsaw'
 
 
-def localized_timezone_choices(locale_name):
+def localized_timezone_choices(locale_name: str) -> List[Tuple[str, str]]:
     if locale_name is None:
         return TIMEZONE_CHOICES
     locale = Locale.parse(locale_name)
@@ -34,7 +35,7 @@ def localized_timezone_choices(locale_name):
     return choices
 
 
-def get_user_language():
+def get_user_language() -> Optional[str]:
     lang = None
     if current_user.is_authenticated:
         lang = current_user.default_language
@@ -45,7 +46,7 @@ def get_user_language():
     return lang
 
 
-def get_user_timezone():
+def get_user_timezone() -> Optional[str]:
     tzname = None
     if current_user.is_authenticated:
         tzname = current_user.timezone

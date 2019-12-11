@@ -34,7 +34,7 @@ class TextProcessingMixin:
         (SMP_RST, 'reStructuredText'),
     )
 
-    def markup_to_html(self, instr, processor):
+    def markup_to_html(self, instr: str, processor: str) -> str:
         if processor == self.SMP_RST:
             config = {
                 'input_encoding': 'unicode',

@@ -66,7 +66,6 @@ setup(
         'docutils',
         'markdown2',
         'textile',
-        'attrs',
         'text-unidecode',
         'pytz',
         'babel',

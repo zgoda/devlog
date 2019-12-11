@@ -1,6 +1,6 @@
 -r test.txt
 
-ipython
+ipython<7.10
 ipdb
 
 pip

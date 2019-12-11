@@ -1,4 +1,6 @@
-import attr
+from dataclasses import dataclass
+from typing import ClassVar
+
 from flask import Markup, render_template_string
 from flask_babel import lazy_gettext as gettext
 from flask_wtf import FlaskForm
@@ -9,31 +11,31 @@ from ..ext import db
 
 class Renderable:
 
-    def render(self):
+    def render(self) -> Markup:
         return Markup(render_template_string(self.template, obj=self))
 
 
-@attr.s
+@dataclass
 class Link(Renderable):
-    href = attr.ib()
-    text = attr.ib(default='click')
+    href: str
+    text: str = 'click'
 
-    template = ''.join([
+    template: ClassVar[str] = ''.join([
         '<a href="{{ obj.href }}" class="button">',
         '{{ obj.text }}',
         '</a>',
     ])
 
 
-@attr.s
+@dataclass
 class Button(Renderable):
-    type_ = attr.ib(default='submit')
-    class_ = attr.ib(default='primary')
-    icon = attr.ib(default='check')
-    icon_type = attr.ib(default='fas')
-    text = attr.ib('ok')
+    type_: str = 'submit'
+    class_: str = 'primary'
+    icon: str = 'check'
+    icon_type: str = 'fas'
+    text: str = 'ok'
 
-    template = ''.join([
+    template: ClassVar[str] = ''.join([
         '<button type="{{ obj.type_ }}" class="button is-{{ obj.class_ }}">',
         '<span class="icon">',
         '<i class="{{ obj.icon_type }} fa-{{ obj.icon }}"></i>',

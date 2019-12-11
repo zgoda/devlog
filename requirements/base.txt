@@ -7,8 +7,7 @@ Flask-SQLAlchemy
 SQLAlchemy-Utils
 Authlib
 WTForms-Alchemy
-attrs
-text-unidecode<1.3
+text-unidecode
 pytz
 babel
 

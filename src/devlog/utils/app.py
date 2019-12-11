@@ -12,6 +12,6 @@ class Devlog(Flask):
         })
         return options
 
-    def select_jinja_autoescape(self, filename):
+    def select_jinja_autoescape(self, filename: str) -> bool:
         orig_select = super().select_jinja_autoescape(filename)
         return orig_select or filename.endswith(('.jinja', '.jinja2', '.j2'))
