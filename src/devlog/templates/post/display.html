@@ -1,7 +1,7 @@
-{% extends "post/base.jinja" %}
+{% extends "post/base.html" %}
 
-{% from 'macros/forms.jinja' import render_form %}
-{% from 'macros/blog.jinja' import render_post_pubinfo %}
+{% from 'macros/forms.html' import render_form %}
+{% from 'macros/blog.html' import render_post_pubinfo %}
 
 {% block pagetitle %}{{ post.title }}{% endblock %}
 

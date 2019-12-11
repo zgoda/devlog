@@ -1,6 +1,6 @@
-{% extends "blog/base.jinja" %}
+{% extends "blog/base.html" %}
 
-{% from 'macros/forms.jinja' import render_form %}
+{% from 'macros/forms.html' import render_form %}
 
 {% set blog_display_url = url_for('blog.display', blog_id=blog.id) %}
 {% set blog_details_url = url_for('blog.details', blog_id=blog.id) %}

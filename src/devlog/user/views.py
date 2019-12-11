@@ -31,7 +31,7 @@ def account() -> Response:
     context = {
         'form': form,
     }
-    return render_template('user/details.jinja', **context)
+    return render_template('user/details.html', **context)
 
 
 @user_bp.route('/<int:user_id>')
@@ -43,7 +43,7 @@ def profile(user_id: int) -> Response:
     context = {
         'user': user,
     }
-    return render_template('user/profile.jinja', **context)
+    return render_template('user/profile.html', **context)
 
 
 @user_bp.route('/remove')
@@ -52,7 +52,7 @@ def confirm_delete() -> Response:
     context = {
         'delete_form': DeleteForm(),
     }
-    return render_template('user/remove.jinja', **context)
+    return render_template('user/remove.html', **context)
 
 
 @user_bp.route('/delete', methods=['POST'])

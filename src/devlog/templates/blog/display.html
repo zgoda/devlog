@@ -1,7 +1,7 @@
-{% extends "blog/base.jinja" %}
+{% extends "blog/base.html" %}
 
-{% from "macros/blog.jinja" import render_post_headline %}
-{% from "macros/menus.jinja" import tool_dropdown %}
+{% from "macros/blog.html" import render_post_headline %}
+{% from "macros/menus.html" import tool_dropdown %}
 
 {% block pagetitle %}{{ blog.name }}{% endblock %}
 

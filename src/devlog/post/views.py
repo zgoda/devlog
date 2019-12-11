@@ -26,7 +26,7 @@ def create(blog_id: int) -> Response:
         'blog': blog,
         'form': form or PostForm(),
     }
-    return render_template('post/create.jinja', **context)
+    return render_template('post/create.html', **context)
 
 
 @post_bp.route('/<int:post_id>', methods=['POST', 'GET'], defaults={'slug': None})
@@ -48,4 +48,4 @@ def display(post_id: int, slug: Optional[str]) -> Response:
         'post': post,
         'form': form or PostForm(obj=post),
     }
-    return render_template('post/display.jinja', **context)
+    return render_template('post/display.html', **context)

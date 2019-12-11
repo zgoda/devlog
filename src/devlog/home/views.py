@@ -19,4 +19,4 @@ def index() -> Response:
         'blogs': blogs,
         'posts': posts,
     }
-    return render_template('index.jinja', **context)
+    return render_template('index.html', **context)

@@ -32,7 +32,7 @@ def create() -> Response:
     context = {
         'form': form or BlogForm(),
     }
-    return render_template('blog/create.jinja', **context)
+    return render_template('blog/create.html', **context)
 
 
 @blog_bp.route('/<int:blog_id>', defaults={'slug': None})
@@ -58,7 +58,7 @@ def display(blog_id: int, slug: Optional[str]) -> Response:
         'blog': blog,
         'posts': pagination,
     }
-    return render_template('blog/display.jinja', **context)
+    return render_template('blog/display.html', **context)
 
 
 @blog_bp.route('/<int:blog_id>/details', methods=['POST', 'GET'])
@@ -81,7 +81,7 @@ def details(blog_id: int) -> Response:
         'blog': blog,
         'form': form or BlogForm(obj=blog),
     }
-    return render_template('blog/details.jinja', **context)
+    return render_template('blog/details.html', **context)
 
 
 @blog_bp.route('/<int:blog_id>/delete', methods=['POST', 'GET'])
@@ -110,4 +110,4 @@ def delete(blog_id: int) -> Response:
         'form': form,
         'blog': blog,
     }
-    return render_template('blog/delete.jinja', **context)
+    return render_template('blog/delete.html', **context)

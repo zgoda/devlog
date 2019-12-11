@@ -10,7 +10,7 @@ from .utils import login_success
 
 @auth_bp.route('/select')
 def select() -> Response:
-    return render_template('auth/select.jinja')
+    return render_template('auth/select.html')
 
 
 @auth_bp.route('/<provider>/login')
