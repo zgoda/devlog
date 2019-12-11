@@ -1,5 +1,6 @@
 -r test.txt
 
+# 7.10 and newer are broken on 3.8
 ipython<7.10
 ipdb
 
@@ -13,13 +14,17 @@ flake8-bugbear
 flake8-mutable
 flake8-comprehensions
 pep8-naming
+dlint
 doc8
+pyroma
+
 rope
+isort
 
 towncrier
 Sphinx
+sphinx-autodoc-typehints
 
 flask-shell-ipython
-watchdog
 termcolor
-python-dotenv
+watchdog
