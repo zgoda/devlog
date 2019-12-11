@@ -7,6 +7,7 @@
     <title>{% block pagetitle %}{% endblock %}</title>
     <link rel="stylesheet" href="/static/vendor/bulma.min.css">
     <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/app.css">
     {% block extracss %}
     {% endblock %}
     {% block headjs %}
@@ -28,9 +29,6 @@
           </a>
         </div>
         <div class="navbar-menu" id="navMenu">
-          <div class="navbar-start">
-            <a class="navbar-item" href="#">Link</a>
-          </div>
           <div class="navbar-end">
             <div class="navbar-item has-dropdown">
               <a class="navbar-link"><span class="fas fa-user-alt"></span>&nbsp;<span>{{ gettext('account tools') }}</span></a>
@@ -58,8 +56,8 @@
           </div>
         {% endfor %}
         {% endwith %}
-        <div class="columns">
-          <div class="column is-full">
+        <div class="columns is-centered">
+          <div class="column is-9">
           {% block widecontent %}
           {% endblock %}
           </div>

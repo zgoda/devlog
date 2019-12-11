@@ -7,9 +7,9 @@
 
 {% block pagetitle %}{{ gettext('Details for blog %(name)s', name=blog.name) }}{% endblock %}
 
-{% block content %}
+{% block widecontent %}
 <h1 class="title is-1">{{ gettext('Details for blog %(name)s', name=blog.name) }}</h1>
-{{ render_form(form, blog_details_url) }}
+{{ render_form(form, blog_details_url, width=9) }}
 <div class="content">
   <p><a href="{{ blog_display_url }}">{{ gettext('display blog').capitalize() }}</a></p>
 </div>

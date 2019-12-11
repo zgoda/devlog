@@ -45,7 +45,10 @@ class TextProcessingMixin:
             )
             return parts['fragment']
         elif processor == self.SMP_MARKDOWN:
-            return markdown2.markdown(instr, safe_mode=True)
+            return markdown2.markdown(
+                instr, safe_mode=True,
+                extras={'html-classes': {'img': 'markdown-image'}},
+            )
         elif processor == self.SMP_TEXTTILE:
             return textile.textile(instr, html_type='html5')
         return instr

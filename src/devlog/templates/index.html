@@ -7,31 +7,31 @@
   <div class="column is-one-third">
     <h4 class="title is-4">{{ gettext('recent posts').capitalize() }}</h4>
     <div class="content">
-      {%- if posts %}
+      {% if posts %}
       <ul class="list-unstyled">
-        {%- for post in posts %}
+        {% for post in posts %}
         <li><a href="{{ url_for('post.display', post_id=post.id, slug=post.slug) }}">{{ post.title }}</a></li>
-        {% endfor -%}
+        {% endfor %}
       </ul>
       <p><a href="">{{ gettext('see more') }}</a></p>
       {% else %}
       <p>{{ gettext('no posts yet').capitalize() }}...</p>
-      {% endif -%}
+      {% endif %}
     </div>
   </div>
   <div class="column is-one-third">
     <h4 class="title is-4">{{ gettext('recent blogs').capitalize() }}</h4>
     <div class="content">
-      {%- if blogs %}
+      {% if blogs %}
       <ul class="list-unstyled">
-        {%- for blog in blogs %}
+        {% for blog in blogs %}
         <li><a href="{{ url_for('blog.display', blog_id=blog.id) }}">{{ blog.name }}</a></li>
-        {% endfor -%}
+        {% endfor %}
       </ul>
       <p><a href="">{{ gettext('see more') }}</a></p>
       {% else %}
       <p>{{ gettext('no blogs yet').capitalize() }}...</p>
-      {% endif -%}
+      {% endif %}
     </div>
   </div>
   <div class="column is-one-third">

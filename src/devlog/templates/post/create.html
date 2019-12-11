@@ -9,5 +9,5 @@
 <div class="content">
   <p>{{ gettext('Fill out the form below to create new post in blog %(name)s', name=blog.name) }}.</p>
 </div>
-{{ render_form(form, url_for('post.create', blog_id=blog.id)) }}
+{{ render_form(form, url_for('post.create', blog_id=blog.id), width=9) }}
 {% endblock %}
