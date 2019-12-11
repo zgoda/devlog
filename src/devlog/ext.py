@@ -1,4 +1,4 @@
-from authlib.flask.client import OAuth
+from authlib.integrations.flask_client import OAuth
 from flask_babel import Babel
 from flask_flatpages import FlatPages
 from flask_login import LoginManager
