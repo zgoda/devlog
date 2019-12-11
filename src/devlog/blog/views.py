@@ -1,8 +1,10 @@
+import os
 from typing import Optional
 
-from flask import Response, abort, flash, redirect, render_template, request, url_for
+from flask import Response, abort, flash, redirect, render_template, request, url_for, current_app
 from flask_babel import lazy_gettext as gettext
 from flask_login import current_user, login_required
+from werkzeug.utils import secure_filename
 
 from ..ext import db
 from ..models import Blog, Post
@@ -10,7 +12,7 @@ from ..post.service import get_recent as recent_posts
 from ..utils.forms import Button, DeleteForm
 from ..utils.pagination import get_page
 from . import blog_bp
-from .forms import BlogForm
+from .forms import BlogForm, PostImportForm
 
 
 @blog_bp.route('/create', methods=['POST', 'GET'])
@@ -80,8 +82,31 @@ def details(blog_id: int) -> Response:
     context = {
         'blog': blog,
         'form': form or BlogForm(obj=blog),
+        'import_form': PostImportForm(),
     }
     return render_template('blog/details.html', **context)
+
+
+@blog_bp.route('/<int:blog_id>/contentimport', methods=['POST'])
+@login_required
+def import_posts(blog_id: int) -> Response:
+    final = redirect(url_for('.details', blog_id=blog_id))
+    if 'files' not in request.files:
+        flash(gettext('no files uploaded'), category='warning')
+        return final
+    file_storages = request.files.getlist('files')
+    valid_files = []
+    for fs in file_storages:
+        if fs.filename != '' and \
+                fs.filename.endswith(current_app.config['ALLOWED_UPLOAD_EXTENSIONS']):
+            valid_files.append(fs)
+    if not valid_files:
+        flash(gettext('no files uploaded'), category='warning')
+        return final
+    for fs in valid_files:
+        file_name = secure_filename(fs.filename)
+        fs.save(os.path.join(current_app.instance_path, file_name))
+    return final
 
 
 @blog_bp.route('/<int:blog_id>/delete', methods=['POST', 'GET'])

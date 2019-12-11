@@ -1,12 +1,12 @@
 {% macro field_description(field) %}
 {% if field.errors %}
-{% for error in field.errors %}
-<p class="help is-danger">{{ error }}</p>
-{% endfor %}
+  {% for error in field.errors %}
+  <p class="help is-danger">{{ error }}</p>
+  {% endfor %}
 {% else %}
-{% if field.description %}
-<p class="help is-italic">{{ field.description }}</p>
-{% endif %}
+  {% if field.description %}
+  <p class="help is-italic">{{ field.description }}</p>
+  {% endif %}
 {% endif %}
 {% endmacro %}
 
@@ -34,6 +34,17 @@
       </div>
       {{ field_description(field) }}
     </div>
+    {% elif field.widget.input_type == 'file' %}
+    <div class="file has-name" id="fileinput-{{ field.name }}">
+      <label class="file-label">
+        {{ field(class_='file-input', **kwargs) }}
+        <span class="file-cta">
+          <span class="file-icon"><i class="fas fa-upload"></i></span>
+          <span class="file-label">{{ gettext('choose a file to upload') }}</span>
+        </span>
+        <span class="file-name">File name</span>
+      </label>
+    </div>
     {% else %}
     <div class="field">
       <div class="control">
@@ -51,26 +62,26 @@
 {% endmacro %}
 
 {% macro form_errors(form, hiddens=True) %}
-{%- if form.errors %}
-  {%- for fieldname, errors in form.errors.items() %}
-    {%- if (is_hidden_field(form[fieldname]) and hiddens) or (not is_hidden_field(form[fieldname]) and hiddens != 'only') %}
-      {%- for error in errors %}
+{% if form.errors %}
+  {% for fieldname, errors in form.errors.items() %}
+    {% if (is_hidden_field(form[fieldname]) and hiddens) or (not is_hidden_field(form[fieldname]) and hiddens != 'only') %}
+      {% for error in errors %}
         <div class="help is-danger">{{ error }}</div>
-      {%- endfor %}
-    {%- endif %}
-  {%- endfor %}
-{%- endif %}
-{%- endmacro %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+{% endmacro %}
 
 {% macro render_form_fields(form) %}
 {{ form.hidden_tag() }}
 {{ form_errors(form, hiddens='only') }}
-{%- for field in form %}
+{% for field in form %}
   {% if not is_hidden_field(field) -%}
     {{ render_field(field) }}
-  {%- endif %}
-{%- endfor %}
-{%- endmacro %}
+  {% endif %}
+{% endfor %}
+{% endmacro %}
 
 {% macro render_form_buttons(buttons) %}
 <div class="field is-horizontal">
@@ -85,17 +96,17 @@
     </div>
   </div>
 </div>
-{%- endmacro %}
+{% endmacro %}
 
-{% macro render_form(form, action, width=6, box=True) %}
+{% macro render_form(form, action, width=6, box=True, has_files=False) %}
 <div class="container">
   <div class="columns is-centered">
     <div class="column{% if width %} is-{{ width }}"{% endif %}>
-      <form method="post" action="{{ action }}" role="form" novalidate{% if box %} class="box"{% endif %}>
+      <form method="post" action="{{ action }}" role="form" novalidate{% if box %} class="box"{% endif %}{% if has_files %} enctype="multipart/form-data"{% endif %}>
         {{ render_form_fields(form) }}
         {{ render_form_buttons(form.buttons) }}
       </form>
     </div>
   </div>
 </div>
-{%- endmacro %}
+{% endmacro %}

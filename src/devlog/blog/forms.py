@@ -2,11 +2,14 @@ from typing import Optional
 
 from flask_babel import lazy_gettext as gettext
 from flask_login import current_user
+from flask_wtf import FlaskForm
 from wtforms import validators
-from wtforms.fields import BooleanField, SelectField, StringField, TextAreaField
+from wtforms.fields import (
+    BooleanField, MultipleFileField, SelectField, StringField, TextAreaField,
+)
 
 from ..models import Blog
-from ..utils.forms import ObjectForm
+from ..utils.forms import Button, ObjectForm
 
 
 class BlogForm(ObjectForm):
@@ -24,3 +27,11 @@ class BlogForm(ObjectForm):
         if obj is None:
             obj = Blog(user=current_user)
         return super().save(obj, save)
+
+
+class PostImportForm(FlaskForm):
+    files = MultipleFileField(gettext('files'))
+
+    buttons = [
+        Button(text=gettext('import'), icon='file-import')
+    ]
