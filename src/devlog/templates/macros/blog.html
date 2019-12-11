@@ -4,7 +4,7 @@
     <h2 class="title is-3">{{ post.title }}</h2>
     <div class="content">
       <p class="card-text">{{ post.summary_html|safe }}</p>
-      <a href="{{ url_for('post.display', post_id=post.id) }}" class="card-link">{{ gettext('read more') }}</a>
+      <a href="{% if post.draft %}{{ url_for('post.display', **post.ident) }}{% else %}{{ url_for('home.post', **post.ident) }}{% endif %}" class="card-link">{{ gettext('read more') }}</a>
     </div>
   </div>
 </div>

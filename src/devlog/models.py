@@ -173,6 +173,16 @@ class Post(db.Model, TextProcessingMixin):
         if target.language is None:
             target.language = target.blog.effective_language
 
+    @property
+    def ident(self):
+        if self.draft:
+            return {'post_id': self.id}
+        else:
+            return {
+                'y': self.created.year, 'm': self.created.month, 'd': self.created.day,
+                'slug': self.slug,
+            }
+
 
 @db.event.listens_for(Post, 'before_insert')
 @db.event.listens_for(Post, 'before_update')

@@ -32,3 +32,12 @@ def get_recent(
     if limit is not None:
         query = query.limit(limit)
     return query
+
+
+def get_by_ident(year: int, month: int, day: int, slug: str) -> Post:
+    return Post.query.filter(
+        db.func.extract('year', Post.created) == year,
+        db.func.extract('month', Post.created) == month,
+        db.func.extract('day', Post.created) == day,
+        Post.slug == slug,
+    ).first_or_404()

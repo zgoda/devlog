@@ -10,7 +10,7 @@
       {% if posts %}
       <ul class="list-unstyled">
         {% for post in posts %}
-        <li><a href="{{ url_for('post.display', post_id=post.id, slug=post.slug) }}">{{ post.title }}</a></li>
+        <li><a href="{% if post.draft %}{{ url_for('post.display', **post.ident) }}{% else %}{{ url_for('home.post', **post.ident) }}{% endif %}">{{ post.title }}</a></li>
         {% endfor %}
       </ul>
       <p><a href="">{{ gettext('see more') }}</a></p>

@@ -1,5 +1,3 @@
-from typing import Optional
-
 from flask import Response, abort, flash, redirect, render_template, request, url_for
 from flask_babel import lazy_gettext as gettext
 from flask_login import current_user, login_required
@@ -29,10 +27,7 @@ def create(blog_id: int) -> Response:
     return render_template('post/create.html', **context)
 
 
-@post_bp.route('/<int:post_id>', methods=['POST', 'GET'], defaults={'slug': None})
-@post_bp.route('/<int:post_id>/<slug>', methods=['POST', 'GET'])
-def display(post_id: int, slug: Optional[str]) -> Response:
-    post = Post.query.get_or_404(post_id)
+def post_display_func(post: Post) -> Response:
     if (not post.public or post.draft) and current_user != post.blog.user:
         abort(404)
     form = None
@@ -49,3 +44,9 @@ def display(post_id: int, slug: Optional[str]) -> Response:
         'form': form or PostForm(obj=post),
     }
     return render_template('post/display.html', **context)
+
+
+@post_bp.route('/<int:post_id>', methods=['POST', 'GET'])
+def display(post_id: int) -> Response:
+    post = Post.query.get_or_404(post_id)
+    return post_display_func(post)
