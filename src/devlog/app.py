@@ -1,9 +1,13 @@
 import os
 from logging.config import dictConfig
+from typing import Optional
 
+import rq
 import sentry_sdk
+from fakeredis import FakeStrictRedis
 from flask import render_template
 from flask_babel import gettext as _
+from redis import Redis
 from sentry_sdk.integrations.flask import FlaskIntegration
 from werkzeug.utils import ImportStringError
 
@@ -19,7 +23,7 @@ from .utils.app import Devlog
 from .utils.i18n import get_user_language, get_user_timezone
 
 
-def make_app(env=None):
+def make_app(env: Optional[str] = None) -> Devlog:
     flask_environment = os.environ.get('FLASK_ENV', '')
     if flask_environment == 'production':
         configure_logging()
@@ -42,7 +46,7 @@ def make_app(env=None):
     return app
 
 
-def configure_app(app, env):
+def configure_app(app: Devlog, env: Optional[str]):
     app.config.from_object('devlog.config')
     if env is not None:
         try:
@@ -59,7 +63,17 @@ def configure_app(app, env):
         app.config.from_envvar('DEVLOG_CONFIG_SECRETS')
 
 
-def configure_blueprints(app, env):
+def configure_redis(app: Devlog, env: Optional[str]):
+    redis_conn_cls = Redis
+    run_async = True
+    if app.testing:
+        redis_conn_cls = FakeStrictRedis
+        run_async = False
+    app.redis = redis_conn_cls.from_url(app.config['REDIS_URL'])
+    app.task_queue = rq.Queue('devlog-tasks', is_async=run_async, connection=app.redis)
+
+
+def configure_blueprints(app: Devlog, env: Optional[str]):
     app.register_blueprint(home_bp)
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(user_bp, url_prefix='/user')
@@ -67,7 +81,7 @@ def configure_blueprints(app, env):
     app.register_blueprint(post_bp, url_prefix='/post')
 
 
-def configure_extensions(app, env):
+def configure_extensions(app: Devlog, env: Optional[str]):
     db.init_app(app)
     csrf.init_app(app)
     oauth.init_app(app)
@@ -117,7 +131,7 @@ def configure_logging():
     })
 
 
-def configure_error_handlers(app):
+def configure_error_handlers(app: Devlog):
 
     @app.errorhandler(403)
     def forbidden_page(error):

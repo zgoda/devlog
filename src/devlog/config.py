@@ -12,6 +12,7 @@ CSRF_ENABLED = True
 WTF_CSRF_ENABLED = CSRF_ENABLED
 CSRF_SESSION_KEY = 'not so secret'
 MAX_CONTENT_LENGTH = 1024 * 1024  # 1 MB max upload size
+REDIS_URL = os.environ.get('REDIS_URL', 'redis://')
 
 # flatpages
 FLATPAGES_EXTENSION = '.html.md'
