@@ -1,7 +1,9 @@
 import os
 from typing import Optional
 
-from flask import Response, abort, flash, redirect, render_template, request, url_for, current_app
+from flask import (
+    Response, abort, current_app, flash, redirect, render_template, request, url_for,
+)
 from flask_babel import lazy_gettext as gettext
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
@@ -101,11 +103,23 @@ def import_posts(blog_id: int) -> Response:
                 fs.filename.endswith(current_app.config['ALLOWED_UPLOAD_EXTENSIONS']):
             valid_files.append(fs)
     if not valid_files:
-        flash(gettext('no files uploaded'), category='warning')
+        flash(gettext('no valid files uploaded'), category='warning')
         return final
     for fs in valid_files:
         file_name = secure_filename(fs.filename)
-        fs.save(os.path.join(current_app.instance_path, file_name))
+        upload_dir = os.path.join(
+            current_app.instance_path, current_app.config['UPLOAD_DIR_NAME']
+        )
+        file_path = os.path.join(upload_dir, file_name)
+        fs.save(file_path)
+        current_app.task_queue.enqueue('devlog.tasks.import_post', file_path, blog_id)
+        flash(
+            gettext(
+                'import of post file %(file_name)s has been scheduled',
+                file_name=file_name,
+            ),
+            category='success'
+        )
     return final
 
 

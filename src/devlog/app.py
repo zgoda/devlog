@@ -38,6 +38,7 @@ def make_app(env: Optional[str] = None) -> Devlog:
             )
     app = Devlog(__name__.split('.')[0])
     configure_app(app, env)
+    configure_redis(app, env)
     configure_extensions(app, env)
     with app.app_context():
         configure_blueprints(app, env)
@@ -61,6 +62,8 @@ def configure_app(app: Devlog, env: Optional[str]):
     if config_secrets:
         app.logger.info(f'secrets loaded from {config_secrets}')
         app.config.from_envvar('DEVLOG_CONFIG_SECRETS')
+    uploads_dir = os.path.join(app.instance_path, app.config['UPLOAD_DIR_NAME'])
+    os.makedirs(uploads_dir, exist_ok=True)
 
 
 def configure_redis(app: Devlog, env: Optional[str]):

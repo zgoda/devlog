@@ -12,14 +12,14 @@ def import_post(file_name: str, blog_id: int):
     try:
         with open(file_name) as fp:
             text = fp.read()
-        html_text = markdown2.markdown(
+        text_html = markdown2.markdown(
             text, safe_mode=True,
             extras={
                 'html-classes': {'img': 'markdown-image'},
                 'metadata': True
             }
         )
-        if not html_text.metadata or not html_text.metadata.get('title'):
+        if not text_html.metadata or not text_html.metadata.get('title'):
             raise ValueError(
                 f'Post file {file_name} does not provide post title in metadata'
             )
@@ -27,11 +27,11 @@ def import_post(file_name: str, blog_id: int):
         if blog is None:
             raise ValueError(f'Blog ID {blog_id} not found')
         post = Post(
-            blog=blog, title=html_text.metadata['title'], text=text,
-            html_text=html_text, text_markup_type='markdown',
+            blog=blog, title=text_html.metadata['title'], text=text,
+            text_html=text_html, text_markup_type='markdown',
             public=blog.effective_public,
         )
-        post_date = html_text.metadata.get('date')
+        post_date = text_html.metadata.get('date')
         if post_date:
             post_date = isoparse(post_date)
             post.created = post_date

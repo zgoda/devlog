@@ -5,7 +5,7 @@ _basedir = os.path.abspath(os.path.dirname(__file__))
 DEBUG = False
 TESTING = False
 SECRET_KEY = 'not so secret'
-SQLALCHEMY_DATABASE_URI = 'sqlite://'
+SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI', 'sqlite://')
 SQLALCHEMY_ECHO = False
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 CSRF_ENABLED = True
@@ -23,4 +23,5 @@ BABEL_DEFAULT_LOCALE = 'pl'
 BABEL_DEFAULT_TIMEZONE = 'Europe/Warsaw'
 
 # file uploads
-ALLOWED_UPLOAD_EXTENSIONS = ['.md', '.gfm', '.markdown']
+ALLOWED_UPLOAD_EXTENSIONS = ('.md', '.gfm', '.markdown')
+UPLOAD_DIR_NAME = 'uploads'
