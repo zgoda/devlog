@@ -1,34 +1,9 @@
-from flask import Response, flash, redirect, session
-from flask_babel import lazy_gettext as gettext
+from flask import session
 from flask_login import login_user
 
-from ..ext import db
 from ..models import User
-from ..utils.views import next_redirect
 
 
-def login_success(
-            email: str, access_token: str, remote_id: str, service: str, **kwargs
-        ) -> Response:
-    user = User.get_by_email(email)
-    ident = email
-    if user is None:
-        user = User(email=email, remote_user_id=remote_id, oauth_service=service)
-    user.access_token = access_token
-    kwargs.pop('id', None)
-    for k, v in kwargs.items():
-        if v:
-            setattr(user, k, v)
-    db.session.add(user)
-    db.session.commit()
+def login_success(user: User):
     login_user(user)
     session.permanent = True
-    flash(
-        gettext(
-            'you have been signed in as %(ident)s using %(service)s',
-            ident=ident,
-            service=service,
-        ),
-        category='success',
-    )
-    return redirect(next_redirect('home.index'))

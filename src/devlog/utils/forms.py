@@ -57,12 +57,15 @@ class DeleteForm(FlaskForm):
         return False
 
 
-class ObjectForm(FlaskForm):
+class BaseForm(FlaskForm):
 
     buttons = [
         Button(text=gettext('save')),
         Link(href='javascript:history.back()', text=gettext('go back')),
     ]
+
+
+class ObjectForm(BaseForm):
 
     def save(self, obj, save=True):
         self.populate_obj(obj)

@@ -1,4 +1,3 @@
-from authlib.integrations.flask_client import OAuth
 from flask_babel import Babel
 from flask_flatpages import FlatPages
 from flask_login import LoginManager
@@ -12,4 +11,3 @@ babel = Babel()
 pages = FlatPages()
 db = SQLAlchemy(model_class=Model)
 csrf = CSRFProtect()
-oauth = OAuth()

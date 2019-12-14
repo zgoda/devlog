@@ -14,7 +14,7 @@ from werkzeug.utils import ImportStringError
 from ._version import get_version
 from .auth import auth_bp
 from .blog import blog_bp
-from .ext import babel, csrf, db, login_manager, oauth, pages
+from .ext import babel, csrf, db, login_manager, pages
 from .home import home_bp
 from .post import post_bp
 from .templates import setup_template_extensions
@@ -87,11 +87,10 @@ def configure_blueprints(app: Devlog, env: Optional[str]):
 def configure_extensions(app: Devlog, env: Optional[str]):
     db.init_app(app)
     csrf.init_app(app)
-    oauth.init_app(app)
     pages.init_app(app)
     pages.get('foo')  # preload all static pages
     login_manager.init_app(app)
-    login_manager.login_view = 'auth.select'
+    login_manager.login_view = 'auth.login'
     login_manager.login_message = _('Please log in to access this page')
     login_manager.login_message_category = 'warning'
 

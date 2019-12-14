@@ -61,7 +61,7 @@ setup(
         'Flask-SQLAlchemy',
         'Flask-WTF',
         'SQLAlchemy-Utils',
-        'Authlib',
+        'passlib[argon2]',
         'WTForms-Alchemy',
         'docutils',
         'markdown2',
@@ -70,9 +70,7 @@ setup(
         'pytz',
         'babel',
         'sentry_sdk[flask]',
-    ),
-    setup_requires=(
-        'pytest-runner',
+        'python-dateutil',
     ),
     tests_require=(
         'pytest',
@@ -80,7 +78,6 @@ setup(
         'pytest-cov',
         'pytest-flask',
         'pytest-factoryboy',
-        'behave',
     ),
     extras_require={
         'prod': [

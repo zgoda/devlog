@@ -25,6 +25,7 @@ towncrier
 Sphinx
 sphinx-autodoc-typehints
 
+python-dotenv
 flask-shell-ipython
 termcolor
 watchdog

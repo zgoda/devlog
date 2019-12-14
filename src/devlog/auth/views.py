@@ -1,76 +1,54 @@
-from flask import Response, flash, redirect, render_template, request, session, url_for
+from flask import Response, flash, redirect, render_template, request
 from flask_babel import lazy_gettext as gettext
 from flask_login import login_required, logout_user
 
-from ..ext import oauth
 from ..utils.views import next_redirect
-from . import auth_bp, provider as providers
+from . import auth_bp
+from .forms import LoginForm, RegisterForm
 from .utils import login_success
 
 
-@auth_bp.route('/select')
-def select() -> Response:
-    return render_template('auth/select.html')
-
-
-@auth_bp.route('/<provider>/login')
-def login(provider: str) -> Response:  # pragma: nocover
-    if provider == 'local':
-        return local_login_callback(request.args.get('email'))
-    service = getattr(providers, provider, None)
-    if service is None:
+@auth_bp.route('/register', methods=['POST', 'GET'])
+def register() -> Response:
+    logout_user()
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user = form.save()
+        login_success(user)
         flash(
-            gettext('service %(provider)s is not supported', provider=provider),
-            category='danger',
+            gettext(
+                f'account for {user.email} has been registered, you are now logged in'
+            ),
+            category='success',
         )
-        return redirect(url_for('.select'))
-    endpoint = f'.callback-{provider}'
-    callback = url_for(endpoint, _external=True)
-    return service.authorize_redirect(callback)
+        return redirect(next_redirect('home.index'))
+    ctx = {
+        'form': form,
+    }
+    return render_template('auth/register.html', **ctx)
 
 
-@auth_bp.route('/local/callback', endpoint='callback-local')
-def local_login_callback(email: str) -> Response:
-    name = request.args.get('name', 'example user')
-    return login_success(email, 'local', 'local', 'local handler', name=name)
-
-
-@auth_bp.route('/facebook/callback', endpoint='callback-facebook')
-def facebook_login_callback() -> Response:  # pragma: nocover
-    token_data = oauth.facebook.authorize_access_token()
-    if token_data:
-        access_token = token_data.get('access_token')
-        session['access_token'] = token_data, ''
-        resp = oauth.facebook.get(
-            '/me', params={'fields': 'id,email,first_name,last_name'}
-        )
-        if resp.ok:
-            user_data = resp.json()
-            email = user_data.get('email')
-            first_name = user_data.get('first_name', '')
-            last_name = user_data.get('last_name', '')
-            name = f'{first_name} {last_name}'.strip()
-            return login_success(
-                email, access_token, user_data['id'], 'facebook', name=name,
+@auth_bp.route('/login', methods=['POST', 'GET'])
+def login() -> Response:
+    logout_user()
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = form.login()
+        if user is None:
+            flash(
+                gettext(
+                    'login failed, either user is not known or password is incorrect'
+                ),
+                category='danger'
             )
-    return redirect(url_for('.select'))
-
-
-@auth_bp.route('/google/callback', endpoint='callback-google')
-def google_login_callback() -> Response:  # pragma: nocover
-    token_data = oauth.google.authorize_access_token()
-    if token_data:
-        access_token = token_data.get('access_token')
-        session['access_token'] = token_data, ''
-        resp = oauth.google.get('/oauth2/v3/userinfo')
-        if resp.ok:
-            user_data = resp.json()
-            email = user_data.pop('email', None)
-            user_id = user_data.pop('sub', None)
-            return login_success(
-                email, access_token, user_id, 'google', **user_data,
-            )
-    return redirect(url_for('.select'))
+            return redirect(request.path)
+        login_success(user)
+        flash(gettext(f'user {user.email} logged in'), category='success')
+        return redirect(next_redirect('home.index'))
+    ctx = {
+        'form': form,
+    }
+    return render_template('auth/login.html', **ctx)
 
 
 @auth_bp.route('/logout')

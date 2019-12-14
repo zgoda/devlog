@@ -5,12 +5,12 @@ Flask-Babel
 Flask-WTF
 Flask-SQLAlchemy
 SQLAlchemy-Utils
-Authlib
 WTForms-Alchemy
 text-unidecode
 pytz
 babel
 python-dateutil
+passlib[argon2]
 
 sentry-sdk[flask]
 

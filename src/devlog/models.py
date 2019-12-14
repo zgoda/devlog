@@ -1,8 +1,12 @@
+from __future__ import annotations
+
 import datetime
+from typing import Optional
 
 from flask_login import UserMixin
 from sqlalchemy_utils import observes
 
+from .sec import pwd_context
 from .ext import db
 from .utils.models import MarkupField, SlugField, TextProcessingMixin
 
@@ -12,24 +16,24 @@ class User(db.Model, UserMixin, TextProcessingMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)  # noqa: A003
-    name = db.Column(db.String(200), nullable=False)
+    name = db.Column(db.String(200))
     slug = db.Column(db.String(200), index=True)
     blurb = db.Column(db.Text)
     blurb_html = db.Column(db.Text)
     blurb_markup_type = db.Column(db.String(50))
-    email = db.Column(db.String(200), unique=True)
-    access_token = db.Column(db.Text)
-    oauth_service = db.Column(db.String(50))
-    remote_user_id = db.Column(db.Text)
+    email = db.Column(db.String(200), nullable=False, unique=True)
+    password = db.Column(db.Text, nullable=False)
     active = db.Column(db.Boolean, default=True)
     public = db.Column(db.Boolean, default=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     default_language = db.Column(db.String(20), default='pl')
     timezone = db.Column(db.String(80), default='Europe/Warsaw')
 
-    __table_args__ = (
-        db.Index('ix_users_user_remote_id', 'oauth_service', 'remote_user_id'),
-    )
+    def set_password(self, password):
+        self.password = pwd_context.hash(password)
+
+    def check_password(self, s):
+        return pwd_context.verify(s, self.password)
 
     @property
     def effective_public(self):
@@ -51,7 +55,7 @@ class User(db.Model, UserMixin, TextProcessingMixin):
         return self.active
 
     @classmethod
-    def get_by_email(cls, email):
+    def get_by_email(cls, email) -> Optional[User]:
         return cls.query.filter_by(email=email).first()
 
     def has_blogs(self):

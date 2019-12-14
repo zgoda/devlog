@@ -1,0 +1,12 @@
+{% extends "auth/base.html" %}
+
+{% from 'macros/forms.html' import render_form %}
+
+{% set form_url = url_for('auth.login') %}
+
+{% block pagetitle %}{{ gettext('Devlog login') }}{% endblock %}
+
+{% block widecontent %}
+<h1 class="title is-1">{{ gettext('Devlog login') }}</h1>
+{{ render_form(form, form_url, width=6) }}
+{% endblock %}
