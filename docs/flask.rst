@@ -32,6 +32,9 @@ autoescaping selection logic or subclass it and override
 but the later may be handy in resolving other issues which we will look at
 later.
 
+Anyway, after experimenting with ``.jinja`` extension for template files I
+reverted to using ``.html`` because most code editors support.
+
 Jinja configuration
 -------------------
 

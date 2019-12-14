@@ -54,3 +54,20 @@ Bulma and other CSS frameworks
 `Bootstrap <https://getbootstrap.com/>`_ is usually 1st choice when it comes
 to CSS framework selection. It's proven, it has all the docs, it's widely
 used. It has its drawbacks but not many and most people can live with that.
+There are contenders and Bulma is one of them.
+
+Bulma is pure CSS iow it does not neither provide or require any Javascript to
+operate. There are parts that may require some Javascript code but one can
+live without them I guess. My main concern is that Bulma has 2 modes of
+operation and one of them is PITA for Flask template authors.
+
+Normally all elements are totally unstyled. Paragraphs are displayed exactly
+the same as headings, citations or even code. One has to add CSS context
+classes to make them look like paragraphs, headings, citations or code. This
+mode is the default mode and putting that extra classes on **every HTML
+element** just feels really wrong. I guess web designers are happy with this
+but for guys like me that just wants to output some HTML and make it look a
+bit better than ugly it seems too much.
+
+But Bulma has another mode, which is triggered by wrapping HTML elements in
+class ``content`` and in this mode elements are styled normally.
