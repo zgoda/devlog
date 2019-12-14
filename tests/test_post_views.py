@@ -23,19 +23,19 @@ class TestPostCreateView(DevlogTests):
         blog = blog_factory(name='Infernal Tendencies')
         rv = self.client.get(self.url(blog))
         assert rv.status_code == 302
-        assert url_for('auth.select') in rv.headers['Location']
+        assert url_for('auth.login') in rv.headers['Location']
 
     def test_authenticated_get(self, blog_factory, user_factory):
         blog = blog_factory(name='Infernal Tendencies')
-        user = user_factory(name='Ivory Tower')
-        self.login(user.email, name=user.name)
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
+        self.login(user.email)
         rv = self.client.get(self.url(blog))
         assert rv.status_code == 404
 
     def test_owner_get(self, blog_factory, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies', user=user)
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         url = self.url(blog)
         rv = self.client.get(url)
         assert f'action="{url}"' in rv.text
@@ -44,40 +44,40 @@ class TestPostCreateView(DevlogTests):
         blog = blog_factory(name='Infernal Tendencies')
         rv = self.client.post(self.url(blog), data=self.DATA_OK)
         assert rv.status_code == 302
-        assert url_for('auth.select') in rv.headers['Location']
+        assert url_for('auth.login') in rv.headers['Location']
 
     def test_anon_post_data_incomplete(self, blog_factory):
         blog = blog_factory(name='Infernal Tendencies')
         rv = self.client.post(self.url(blog), data=self.DATA_INCOMPLETE)
         assert rv.status_code == 302
-        assert url_for('auth.select') in rv.headers['Location']
+        assert url_for('auth.login') in rv.headers['Location']
 
     def test_authenticated_post_data_ok(self, blog_factory, user_factory):
         blog = blog_factory(name='Infernal Tendencies')
-        user = user_factory(name='Ivory Tower')
-        self.login(user.email, name=user.name)
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
+        self.login(user.email)
         rv = self.client.post(self.url(blog), data=self.DATA_OK)
         assert rv.status_code == 404
 
     def test_authenticated_post_data_incomplete(self, blog_factory, user_factory):
         blog = blog_factory(name='Infernal Tendencies')
-        user = user_factory(name='Ivory Tower')
-        self.login(user.email, name=user.name)
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
+        self.login(user.email)
         rv = self.client.post(self.url(blog), data=self.DATA_INCOMPLETE)
         assert rv.status_code == 404
 
     def test_owner_post_data_ok(self, blog_factory, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies', user=user)
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         rv = self.client.post(self.url(blog), data=self.DATA_OK)
         assert rv.status_code == 302
         assert url_for('blog.display', blog_id=blog.id) in rv.headers['Location']
 
     def test_owner_post_data_incomplete(self, blog_factory, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies', user=user)
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         rv = self.client.post(self.url(blog), data=self.DATA_INCOMPLETE)
         assert 'field is required' in rv.text
 
@@ -87,7 +87,7 @@ class TestPostDisplayView(DevlogTests):
 
     @pytest.fixture(autouse=True)
     def set_up(self, user_factory):
-        self.user = user_factory(name='Public User')
+        self.user = user_factory(name='Public User', password=self.default_pw)
 
     def url(self, post):
         return url_for('post.display', post_id=post.id)
@@ -114,11 +114,11 @@ class TestPostDisplayView(DevlogTests):
         assert rv.status_code == 404
 
     def test_authenticated_get_public(self, post_factory, blog_factory, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(user=self.user, public=True)
         title = 'First post'
         post = post_factory(blog=blog, public=True, draft=False, title=title)
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         url = self.url(post)
         rv = self.client.get(url)
         assert f'>{title}</h1>' in rv.text
@@ -128,13 +128,14 @@ class TestPostDisplayView(DevlogTests):
         (False, False),
         (False, True)
     ], ids=['public-draft', 'nonpublic-nondraft', 'nonpublic-draft'])
-    def test_authenticated_get_no_access(self, public, draft, post_factory,
-                                         blog_factory, user_factory):
-        user = user_factory(name='Ivory Tower')
+    def test_authenticated_get_no_access(
+                self, public, draft, post_factory, blog_factory, user_factory
+            ):
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(user=self.user, public=True)
         title = 'First post'
         post = post_factory(blog=blog, public=public, draft=draft, title=title)
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         url = self.url(post)
         rv = self.client.get(url)
         assert rv.status_code == 404
@@ -154,7 +155,7 @@ class TestPostDisplayView(DevlogTests):
         blog = blog_factory(user=self.user, public=True)
         title = 'First post'
         post = post_factory(blog=blog, public=True, draft=False, title=title)
-        self.login(self.user.email, name=self.user.name)
+        self.login(self.user.email)
         url = self.url(post)
         rv = self.client.get(url)
         assert f'>{title}</h1>' in rv.text
@@ -192,14 +193,15 @@ class TestPostDisplayView(DevlogTests):
         'nonpublic-nondraft',
         'nonpublic-draft',
     ])
-    def test_authenticated_post_no_access(self, public, draft, post_factory,
-                                          blog_factory, user_factory):
+    def test_authenticated_post_no_access(
+                self, public, draft, post_factory, blog_factory, user_factory
+            ):
         blog = blog_factory(user=self.user, public=True)
         title = 'First post'
         post = post_factory(blog=blog, public=public, draft=draft, title=title)
         user = user_factory(name='Ivory Tower')
         url = self.url(post)
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         data = {
             'title': 'New name',
         }
@@ -222,7 +224,7 @@ class TestPostDisplayView(DevlogTests):
         title = 'First post'
         post = post_factory(blog=blog, public=public, draft=draft, title=title)
         url = self.url(post)
-        self.login(self.user.email, name=self.user.name)
+        self.login(self.user.email)
         new_title = 'New name'
         data = {
             'title': new_title,
@@ -247,7 +249,7 @@ class TestPostDisplayView(DevlogTests):
         title = 'First post'
         post = post_factory(blog=blog, public=public, draft=draft, title=title)
         url = self.url(post)
-        self.login(self.user.email, name=self.user.name)
+        self.login(self.user.email)
         new_title = None
         data = {
             'title': new_title,

@@ -1,18 +1,13 @@
-from urllib.parse import urlencode
-
-
 class DevlogTests:
 
-    def login(self, email, name=None):
+    default_pw = 'pass'
+
+    def login(self, email, password=None):
         params = {
-            'email': email
+            'email': email,
+            'password': password or self.default_pw,
         }
-        if name:
-            params['name'] = name
-        params = urlencode(params)
-        return self.client.get(
-            f'/auth/local/login?{params}', follow_redirects=True,
-        )
+        return self.client.post('/auth/login', data=params, follow_redirects=True)
 
     def logout(self):
         return self.client.get('/auth/logout', follow_redirects=True)

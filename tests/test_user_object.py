@@ -11,6 +11,7 @@ class TestUserObject(DevlogTests):
 
     def test_defaults(self):
         user = User(email='test.email@example.com', name='Ivory Tower')
+        user.set_password(self.default_pw)
         db.session.add(user)
         db.session.commit()
         assert user.id is not None

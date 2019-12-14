@@ -15,11 +15,11 @@ class TestBlogCreateView(DevlogTests):
     def test_anon_get(self):
         rv = self.client.get(self.url)
         assert rv.status_code == 302
-        assert url_for('auth.select') in rv.headers['Location']
+        assert url_for('auth.login') in rv.headers['Location']
 
     def test_authenticated_get(self, user_factory):
-        user = user_factory(name='Ivory Tower')
-        self.login(user.email, name=user.name)
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
+        self.login(user.email)
         rv = self.client.get(self.url)
         assert rv.status_code == 200
         assert f'action="{self.url}"' in rv.text
@@ -29,21 +29,21 @@ class TestBlogCreateView(DevlogTests):
         data = {'user': user.id, 'name': 'Infernal Tendencies'}
         rv = self.client.post(self.url, data=data)
         assert rv.status_code == 302
-        assert url_for('auth.select') in rv.headers['Location']
+        assert url_for('auth.login') in rv.headers['Location']
 
     def test_authenticated_post_ok(self, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog_name = 'Infernal Tendencies'
         data = {'user': user.id, 'name': blog_name}
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         rv = self.client.post(self.url, data=data, follow_redirects=True)
         assert f'{blog_name} has been created' in rv.text
         assert f'>{blog_name}</h1>' in rv.text
 
     def test_authenticated_post_fail(self, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         data = {'user': user.id}
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         rv = self.client.post(self.url, data=data, follow_redirects=True)
         assert f'field is required' in rv.text
         assert f'has been created' not in rv.text
@@ -76,10 +76,10 @@ class TestBlogDisplayView(DevlogTests):
         assert rv.status_code == 404
 
     def test_authenticated_get_public(self, user_factory, blog_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies')
         edit_url = url_for('blog.details', blog_id=blog.id)
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         rv = self.client.get(self.url(blog))
         assert rv.status_code == 200
         assert f'>{blog.name}</h1>' in rv.text
@@ -95,9 +95,9 @@ class TestBlogDisplayView(DevlogTests):
     def test_authenticated_get_non_public(
         self, user_factory, blog_factory, public, active
     ):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies', public=public, active=active)
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         rv = self.client.get(self.url(blog))
         assert rv.status_code == 404
 
@@ -110,12 +110,12 @@ class TestBlogDisplayView(DevlogTests):
         ids=['public-active', 'private-active', 'public-inactive', 'private-inactive'],
     )
     def test_owner_get_non_own(self, user_factory, blog_factory, public, active):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(
             user=user, name='Infernal Tendencies', public=public, active=active
         )
         edit_url = url_for('blog.details', blog_id=blog.id)
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         rv = self.client.get(self.url(blog))
         assert rv.status_code == 200
         assert f'>{blog.name}</h1>' in rv.text
@@ -132,20 +132,20 @@ class TestBlogDetailsView(DevlogTests):
         blog = blog_factory(name='Infernal Tendencies')
         rv = self.client.get(self.url(blog))
         assert rv.status_code == 302
-        assert url_for('auth.select') in rv.headers['Location']
+        assert url_for('auth.login') in rv.headers['Location']
 
     def test_authenticated_get(self, blog_factory, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies')
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         rv = self.client.get(self.url(blog))
         assert rv.status_code == 404
 
     def test_owner_get(self, blog_factory, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies', user=user)
         url = self.url(blog)
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         rv = self.client.get(url)
         assert f'action="{url}"' in rv.text
 
@@ -153,29 +153,29 @@ class TestBlogDetailsView(DevlogTests):
         blog = blog_factory(name='Infernal Tendencies')
         rv = self.client.post(self.url(blog), data={'name': 'New Order'})
         assert rv.status_code == 302
-        assert url_for('auth.select') in rv.headers['Location']
+        assert url_for('auth.login') in rv.headers['Location']
 
     def test_authenticated_post(self, blog_factory, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies')
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         rv = self.client.post(self.url(blog), data={'name': 'New Order'})
         assert rv.status_code == 404
 
     def test_owner_ok(self, blog_factory, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies', user=user)
         url = self.url(blog)
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         new_name = 'New Order'
         rv = self.client.post(url, data={'name': new_name}, follow_redirects=True)
         assert f'{new_name} has been modified' in rv.text
 
     def test_owner_fail(self, blog_factory, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies', user=user)
         url = self.url(blog)
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         new_name = None
         rv = self.client.post(url, data={'name': new_name}, follow_redirects=True)
         assert 'field is required' in rv.text
@@ -191,19 +191,19 @@ class TestBlogDeleteView(DevlogTests):
         blog = blog_factory(name='Infernal Tendencies')
         rv = self.client.get(self.url(blog))
         assert rv.status_code == 302
-        assert url_for('auth.select') in rv.headers['Location']
+        assert url_for('auth.login') in rv.headers['Location']
 
     def test_authenticated_get(self, blog_factory, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies')
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         rv = self.client.get(self.url(blog))
         assert rv.status_code == 404
 
     def test_owner_get(self, blog_factory, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='infernal Tendencies', user=user)
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         url = self.url(blog)
         rv = self.client.get(url)
         assert f'action="{url}"' in rv.text
@@ -212,19 +212,19 @@ class TestBlogDeleteView(DevlogTests):
         blog = blog_factory(name='Infernal Tendencies')
         rv = self.client.post(self.url(blog), data={'delete_it': True})
         assert rv.status_code == 302
-        assert url_for('auth.select') in rv.headers['Location']
+        assert url_for('auth.login') in rv.headers['Location']
 
     def test_authenticated_post(self, blog_factory, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies')
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         rv = self.client.post(self.url(blog), data={'delete_it': True})
         assert rv.status_code == 404
 
     def test_owner_post(self, blog_factory, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='infernal Tendencies', user=user)
-        self.login(user.email, name=user.name)
+        self.login(user.email)
         url = self.url(blog)
         rv = self.client.post(url, data={'delete_it': True})
         assert rv.status_code == 302

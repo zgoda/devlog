@@ -10,7 +10,7 @@ class TestMainPageAccountLinks(DevlogTests):
 
     @pytest.fixture(autouse=True)
     def set_up(self):
-        self.login_url = url_for('auth.select')
+        self.login_url = url_for('auth.login')
         self.logout_url = url_for('auth.logout')
         self.account_url = url_for('user.account')
 
@@ -21,7 +21,7 @@ class TestMainPageAccountLinks(DevlogTests):
         assert f'href="{self.account_url}"' not in r.text
 
     def test_authenticated_login_urls(self, user_factory):
-        user = user_factory(name='Ivory Tower')
+        user = user_factory(name='Ivory Tower', password=self.default_pw)
         self.login(user.email)
         r = self.client.get(url_for('home.index'))
         assert f'href="{self.login_url}"' not in r.text
