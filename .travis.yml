@@ -4,14 +4,13 @@ python:
   - "3.7"
   - "3.8"
 install:
-  - pip install -U -r requirements/test.txt
-  - pip install -U Sphinx wheel
-  - pip install -e .
-  - pip install -U codacy-coverage
+  - pip install -q -U Sphinx wheel
+  - pip install -q -e .[test]
+  - pip install -q -U codacy-coverage
 script:
   - pytest --cov-branch --cov-report xml --cov=devlog tests
-  - python setup.py build_sphinx
-  - python setup.py sdist bdist_wheel
+  - python setup.py -q build_sphinx
+  - python setup.py -q sdist bdist_wheel
 after_success:
   - python-codacy-coverage -r coverage.xml
 deploy:

@@ -25,6 +25,71 @@ def find_version(*file_paths):
     raise RuntimeError('Unable to find version string.')
 
 
+REQ_BASE = [
+    'Flask',
+    'Flask-Login',
+    'Flask-FlatPages',
+    'Flask-Babel',
+    'Flask-WTF',
+    'Flask-SQLAlchemy',
+    'SQLAlchemy-Utils',
+    'WTForms-Alchemy',
+    'text-unidecode',
+    'python-dateutil',
+    'passlib[argon2]',
+    # Sentry
+    'sentry-sdk[flask]',
+    # simplified markup processors
+    'docutils',
+    'textile',
+    'markdown2',
+    # RQ requirements
+    'rq',
+    'hiredis',
+]
+
+REQ_TEST = [
+    'pytest',
+    'pytest-mock',
+    'pytest-cov',
+    'pytest-factoryboy',
+    'pytest-flask',
+    'fakeredis',
+]
+
+REQ_DEV = [
+    'ipython<7.10',
+    'ipdb',
+    'pip',
+    'setuptools',
+    'wheel',
+    'flake8',
+    'flake8-builtins',
+    'flake8-bugbear',
+    'flake8-mutable',
+    'flake8-comprehensions',
+    'pep8-naming',
+    'dlint',
+    'doc8',
+    'pyroma',
+    'rope',
+    'isort',
+    'towncrier',
+    'Sphinx',
+    'sphinx-autodoc-typehints',
+    'python-dotenv',
+    'flask-shell-ipython',
+    'termcolor',
+    'watchdog',
+]
+
+REQ_PROD = [
+    'psycopg2-binary',
+    'uwsgi',
+    'supervisor',
+]
+
+
 long_description = read('README.md')
 
 setup(
@@ -53,37 +118,11 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary',
     ],
-    install_requires=(
-        'Flask',
-        'Flask-Babel',
-        'Flask-Login',
-        'Flask-FlatPages',
-        'Flask-SQLAlchemy',
-        'Flask-WTF',
-        'SQLAlchemy-Utils',
-        'passlib[argon2]',
-        'WTForms-Alchemy',
-        'docutils',
-        'markdown2',
-        'textile',
-        'text-unidecode',
-        'pytz',
-        'babel',
-        'sentry_sdk[flask]',
-        'python-dateutil',
-    ),
-    tests_require=(
-        'pytest',
-        'pytest-mock',
-        'pytest-cov',
-        'pytest-flask',
-        'pytest-factoryboy',
-    ),
+    install_requires=REQ_BASE,
+    tests_require=REQ_TEST,
     extras_require={
-        'prod': [
-            'psycopg2-binary',
-            'uwsgi',
-        ]
+        'prod': REQ_PROD,
+        'dev': REQ_TEST + REQ_DEV,
     },
     entry_points={
         'console_scripts': [
