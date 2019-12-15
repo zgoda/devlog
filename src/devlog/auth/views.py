@@ -17,7 +17,8 @@ def register() -> Response:
         login_success(user)
         flash(
             gettext(
-                f'account for {user.email} has been registered, you are now logged in'
+                'account for %(email)s has been registered, you are now logged in',
+                email=user.email,
             ),
             category='success',
         )
@@ -43,7 +44,7 @@ def login() -> Response:
             )
             return redirect(request.path)
         login_success(user)
-        flash(gettext(f'user {user.email} logged in'), category='success')
+        flash(gettext('user %(email)s logged in', email=user.email), category='success')
         return redirect(next_redirect('home.index'))
     ctx = {
         'form': form,

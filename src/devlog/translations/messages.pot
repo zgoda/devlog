@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: devlog 0.0.5.dev0\n"
+"Project-Id-Version: devlog 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-05-29 17:57+0200\n"
+"POT-Creation-Date: 2019-12-15 18:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,182 +17,230 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: src/devlog/app.py:78
+#: src/devlog/app.py:97
 msgid "Please log in to access this page"
 msgstr ""
 
-#: src/devlog/auth/utils.py:25
-#, python-format
-msgid "you have been signed in as %(ident)s using %(service)s"
+#: src/devlog/auth/forms.py:14 src/devlog/auth/forms.py:34
+#: src/devlog/user/forms.py:24
+msgid "email"
 msgstr ""
 
-#: src/devlog/auth/views.py:24
-#, python-format
-msgid "service %(provider)s is not supported"
+#: src/devlog/auth/forms.py:15 src/devlog/templates/user/profile.html:12
+msgid "user name"
 msgstr ""
 
-#: src/devlog/blog/forms.py:11 src/devlog/user/forms.py:18
+#: src/devlog/auth/forms.py:16 src/devlog/auth/forms.py:35
+msgid "password"
+msgstr ""
+
+#: src/devlog/auth/forms.py:18
+msgid "repeat password"
+msgstr ""
+
+#: src/devlog/auth/forms.py:21
+msgid "both password fields must match"
+msgstr ""
+
+#: src/devlog/auth/views.py:19
+#, python-format
+msgid "account for %(email)s has been registered, you are now logged in"
+msgstr ""
+
+#: src/devlog/auth/views.py:40
+msgid "login failed, either user is not known or password is incorrect"
+msgstr ""
+
+#: src/devlog/auth/views.py:47
+#, python-format
+msgid "user %(email)s logged in"
+msgstr ""
+
+#: src/devlog/blog/forms.py:16 src/devlog/user/forms.py:15
 msgid "name"
 msgstr ""
 
-#: src/devlog/blog/forms.py:12 src/devlog/user/forms.py:19
+#: src/devlog/blog/forms.py:17 src/devlog/user/forms.py:16
 msgid "blurb"
 msgstr ""
 
-#: src/devlog/blog/forms.py:14 src/devlog/post/forms.py:13
-#: src/devlog/user/forms.py:21
+#: src/devlog/blog/forms.py:19 src/devlog/post/forms.py:15
+#: src/devlog/user/forms.py:18
 msgid "blurb markup processor"
 msgstr ""
 
-#: src/devlog/blog/forms.py:17 src/devlog/user/forms.py:34
+#: src/devlog/blog/forms.py:22 src/devlog/user/forms.py:33
 msgid "active"
 msgstr ""
 
-#: src/devlog/blog/forms.py:18 src/devlog/post/forms.py:19
-#: src/devlog/user/forms.py:35
+#: src/devlog/blog/forms.py:23 src/devlog/post/forms.py:21
+#: src/devlog/user/forms.py:34
 msgid "public"
 msgstr ""
 
-#: src/devlog/blog/forms.py:19
+#: src/devlog/blog/forms.py:24
 msgid "default"
 msgstr ""
 
-#: src/devlog/blog/views.py:18
+#: src/devlog/blog/forms.py:33
+msgid "files"
+msgstr ""
+
+#: src/devlog/blog/forms.py:36
+msgid "import"
+msgstr ""
+
+#: src/devlog/blog/views.py:24
 msgid "your account is inactive"
 msgstr ""
 
-#: src/devlog/blog/views.py:26
+#: src/devlog/blog/views.py:32
 #, python-format
 msgid "Your blog %(name)s has been created"
 msgstr ""
 
-#: src/devlog/blog/views.py:74
+#: src/devlog/blog/views.py:80
 #, python-format
 msgid "blog %(name)s has been modified"
 msgstr ""
 
 #: src/devlog/blog/views.py:97
+msgid "no files uploaded"
+msgstr ""
+
+#: src/devlog/blog/views.py:106
+msgid "no valid files uploaded"
+msgstr ""
+
+#: src/devlog/blog/views.py:118
+#, python-format
+msgid "import of post file %(file_name)s has been scheduled"
+msgstr ""
+
+#: src/devlog/blog/views.py:139
 #, python-format
 msgid "your blog %(blog_name)s has been completely removed from the site"
 msgstr ""
 
-#: src/devlog/blog/views.py:105 src/devlog/utils/forms.py:50
+#: src/devlog/blog/views.py:147 src/devlog/utils/forms.py:50
 #: src/devlog/utils/forms.py:52
 msgid "confirm"
 msgstr ""
 
-#: src/devlog/post/forms.py:10
+#: src/devlog/post/forms.py:12
 msgid "title"
 msgstr ""
 
-#: src/devlog/post/forms.py:11
+#: src/devlog/post/forms.py:13
 msgid "text"
 msgstr ""
 
-#: src/devlog/post/forms.py:18
+#: src/devlog/post/forms.py:20
 msgid "mood"
 msgstr ""
 
-#: src/devlog/post/forms.py:20 src/devlog/templates/post/display.jinja:10
+#: src/devlog/post/forms.py:22 src/devlog/templates/post/display.html:10
 msgid "draft"
 msgstr ""
 
-#: src/devlog/post/forms.py:21
+#: src/devlog/post/forms.py:23
 msgid "pinned"
 msgstr ""
 
-#: src/devlog/post/views.py:21 src/devlog/post/views.py:43
+#: src/devlog/post/views.py:21 src/devlog/post/views.py:40
 msgid "your blog post has been saved"
 msgstr ""
 
-#: src/devlog/templates/base.jinja:20
+#: src/devlog/templates/base.html:21
 msgid "main navigation"
 msgstr ""
 
-#: src/devlog/templates/base.jinja:24
+#: src/devlog/templates/base.html:25
 msgid "top menu"
 msgstr ""
 
-#: src/devlog/templates/base.jinja:36
+#: src/devlog/templates/base.html:34
 msgid "account tools"
 msgstr ""
 
-#: src/devlog/templates/base.jinja:39
+#: src/devlog/templates/base.html:37
 msgid "account"
 msgstr ""
 
-#: src/devlog/templates/base.jinja:40
+#: src/devlog/templates/base.html:38
 msgid "sign out"
 msgstr ""
 
-#: src/devlog/templates/base.jinja:42
+#: src/devlog/templates/base.html:40
+msgid "sign up"
+msgstr ""
+
+#: src/devlog/templates/base.html:41
 msgid "sign in"
 msgstr ""
 
-#: src/devlog/templates/base.jinja:82
+#: src/devlog/templates/base.html:81
 #, python-format
 msgid "version %(ver)s"
 msgstr ""
 
-#: src/devlog/templates/index.jinja:3
+#: src/devlog/templates/index.html:3
 msgid "and other logs"
 msgstr ""
 
-#: src/devlog/templates/blog/display.jinja:24 src/devlog/templates/index.jinja:8
-#: src/devlog/templates/user/base.jinja:27
+#: src/devlog/templates/blog/display.html:24 src/devlog/templates/index.html:8
+#: src/devlog/templates/user/base.html:27
 msgid "recent posts"
 msgstr ""
 
-#: src/devlog/templates/index.jinja:16 src/devlog/templates/index.jinja:31
-#: src/devlog/templates/user/base.jinja:17 src/devlog/templates/user/base.jinja:37
+#: src/devlog/templates/index.html:16 src/devlog/templates/index.html:31
+#: src/devlog/templates/user/base.html:17 src/devlog/templates/user/base.html:37
 msgid "see more"
 msgstr ""
 
-#: src/devlog/templates/blog/display.jinja:29 src/devlog/templates/index.jinja:18
-#: src/devlog/templates/user/base.jinja:39
+#: src/devlog/templates/blog/display.html:29 src/devlog/templates/index.html:18
+#: src/devlog/templates/user/base.html:39
 msgid "no posts yet"
 msgstr ""
 
-#: src/devlog/templates/index.jinja:23
+#: src/devlog/templates/index.html:23
 msgid "recent blogs"
 msgstr ""
 
-#: src/devlog/templates/index.jinja:33 src/devlog/templates/user/base.jinja:19
+#: src/devlog/templates/index.html:33 src/devlog/templates/user/base.html:19
 msgid "no blogs yet"
 msgstr ""
 
-#: src/devlog/templates/index.jinja:38
+#: src/devlog/templates/index.html:38
 msgid "recently active"
 msgstr ""
 
-#: src/devlog/templates/auth/select.jinja:7
-#: src/devlog/templates/auth/select.jinja:10
-msgid "select login provider"
+#: src/devlog/templates/auth/login.html:7 src/devlog/templates/auth/login.html:10
+msgid "Devlog login"
 msgstr ""
 
-#: src/devlog/templates/auth/select.jinja:12
-msgid "Select site to authenticate with"
+#: src/devlog/templates/auth/register.html:7
+#: src/devlog/templates/auth/register.html:11
+msgid "register new account"
 msgstr ""
 
-#: src/devlog/templates/auth/select.jinja:34
-msgid "local"
+#: src/devlog/templates/auth/register.html:12
+msgid "Fill out the form below to register new account at Devlog."
 msgstr ""
 
-#: src/devlog/templates/blog/create.jinja:7
-#: src/devlog/templates/blog/create.jinja:10
+#: src/devlog/templates/blog/create.html:7 src/devlog/templates/blog/create.html:10
 msgid "create new blog"
 msgstr ""
 
-#: src/devlog/templates/blog/create.jinja:12
+#: src/devlog/templates/blog/create.html:12
 msgid "Fill out the form below to create new blog"
 msgstr ""
 
-#: src/devlog/templates/blog/delete.jinja:5
-#: src/devlog/templates/blog/delete.jinja:8
+#: src/devlog/templates/blog/delete.html:5 src/devlog/templates/blog/delete.html:8
 msgid "confirm blog delete"
 msgstr ""
 
-#: src/devlog/templates/blog/delete.jinja:10
+#: src/devlog/templates/blog/delete.html:10
 #, python-format
 msgid ""
 "Please confirm that you really want your blog %(blog_name)s to be removed. "
@@ -200,193 +248,312 @@ msgid ""
 "your blog."
 msgstr ""
 
-#: src/devlog/templates/blog/details.jinja:8
-#: src/devlog/templates/blog/details.jinja:11
+#: src/devlog/templates/blog/details.html:9
+#: src/devlog/templates/blog/details.html:12
 #, python-format
 msgid "Details for blog %(name)s"
 msgstr ""
 
-#: src/devlog/templates/blog/details.jinja:14
+#: src/devlog/templates/blog/details.html:15
 msgid "display blog"
 msgstr ""
 
-#: src/devlog/templates/blog/details.jinja:16
+#: src/devlog/templates/blog/details.html:17
+msgid "import posts"
+msgstr ""
+
+#: src/devlog/templates/blog/details.html:22
 msgid "blog removal"
 msgstr ""
 
-#: src/devlog/templates/blog/details.jinja:18
+#: src/devlog/templates/blog/details.html:24
 msgid ""
 "The above form allows to hide your blog or temporarily to make it inactive. "
 "Click the button below to go to blog deletion confirmation page if you want "
 "to completely delete your blog with all the content."
 msgstr ""
 
-#: src/devlog/templates/blog/details.jinja:19
-#: src/devlog/templates/user/details.jinja:16
+#: src/devlog/templates/blog/details.html:25
+#: src/devlog/templates/user/details.html:24
 msgid "delete"
 msgstr ""
 
-#: src/devlog/templates/blog/display.jinja:17
+#: src/devlog/templates/blog/display.html:17
 msgid "edit blog"
 msgstr ""
 
-#: src/devlog/templates/blog/display.jinja:18
+#: src/devlog/templates/blog/display.html:18
 msgid "add post"
 msgstr ""
 
-#: src/devlog/templates/blog/display.jinja:20
+#: src/devlog/templates/blog/display.html:20
 msgid "tools"
 msgstr ""
 
-#: src/devlog/templates/errors/403.jinja:6
+#: src/devlog/templates/errors/403.html:6
 msgid "access forbidden"
 msgstr ""
 
-#: src/devlog/templates/errors/403.jinja:8
+#: src/devlog/templates/errors/403.html:8
 msgid "Access to the page you're trying to open is forbidden."
 msgstr ""
 
-#: src/devlog/templates/errors/404.jinja:3 src/devlog/templates/errors/404.jinja:6
+#: src/devlog/templates/errors/404.html:3 src/devlog/templates/errors/404.html:6
 msgid "page not found"
 msgstr ""
 
-#: src/devlog/templates/errors/404.jinja:8
+#: src/devlog/templates/errors/404.html:8
 msgid "The page you requested could not be found"
 msgstr ""
 
-#: src/devlog/templates/errors/500.jinja:3 src/devlog/templates/errors/500.jinja:6
+#: src/devlog/templates/errors/500.html:3 src/devlog/templates/errors/500.html:6
 msgid "server error"
 msgstr ""
 
-#: src/devlog/templates/errors/500.jinja:8
+#: src/devlog/templates/errors/500.html:8
 msgid ""
 "The server encountered condition it was not able to handle. This is "
 "unrecoverable."
 msgstr ""
 
-#: src/devlog/templates/macros/blog.jinja:7
+#: src/devlog/templates/macros/blog.html:7
 msgid "read more"
 msgstr ""
 
-#: src/devlog/templates/macros/blog.jinja:17
+#: src/devlog/templates/macros/blog.html:17
 msgid "created"
 msgstr ""
 
-#: src/devlog/templates/macros/blog.jinja:22
+#: src/devlog/templates/macros/blog.html:22
 msgid "updated"
 msgstr ""
 
-#: src/devlog/templates/macros/blog.jinja:27
-#: src/devlog/templates/post/display.jinja:10
+#: src/devlog/templates/macros/blog.html:27
+#: src/devlog/templates/post/display.html:10
 msgid "published"
 msgstr ""
 
-#: src/devlog/templates/post/create.jinja:5
-#: src/devlog/templates/post/create.jinja:8
+#: src/devlog/templates/macros/forms.html:43
+msgid "choose a file to upload"
+msgstr ""
+
+#: src/devlog/templates/post/create.html:5 src/devlog/templates/post/create.html:8
 msgid "create new post"
 msgstr ""
 
-#: src/devlog/templates/post/create.jinja:10
+#: src/devlog/templates/post/create.html:10
 #, python-format
 msgid "Fill out the form below to create new post in blog %(name)s"
 msgstr ""
 
-#: src/devlog/templates/post/display.jinja:12
+#: src/devlog/templates/post/display.html:13
 #, python-format
 msgid "mood: %(mood)s"
 msgstr ""
 
-#: src/devlog/templates/post/display.jinja:23
+#: src/devlog/templates/post/display.html:25
 msgid "edit post"
 msgstr ""
 
-#: src/devlog/templates/user/base.jinja:7
+#: src/devlog/templates/user/base.html:7
 msgid "blogs"
 msgstr ""
 
-#: src/devlog/templates/user/base.jinja:21
+#: src/devlog/templates/user/base.html:21
 msgid "create new"
 msgstr ""
 
-#: src/devlog/templates/user/details.jinja:5
-#: src/devlog/templates/user/details.jinja:8
+#: src/devlog/templates/user/confirmation_remove.html:5
+#: src/devlog/templates/user/confirmation_remove.html:9
+msgid "change email confirmation status"
+msgstr ""
+
+#: src/devlog/templates/user/confirmation_remove.html:10
+msgid ""
+"Please confirm that you want your email to become unconfirmed again by "
+"ticking the box below and pressing confirmation button."
+msgstr ""
+
+#: src/devlog/templates/user/confirmation_start.html:3
+#: src/devlog/templates/user/confirmation_start.html:7
+msgid "user email confirmation"
+msgstr ""
+
+#: src/devlog/templates/user/confirmation_start.html:8
+msgid "How user email confirmation procedure works? What are the steps?"
+msgstr ""
+
+#: src/devlog/templates/user/confirmation_start.html:10
+msgid ""
+"we send an email to your provided address; this email contains verification "
+"link that you need to follow by clicking on it or copying it and pasting in "
+"you web browser address bar"
+msgstr ""
+
+#: src/devlog/templates/user/confirmation_start.html:11
+msgid ""
+"if your session is not active when you click the link in an email, you will "
+"be redirected to login page then after succesful login brought back to "
+"verification page"
+msgstr ""
+
+#: src/devlog/templates/user/confirmation_start.html:12
+msgid ""
+"that's it, your email is confirmed, so says message on the page; you may want"
+" to test messages you will receive from our service by sending test email on "
+"notification preferences page"
+msgstr ""
+
+#: src/devlog/templates/user/confirmation_start.html:14
+msgid "send me confirmation link"
+msgstr ""
+
+#: src/devlog/templates/user/details.html:5
+#: src/devlog/templates/user/details.html:8
 msgid "account details"
 msgstr ""
 
-#: src/devlog/templates/user/details.jinja:11
+#: src/devlog/templates/user/details.html:11
+msgid "information"
+msgstr ""
+
+#: src/devlog/templates/user/details.html:12
 msgid "view your profile page"
 msgstr ""
 
-#: src/devlog/templates/user/details.jinja:13
-#: src/devlog/templates/user/remove.jinja:5
-#: src/devlog/templates/user/remove.jinja:8
+#: src/devlog/templates/user/details.html:14
+#, python-format
+msgid ""
+"Your email has been confirmed on %(confirmation_dt)s. Click the button below "
+"to clear email confirmation status (this will cease all communication from "
+"us)."
+msgstr ""
+
+#: src/devlog/templates/user/details.html:15
+msgid "clear email confirmation"
+msgstr ""
+
+#: src/devlog/templates/user/details.html:17
+msgid ""
+"Your email has not been yet confirmed. This means no communication from us "
+"(including lost password recovery!). Please click the button below to begin "
+"email confirmation process."
+msgstr ""
+
+#: src/devlog/templates/user/details.html:18
+msgid "confirm email"
+msgstr ""
+
+#: src/devlog/templates/user/details.html:21
+#: src/devlog/templates/user/remove.html:5 src/devlog/templates/user/remove.html:8
 msgid "remove account"
 msgstr ""
 
-#: src/devlog/templates/user/details.jinja:15
+#: src/devlog/templates/user/details.html:23
 msgid ""
 "You may temporarily deactivate your account using the form above. To "
 "completely remove your account click the button below to get to confirmation "
 "page. We will miss you."
 msgstr ""
 
-#: src/devlog/templates/user/profile.jinja:3
-#: src/devlog/templates/user/profile.jinja:6
+#: src/devlog/templates/user/profile.html:3
+#: src/devlog/templates/user/profile.html:6
 #, python-format
 msgid "Profile page for %(user_name)s"
 msgstr ""
 
-#: src/devlog/templates/user/profile.jinja:9
+#: src/devlog/templates/user/profile.html:9
 msgid ""
 "Your account is inactive or set as private (or both), no one except you can "
 "see this page"
 msgstr ""
 
-#: src/devlog/templates/user/profile.jinja:12
-msgid "user name"
-msgstr ""
-
-#: src/devlog/templates/user/profile.jinja:14
+#: src/devlog/templates/user/profile.html:14
 msgid "date joined"
 msgstr ""
 
-#: src/devlog/templates/user/remove.jinja:10
+#: src/devlog/templates/user/remove.html:10
 msgid ""
 "Deleting account is destructive process. It can not be reverted. All your "
 "content will be deleted and if you decide to rejoin us later, it will be lost"
 " so be careful."
 msgstr ""
 
-#: src/devlog/templates/user/remove.jinja:11
+#: src/devlog/templates/user/remove.html:11
 msgid "You will be logged out and redirected to site home page."
 msgstr ""
 
-#: src/devlog/user/forms.py:26
-msgid "email"
+#: src/devlog/templates/user/email/confirmation.html:1
+msgid ""
+"You asked for email confirmation in Devlog. Please click the link below to "
+"verify your email."
 msgstr ""
 
-#: src/devlog/user/forms.py:28
+#: src/devlog/templates/user/email/confirmation.html:4
+msgid "Devlog team"
+msgstr ""
+
+#: src/devlog/user/forms.py:27
 msgid "default language"
 msgstr ""
 
-#: src/devlog/user/forms.py:32
+#: src/devlog/user/forms.py:31
 msgid "timezone"
 msgstr ""
 
-#: src/devlog/user/forms.py:43
+#: src/devlog/user/forms.py:42
 msgid "user can not be activated without email"
 msgstr ""
 
-#: src/devlog/user/views.py:23
+#: src/devlog/user/views.py:27
 #, python-format
-msgid "Data for user %(name)s has been saved"
+msgid "user %(email)s details have been saved"
 msgstr ""
 
-#: src/devlog/user/views.py:64
+#: src/devlog/user/views.py:34
+msgid "email address has been changed, new email will have to be confirmed again"
+msgstr ""
+
+#: src/devlog/user/views.py:67
+msgid "Devlog email confirmation"
+msgstr ""
+
+#: src/devlog/user/views.py:70
+msgid ""
+"confirmation email has been sent to your email address, please check your "
+"mailbox"
+msgstr ""
+
+#: src/devlog/user/views.py:87
+#, python-format
+msgid "user %(email)s not found"
+msgstr ""
+
+#: src/devlog/user/views.py:95
+msgid "your email has been succesfully confirmed"
+msgstr ""
+
+#: src/devlog/user/views.py:101
+msgid "the token has expired, please start new confirmation process again"
+msgstr ""
+
+#: src/devlog/user/views.py:105
+msgid "the token is invalid"
+msgstr ""
+
+#: src/devlog/user/views.py:107
+msgid "token check failed"
+msgstr ""
+
+#: src/devlog/user/views.py:135
+msgid "your email is now unconfirmed again"
+msgstr ""
+
+#: src/devlog/user/views.py:158
 msgid "no name"
 msgstr ""
 
-#: src/devlog/user/views.py:69
+#: src/devlog/user/views.py:163
 #, python-format
 msgid "Account for user %(name)s deleted"
 msgstr ""
@@ -399,11 +566,11 @@ msgstr ""
 msgid "go back"
 msgstr ""
 
-#: src/devlog/utils/i18n.py:14
+#: src/devlog/utils/i18n.py:15
 msgid "Polish"
 msgstr ""
 
-#: src/devlog/utils/i18n.py:15
+#: src/devlog/utils/i18n.py:16
 msgid "English"
 msgstr ""
 
