@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: devlog 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-15 18:53+0100\n"
+"POT-Creation-Date: 2019-12-15 23:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "Please log in to access this page"
 msgstr ""
 
-#: src/devlog/auth/forms.py:14 src/devlog/auth/forms.py:34
+#: src/devlog/auth/forms.py:14 src/devlog/auth/forms.py:43
 #: src/devlog/user/forms.py:24
 msgid "email"
 msgstr ""
@@ -30,7 +30,7 @@ msgstr ""
 msgid "user name"
 msgstr ""
 
-#: src/devlog/auth/forms.py:16 src/devlog/auth/forms.py:35
+#: src/devlog/auth/forms.py:16 src/devlog/auth/forms.py:44
 msgid "password"
 msgstr ""
 
@@ -40,6 +40,11 @@ msgstr ""
 
 #: src/devlog/auth/forms.py:21
 msgid "both password fields must match"
+msgstr ""
+
+#: src/devlog/auth/forms.py:37
+#, python-format
+msgid "account %(email)s is already registered"
 msgstr ""
 
 #: src/devlog/auth/views.py:19
@@ -127,7 +132,7 @@ msgstr ""
 msgid "confirm"
 msgstr ""
 
-#: src/devlog/post/forms.py:12
+#: src/devlog/post/forms.py:12 src/devlog/templates/post/list.html:15
 msgid "title"
 msgstr ""
 
@@ -147,7 +152,7 @@ msgstr ""
 msgid "pinned"
 msgstr ""
 
-#: src/devlog/post/views.py:21 src/devlog/post/views.py:40
+#: src/devlog/post/views.py:22 src/devlog/post/views.py:41
 msgid "your blog post has been saved"
 msgstr ""
 
@@ -184,21 +189,22 @@ msgstr ""
 msgid "version %(ver)s"
 msgstr ""
 
-#: src/devlog/templates/index.html:3
+#: src/devlog/templates/index.html:5
 msgid "and other logs"
 msgstr ""
 
-#: src/devlog/templates/blog/display.html:24 src/devlog/templates/index.html:8
+#: src/devlog/templates/blog/display.html:24 src/devlog/templates/index.html:10
+#: src/devlog/templates/post/list.html:6 src/devlog/templates/post/list.html:10
 #: src/devlog/templates/user/base.html:27
 msgid "recent posts"
 msgstr ""
 
-#: src/devlog/templates/index.html:16 src/devlog/templates/index.html:31
+#: src/devlog/templates/index.html:17 src/devlog/templates/index.html:30
 #: src/devlog/templates/user/base.html:17 src/devlog/templates/user/base.html:37
 msgid "see more"
 msgstr ""
 
-#: src/devlog/templates/blog/display.html:29 src/devlog/templates/index.html:18
+#: src/devlog/templates/blog/display.html:29 src/devlog/templates/index.html:19
 #: src/devlog/templates/user/base.html:39
 msgid "no posts yet"
 msgstr ""
@@ -207,11 +213,11 @@ msgstr ""
 msgid "recent blogs"
 msgstr ""
 
-#: src/devlog/templates/index.html:33 src/devlog/templates/user/base.html:19
+#: src/devlog/templates/index.html:32 src/devlog/templates/user/base.html:19
 msgid "no blogs yet"
 msgstr ""
 
-#: src/devlog/templates/index.html:38
+#: src/devlog/templates/index.html:36
 msgid "recently active"
 msgstr ""
 
@@ -316,25 +322,47 @@ msgid ""
 "unrecoverable."
 msgstr ""
 
-#: src/devlog/templates/macros/blog.html:7
+#: src/devlog/templates/macros/blog.html:11
 msgid "read more"
 msgstr ""
 
-#: src/devlog/templates/macros/blog.html:17
+#: src/devlog/templates/macros/blog.html:21
 msgid "created"
 msgstr ""
 
-#: src/devlog/templates/macros/blog.html:22
+#: src/devlog/templates/macros/blog.html:26
 msgid "updated"
 msgstr ""
 
-#: src/devlog/templates/macros/blog.html:27
+#: src/devlog/templates/macros/blog.html:31
 #: src/devlog/templates/post/display.html:10
 msgid "published"
 msgstr ""
 
 #: src/devlog/templates/macros/forms.html:43
 msgid "choose a file to upload"
+msgstr ""
+
+#: src/devlog/templates/macros/forms.html:45
+msgid "file name"
+msgstr ""
+
+#: src/devlog/templates/macros/pagination.html:3
+msgid "pages"
+msgstr ""
+
+#: src/devlog/templates/macros/pagination.html:4
+msgid "previous"
+msgstr ""
+
+#: src/devlog/templates/macros/pagination.html:5
+msgid "next"
+msgstr ""
+
+#: src/devlog/templates/macros/pagination.html:11
+#: src/devlog/templates/macros/pagination.html:15
+#, python-format
+msgid "page %(page_no)s"
 msgstr ""
 
 #: src/devlog/templates/post/create.html:5 src/devlog/templates/post/create.html:8
@@ -353,6 +381,18 @@ msgstr ""
 
 #: src/devlog/templates/post/display.html:25
 msgid "edit post"
+msgstr ""
+
+#: src/devlog/templates/post/list.html:16
+msgid "date"
+msgstr ""
+
+#: src/devlog/templates/post/list.html:17
+msgid "blog"
+msgstr ""
+
+#: src/devlog/templates/post/list.html:32
+msgid "no posts found"
 msgstr ""
 
 #: src/devlog/templates/user/base.html:7

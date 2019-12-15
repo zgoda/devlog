@@ -1,6 +1,6 @@
 from typing import Optional
 
-from flask_babel import lazy_gettext as gettext
+from flask_babel import lazy_gettext
 from flask_login import current_user
 from flask_wtf import FlaskForm
 from wtforms import validators
@@ -13,15 +13,15 @@ from ..utils.forms import Button, ObjectForm
 
 
 class BlogForm(ObjectForm):
-    name = StringField(gettext('name'), validators=[validators.InputRequired()])
-    blurb = TextAreaField(gettext('blurb'))
+    name = StringField(lazy_gettext('name'), validators=[validators.InputRequired()])
+    blurb = TextAreaField(lazy_gettext('blurb'))
     blurb_markup_type = SelectField(
-        gettext('blurb markup processor'), choices=Blog.SMP_CHOICES,
+        lazy_gettext('blurb markup processor'), choices=Blog.SMP_CHOICES,
         validators=[validators.Optional()], default=Blog.SMP_NONE,
     )
-    active = BooleanField(gettext('active'), default=True)
-    public = BooleanField(gettext('public'), default=True)
-    default = BooleanField(gettext('default'), default=False)
+    active = BooleanField(lazy_gettext('active'), default=True)
+    public = BooleanField(lazy_gettext('public'), default=True)
+    default = BooleanField(lazy_gettext('default'), default=False)
 
     def save(self, obj: Optional[Blog] = None, save: bool = True) -> Blog:
         if obj is None:
@@ -30,8 +30,8 @@ class BlogForm(ObjectForm):
 
 
 class PostImportForm(FlaskForm):
-    files = MultipleFileField(gettext('files'))
+    files = MultipleFileField(lazy_gettext('files'))
 
     buttons = [
-        Button(text=gettext('import'), icon='file-import')
+        Button(text=lazy_gettext('import'), icon='file-import')
     ]
