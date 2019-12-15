@@ -1,7 +1,5 @@
 language: python
 cache: pip
-env:
-  - SQLALCHEMY_DATABASE_URI=dummy REDIS_URL=dummy MAILGUN_API_KEY=dummy MAILGUN_DOMAIN=dummy EMAIL_CONFIRMATION_SALT=dummy SECRET_KEY=dummy
 python:
   - "3.7"
   - "3.8"
