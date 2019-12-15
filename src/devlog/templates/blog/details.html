@@ -11,14 +11,9 @@
 {% block widecontent %}
 <h1 class="title is-1">{{ gettext('Details for blog %(name)s', name=blog.name) }}</h1>
 {{ render_form(form, blog_details_url, width=9) }}
-<div class="content">
-  <p><a href="{{ blog_display_url }}">{{ gettext('display blog').capitalize() }}</a></p>
-</div>
+<p><a href="{{ blog_display_url }}">{{ gettext('display blog').capitalize() }}</a></p>
 <h2 class="title is-2">{{ gettext('import posts').capitalize() }}</h2>
 {{ render_form(import_form, post_import_url, width=6, has_files=True) }}
-<div class="content">
-  <p></p>
-</div>
 <h2 class="title is-2">{{ gettext('blog removal').capitalize() }}</h2>
 <div class="content">
   <p>{% trans %}The above form allows to hide your blog or temporarily to make it inactive. Click the button below to go to blog deletion confirmation page if you want to completely delete your blog with all the content.{% endtrans %}</p>
