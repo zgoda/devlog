@@ -39,9 +39,9 @@ class TestAccountView(UserViewsTests):
         user = user_factory(name='Ivory Tower', password=self.default_pw)
         self.login(email=user.email)
         new_name = 'Infernal Amendment'
-        data = {'name': new_name}
+        data = {'name': new_name, 'email': user.email}
         rv = self.client.post(self.ACCOUNT_URL, data=data, follow_redirects=True)
-        assert f'Data for user {new_name} has been saved' in rv.text
+        assert f'user {user.email} details have been saved' in rv.text
 
     def test_user_account_authenticated_update_failure(self, user_factory):
         user = user_factory(name='Ivory Tower', password=self.default_pw)

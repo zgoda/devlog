@@ -12,7 +12,7 @@ from ..utils.i18n import (
 
 
 class UserForm(ObjectForm):
-    name = StringField(gettext('name'), validators=[validators.InputRequired()])
+    name = StringField(gettext('name'))
     blurb = TextAreaField(gettext('blurb'))
     blurb_markup_type = SelectField(
         gettext('blurb markup processor'),
@@ -20,7 +20,9 @@ class UserForm(ObjectForm):
         validators=[validators.Optional()],
         default=User.SMP_NONE,
     )
-    email = EmailField(gettext('email'), validators=[Email(), validators.Optional()])
+    email = EmailField(
+        gettext('email'), validators=[Email(), validators.InputRequired()]
+    )
     default_language = SelectField(
         gettext('default language'), choices=SUPPORTED_LANGUAGE_CHOICES,
         default=DEFAULT_LANGUAGE,

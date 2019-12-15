@@ -38,7 +38,7 @@ def make_app(env: Optional[str] = None) -> Devlog:
             )
     app = Devlog(__name__.split('.')[0])
     configure_app(app, env)
-    configure_redis(app, env)
+    configure_rq(app, env)
     configure_extensions(app, env)
     with app.app_context():
         configure_blueprints(app, env)
@@ -66,14 +66,17 @@ def configure_app(app: Devlog, env: Optional[str]):
     os.makedirs(uploads_dir, exist_ok=True)
 
 
-def configure_redis(app: Devlog, env: Optional[str]):
+def configure_rq(app: Devlog, env: Optional[str]):
     redis_conn_cls = Redis
     run_async = True
     if app.testing:
         redis_conn_cls = FakeStrictRedis
         run_async = False
     app.redis = redis_conn_cls.from_url(app.config['REDIS_URL'])
-    app.task_queue = rq.Queue('devlog-tasks', is_async=run_async, connection=app.redis)
+    app.queues = {
+        'import': rq.Queue('devlog-import', is_async=run_async, connection=app.redis),
+        'mail': rq.Queue('devlog-mail', is_async=run_async, connection=app.redis),
+    }
 
 
 def configure_blueprints(app: Devlog, env: Optional[str]):

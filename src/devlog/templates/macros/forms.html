@@ -89,9 +89,9 @@
   <div class="field-body">
     <div class="field">
       <div class="control">
-        {%- for button in buttons %}
+        {% for button in buttons %}
         {{ button.render() }}&nbsp;
-        {%- endfor %}
+        {% endfor %}
       </div>
     </div>
   </div>
@@ -101,7 +101,7 @@
 {% macro render_form(form, action, width=6, box=True, has_files=False) %}
 <div class="container">
   <div class="columns is-centered">
-    <div class="column{% if width %} is-{{ width }}"{% endif %}>
+    <div class="column{% if width %} is-{{ width }}{% endif %}">
       <form method="post" action="{{ action }}" role="form" novalidate{% if box %} class="box"{% endif %}{% if has_files %} enctype="multipart/form-data"{% endif %}>
         {{ render_form_fields(form) }}
         {{ render_form_buttons(form.buttons) }}

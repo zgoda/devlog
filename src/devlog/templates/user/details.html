@@ -6,9 +6,17 @@
 
 {% block content %}
 <h1 class="title is-1">{{ gettext('account details').capitalize() }}</h1>
-{{ render_form(form, url_for('user.account'), width=None) }}
+{{ render_form(form, request.path, width=None) }}
 <div class="content">
+  <h2>{{ gettext('information').capitalize() }}</h2>
   <p><a href="{{ url_for('user.profile', user_id=current_user.id) }}">{{ gettext('view your profile page').capitalize() }}</a></p>
+  {% if current_user.email_confirmed %}
+  <p>{{ gettext('Your email has been confirmed on %(confirmation_dt)s. Click the button below to clear email confirmation status (this will cease all communication from us).', confirmation_dt=format_datetime(current_user.confirmed_dt, format='long')) }}</p>
+  <p class="has-text-centered"><a href="{{ url_for('user.confirmation_remove') }}" class="button is-danger"><span class="icon"><i class="fas fa-skull-crossbones"></i></span>&nbsp;<span>{{ gettext('clear email confirmation') }}</span></a></p>
+  {% else %}
+  <p>{% trans %}Your email has not been yet confirmed. This means no communication from us (including lost password recovery!). Please click the button below to begin email confirmation process.{% endtrans %}</p>
+  <p class="has-text-centered"><a href="{{ url_for('user.confirmation_start') }}" class="button is-info"><span class="icon"><i class="fas fa-paper-plane"></i></span>&nbsp;<span>{{ gettext('confirm email') }}</span></a></p>
+  {% endif %}
 </div>
 <h2 class="title is-2">{{ gettext('remove account').capitalize() }}</h2>
 <div class="content">

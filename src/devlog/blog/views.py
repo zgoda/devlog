@@ -112,7 +112,8 @@ def import_posts(blog_id: int) -> Response:
         )
         file_path = os.path.join(upload_dir, file_name)
         fs.save(file_path)
-        current_app.task_queue.enqueue('devlog.tasks.import_post', file_path, blog_id)
+        queue = current_app.queues['import']
+        queue.enqueue('devlog.tasks.import_post', file_path, blog_id)
         flash(
             gettext(
                 'import of post file %(file_name)s has been scheduled',

@@ -37,6 +37,8 @@ REQ_BASE = [
     'text-unidecode',
     'python-dateutil',
     'passlib[argon2]',
+    'requests',
+    'itsdangerous',
     # Sentry
     'sentry-sdk[flask]',
     # simplified markup processors
@@ -57,7 +59,7 @@ REQ_TEST = [
     'fakeredis',
 ]
 
-REQ_DEV = [
+REQ_DEV = REQ_TEST + [
     'ipython<7.10',
     'ipdb',
     'pip',
@@ -123,7 +125,7 @@ setup(
     extras_require={
         'prod': REQ_PROD,
         'test': REQ_TEST,
-        'dev': REQ_TEST + REQ_DEV,
+        'dev': REQ_DEV,
     },
     entry_points={
         'console_scripts': [

@@ -18,4 +18,4 @@ class BlogFactory(SQLAlchemyModelFactory):
     class Meta:
         model = Blog
         sqlalchemy_session = db.session
-        sqlalchemy_session_persistence = 'commit'
+        sqlalchemy_session_persistence = 'flush'

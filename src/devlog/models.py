@@ -23,8 +23,9 @@ class User(db.Model, UserMixin, TextProcessingMixin):
     blurb_markup_type = db.Column(db.String(50))
     email = db.Column(db.String(200), nullable=False, unique=True)
     email_confirmed = db.Column(db.Boolean, default=False)
-    email_confirmation_token = db.Column(db.Text)
-    email_confirmation_sent = db.Column(db.DateTime)
+    confirmation_token = db.Column(db.String(200))
+    confirmation_sent_dt = db.Column(db.DateTime)
+    confirmed_dt = db.Column(db.DateTime)
     password = db.Column(db.Text, nullable=False)
     active = db.Column(db.Boolean, default=True)
     public = db.Column(db.Boolean, default=False)
@@ -66,6 +67,14 @@ class User(db.Model, UserMixin, TextProcessingMixin):
 
     def recent_blogs(self, limit=5):
         return self.blogs.order_by(db.desc(Blog.updated)).limit(limit)
+
+    def confirm_email(self):
+        self.email_confirmed = True
+        self.confirmed_dt = datetime.datetime.utcnow()
+
+    def clear_email_confirmation(self):
+        self.email_confirmed = False
+        self.confirmed_dt = self.confirmation_token = self.confirmation_sent_dt = None
 
 
 @db.event.listens_for(User, 'before_insert')
