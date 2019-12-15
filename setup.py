@@ -122,6 +122,7 @@ setup(
     tests_require=REQ_TEST,
     extras_require={
         'prod': REQ_PROD,
+        'test': REQ_TEST,
         'dev': REQ_TEST + REQ_DEV,
     },
     entry_points={
