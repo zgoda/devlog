@@ -89,39 +89,48 @@ def details(blog_id: int) -> Response:
     return render_template('blog/details.html', **context)
 
 
-@blog_bp.route('/<int:blog_id>/contentimport', methods=['POST'])
+@blog_bp.route('/<int:blog_id>/contentimport', methods=['POST', 'GET'])
 @login_required
 def import_posts(blog_id: int) -> Response:
-    final = redirect(url_for('.details', blog_id=blog_id))
-    if 'files' not in request.files:
-        flash(gettext('no files uploaded'), category='warning')
+    blog = Blog.query.get_or_404(blog_id)
+    if blog.user != current_user:
+        abort(403)
+    if request.method == 'POST':
+        final = redirect(url_for('blog.details', blog_id=blog_id))
+        if 'files' not in request.files:
+            flash(gettext('no files uploaded'), category='warning')
+            return final
+        file_storages = request.files.getlist('files')
+        valid_files = []
+        for fs in file_storages:
+            if fs.filename != '' and \
+                    fs.filename.endswith(current_app.config['ALLOWED_UPLOAD_EXTENSIONS']):  # noqa: E501
+                valid_files.append(fs)
+        if not valid_files:
+            flash(gettext('no valid files uploaded'), category='warning')
+            return final
+        for fs in valid_files:
+            file_name = secure_filename(fs.filename)
+            upload_dir = os.path.join(
+                current_app.instance_path, current_app.config['UPLOAD_DIR_NAME']
+            )
+            file_path = os.path.join(upload_dir, file_name)
+            fs.save(file_path)
+            queue = current_app.queues['import']
+            queue.enqueue('devlog.tasks.import_post', file_path, blog_id)
+            flash(
+                gettext(
+                    'import of post file %(file_name)s has been scheduled',
+                    file_name=file_name,
+                ),
+                category='success'
+            )
         return final
-    file_storages = request.files.getlist('files')
-    valid_files = []
-    for fs in file_storages:
-        if fs.filename != '' and \
-                fs.filename.endswith(current_app.config['ALLOWED_UPLOAD_EXTENSIONS']):
-            valid_files.append(fs)
-    if not valid_files:
-        flash(gettext('no valid files uploaded'), category='warning')
-        return final
-    for fs in valid_files:
-        file_name = secure_filename(fs.filename)
-        upload_dir = os.path.join(
-            current_app.instance_path, current_app.config['UPLOAD_DIR_NAME']
-        )
-        file_path = os.path.join(upload_dir, file_name)
-        fs.save(file_path)
-        queue = current_app.queues['import']
-        queue.enqueue('devlog.tasks.import_post', file_path, blog_id)
-        flash(
-            gettext(
-                'import of post file %(file_name)s has been scheduled',
-                file_name=file_name,
-            ),
-            category='success'
-        )
-    return final
+    ctx = {
+        'blog': blog,
+        'form': PostImportForm()
+    }
+    return render_template('blog/import.html', **ctx)
 
 
 @blog_bp.route('/<int:blog_id>/delete', methods=['POST', 'GET'])

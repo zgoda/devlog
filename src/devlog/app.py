@@ -36,7 +36,7 @@ def make_app(env: Optional[str] = None) -> Devlog:
                 release=f'devlog@{version}',
                 integrations=[FlaskIntegration()],
             )
-    app = Devlog(__name__.split('.')[0])
+    app = Devlog()
     configure_app(app, env)
     configure_rq(app, env)
     configure_extensions(app, env)
@@ -53,7 +53,7 @@ def configure_app(app: Devlog, env: Optional[str]):
         try:
             app.config.from_object(f'devlog.config_{env}')
         except ImportStringError:
-            app.logger.info(f'no environment config for {env}')
+            app.logger.warning(f'no environment config for {env}')
     config_local = os.environ.get('DEVLOG_CONFIG_LOCAL')
     if config_local:
         app.logger.info(f'local configuration loaded from {config_local}')

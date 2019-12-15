@@ -16,6 +16,7 @@
 {% set menu_items = [
   (url_for('blog.details', blog_id=blog.id), gettext('edit blog')),
   (url_for('post.create', blog_id=blog.id), gettext('add post')),
+  (url_for('blog.import_posts', blog_id=blog.id), gettext('import posts')),
 ] %}
 {{ tool_dropdown(gettext('tools'), menu_items, 'owner-tools-menu') }}
 {% endif %}
