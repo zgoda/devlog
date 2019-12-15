@@ -3,8 +3,9 @@ from flask_babel import lazy_gettext as gettext
 from flask_login import current_user, login_required
 
 from ..models import Blog, Post
-from . import post_bp
+from . import post_bp, service
 from .forms import PostForm
+from ..utils.pagination import paginate
 
 
 @post_bp.route('/inblog/<int:blog_id>', methods=['POST', 'GET'])
@@ -50,3 +51,16 @@ def post_display_func(post: Post) -> Response:
 def display(post_id: int) -> Response:
     post = Post.query.get_or_404(post_id)
     return post_display_func(post)
+
+
+@post_bp.route('/recent')
+def recent() -> Response:
+    if current_user.is_authenticated:
+        extra_user = current_user
+    else:
+        extra_user = None
+    query = service.get_recent(extra_user=extra_user)
+    ctx = {
+        'pagination': paginate(query),
+    }
+    return render_template('post/list.html', **ctx)

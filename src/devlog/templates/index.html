@@ -1,43 +1,39 @@
 {% extends "base.html" %}
 
+{% from "macros/blog.html" import post_url %}
+
 {% block pagetitle %}Devlog {{ gettext('and other logs') }}{% endblock %}
 
 {% block widecontent %}
 <div class="columns">
   <div class="column is-one-third">
     <h4 class="title is-4">{{ gettext('recent posts').capitalize() }}</h4>
-    <div class="content">
-      {% if posts %}
-      <ul class="list-unstyled">
-        {% for post in posts %}
-        <li><a href="{% if post.draft %}{{ url_for('post.display', **post.ident) }}{% else %}{{ url_for('home.post', **post.ident) }}{% endif %}">{{ post.title }}</a></li>
-        {% endfor %}
-      </ul>
-      <p><a href="">{{ gettext('see more') }}</a></p>
-      {% else %}
-      <p>{{ gettext('no posts yet').capitalize() }}...</p>
-      {% endif %}
-    </div>
+    {% if posts %}
+    <ul>
+      {% for post in posts %}
+      <li><a href="{{ post_url(post) }}">{{ post.title }}</a></li>
+      {% endfor %}
+    </ul>
+    <p><a href="{{ url_for('post.recent') }}">{{ gettext('see more') }}</a></p>
+    {% else %}
+    <p>{{ gettext('no posts yet').capitalize() }}...</p>
+    {% endif %}
   </div>
   <div class="column is-one-third">
     <h4 class="title is-4">{{ gettext('recent blogs').capitalize() }}</h4>
-    <div class="content">
-      {% if blogs %}
-      <ul class="list-unstyled">
-        {% for blog in blogs %}
-        <li><a href="{{ url_for('blog.display', blog_id=blog.id) }}">{{ blog.name }}</a></li>
-        {% endfor %}
-      </ul>
-      <p><a href="">{{ gettext('see more') }}</a></p>
-      {% else %}
-      <p>{{ gettext('no blogs yet').capitalize() }}...</p>
-      {% endif %}
-    </div>
+    {% if blogs %}
+    <ul class="list-unstyled">
+      {% for blog in blogs %}
+      <li><a href="{{ url_for('blog.display', blog_id=blog.id) }}">{{ blog.name }}</a></li>
+      {% endfor %}
+    </ul>
+    <p><a href="">{{ gettext('see more') }}</a></p>
+    {% else %}
+    <p>{{ gettext('no blogs yet').capitalize() }}...</p>
+    {% endif %}
   </div>
   <div class="column is-one-third">
     <h4 class="title is-4">{{ gettext('recently active').capitalize() }}</h4>
-    <div class="content">
-    </div>
   </div>
 </div>
 {% endblock %}

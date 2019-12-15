@@ -1,6 +1,7 @@
-from typing import Union
+from typing import Optional, Union
 
-from flask import request, url_for
+from flask import current_app, request, url_for
+from flask_sqlalchemy import BaseQuery, Pagination
 
 
 def url_for_other_page(page: Union[int, str]) -> str:
@@ -10,7 +11,24 @@ def url_for_other_page(page: Union[int, str]) -> str:
 
 
 def get_page(arg_name: str = 'p') -> int:
+    """Get page number from request params or return default which is 1.
+
+    :param arg_name: URL param name, defaults to 'p'
+    :type arg_name: str, optional
+    :return: page number
+    :rtype: int
+    """
     try:
         return int(request.args.get(arg_name, '1'))
     except ValueError:
         return 1
+
+
+def paginate(
+            query: BaseQuery, page: Optional[int] = None, size: Optional[int] = None
+        ) -> Pagination:
+    if page is None:
+        page = get_page()
+    if size is None:
+        size = current_app.config.get('LIST_SIZE', 20)
+    return query.paginate(page, size)

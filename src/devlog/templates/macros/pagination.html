@@ -1,0 +1,27 @@
+{% macro render_pagination(pagination) %}
+{% if pagination.pages > 1 %}
+<nav class="pagination" role="navigation" aria-label="{{ gettext('pages') }}">
+  <a class="pagination-previous" title="{{ gettext('previous') }}" {% if not pagination.has_prev %}disabled{% endif %}>{{ gettext('previous') }}</a>
+  <a class="pagination-next" title="{{ gettext('next') }}" {% if not pagination.has_next %}disabled{% endif %}>{{ gettext('next') }}</a>
+  <ul class="pagination-list">
+    {% for page in pagination.iter_pages() %}
+    {% if page %}
+    {% if page != pagination.page %}
+    <li>
+      <a class="pagination-link" href="{{ url_for_other_page(page) }}" aria-label="{{ gettext('page %(page_no)s', page_no=page) }}">{{ page }}</a>
+    </li>
+    {% else %}
+    <li>
+      <a class="pagination-link is-current" aria-label="{{ gettext('page %(page_no)s', page_no=page) }}" aria-current="page">{{ page }}</a>
+    </li>
+    {% endif %}
+    {% else %}
+    <li>
+      <span class="pagination-ellipsis">&hellip;</span>
+    </li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+</nav>
+{% endif %}
+{% endmacro %}
