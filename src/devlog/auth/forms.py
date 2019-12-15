@@ -29,6 +29,15 @@ class RegisterForm(BaseForm):
         db.session.commit()
         return user
 
+    def validate(self):
+        data_ok = super().validate()
+        email_ok = User.get_by_email(self.email.data) is None
+        if not email_ok:
+            self.email.errors.append(
+                gettext('account %(email)s is already registered', email=self.email.data)
+            )
+        return data_ok and email_ok
+
 
 class LoginForm(BaseForm):
     email = EmailField(gettext('email'), validators=[InputRequired()])

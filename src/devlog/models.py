@@ -40,6 +40,10 @@ class User(db.Model, UserMixin, TextProcessingMixin):
         return pwd_context.verify(s, self.password)
 
     @property
+    def display_name(self):
+        return self.name or self.email
+
+    @property
     def effective_public(self):
         return self.public
 
