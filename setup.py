@@ -60,7 +60,7 @@ REQ_TEST = [
 ]
 
 REQ_DEV = REQ_TEST + [
-    'ipython<7.10',
+    'ipython',
     'ipdb',
     'pip',
     'setuptools',
