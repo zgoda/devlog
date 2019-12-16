@@ -33,3 +33,17 @@
   </div>
 </div>
 {% endmacro %}
+
+{% macro markdown_preview(src_id) %}
+<div id="markdown-preview">
+</div>
+<script src="/static/vendor/showdown/showdown.min.js"></script>
+<script>
+  const converter = new showdown.Converter();
+  const $el = document.querySelector('.content #markdown-preview');
+  const $src = document.querySelector('#{{ src_id }}');
+  $src.addEventListener('input', () => {
+    $el.innerHTML = converter.makeHtml($src.value);
+  })
+</script>
+{% endmacro %}

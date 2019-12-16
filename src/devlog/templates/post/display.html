@@ -1,7 +1,7 @@
 {% extends "post/base.html" %}
 
 {% from 'macros/forms.html' import render_form %}
-{% from 'macros/blog.html' import render_post_pubinfo %}
+{% from 'macros/blog.html' import render_post_pubinfo, markdown_preview %}
 
 {% block pagetitle %}{{ post.title }}{% endblock %}
 
@@ -27,6 +27,10 @@
   <div class="card-content">
     {{ render_form(form, url_for('post.display', post_id=post.id), width=12) }}
   </div>
+</div>
+<div class="content">
+  <h2>{{ gettext('preview').capitalize() }}</h2>
+  {{ markdown_preview('text') }}
 </div>
 {% endif %}
 {% endblock %}

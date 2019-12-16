@@ -110,3 +110,22 @@
   </div>
 </div>
 {% endmacro %}
+
+{% macro fileinput_js() %}
+<script>
+  const $fileInput = document.querySelector('#fileinput-files input[type=file]');
+  $fileInput.onchange = () => {
+    const numFiles = $fileInput.files.length;
+    if (numFiles > 0) {
+      const $fileName = document.querySelector('#fileinput-files .file-name');
+      const fileName = $fileInput.files[0].name;
+      const moreFilesCount = numFiles - 1;
+      if (moreFilesCount == 0) {
+        $fileName.textContent = fileName;
+      } else {
+        $fileName.textContent = `${fileName} + ${moreFilesCount}`;
+      }
+    }
+  }
+</script>
+{% endmacro %}

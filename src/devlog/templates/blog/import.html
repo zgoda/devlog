@@ -1,6 +1,6 @@
 {% extends "blog/base.html" %}
 
-{% from "macros/forms.html" import render_form %}
+{% from "macros/forms.html" import render_form, fileinput_js %}
 
 {% block pagetitle %}{{ gettext('import posts').capitalize() }}{% endblock %}
 
@@ -22,4 +22,8 @@
   <p>{% trans %}The form below allows to upload multiple files at once. Only valid files will be processed and import will report failure if none of uploaded files is valid. Importing takes some time but usually your posts should appear on site within couple minutes.{% endtrans %}</p>
   {{ render_form(form, url_for('blog.import_posts', blog_id=blog.id), width=6, has_files=True) }}
 </div>
+{% endblock %}
+
+{% block extrajs %}
+{{ fileinput_js }}
 {% endblock %}
