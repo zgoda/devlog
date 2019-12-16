@@ -16,22 +16,13 @@ class User(db.Model, UserMixin, TextProcessingMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)  # noqa: A003
-    name = db.Column(db.String(200))
-    slug = db.Column(db.String(200), index=True)
+    name = db.Column(db.String(200), nullable=False, unique=True)
     blurb = db.Column(db.Text)
     blurb_html = db.Column(db.Text)
-    blurb_markup_type = db.Column(db.String(50))
-    email = db.Column(db.String(200), nullable=False, unique=True)
-    email_confirmed = db.Column(db.Boolean, default=False)
-    confirmation_token = db.Column(db.String(200))
-    confirmation_sent_dt = db.Column(db.DateTime)
-    confirmed_dt = db.Column(db.DateTime)
     password = db.Column(db.Text, nullable=False)
-    active = db.Column(db.Boolean, default=True)
-    public = db.Column(db.Boolean, default=False)
-    created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     default_language = db.Column(db.String(20), default='pl')
     timezone = db.Column(db.String(80), default='Europe/Warsaw')
+    active = db.Column(db.Boolean, default=True)
 
     def set_password(self, password):
         self.password = pwd_context.hash(password)
@@ -39,21 +30,9 @@ class User(db.Model, UserMixin, TextProcessingMixin):
     def check_password(self, s):
         return pwd_context.verify(s, self.password)
 
-    @property
-    def display_name(self):
-        return self.name or self.email
-
-    @property
-    def effective_public(self):
-        return self.public
-
     @classmethod
     def markup_fields(cls):
-        return [
-            MarkupField(
-                source='blurb', dest='blurb_html', processor='blurb_markup_type'
-            )
-        ]
+        return [MarkupField(source='blurb', dest='blurb_html')]
 
     @classmethod
     def slug_fields(cls):
@@ -63,22 +42,14 @@ class User(db.Model, UserMixin, TextProcessingMixin):
         return self.active
 
     @classmethod
-    def get_by_email(cls, email) -> Optional[User]:
-        return cls.query.filter_by(email=email).first()
+    def get_by_name(cls, name: str) -> Optional[User]:
+        return cls.query.filter_by(name=name).first()
 
     def has_blogs(self):
         return self.blogs.count() > 0
 
     def recent_blogs(self, limit=5):
         return self.blogs.order_by(db.desc(Blog.updated)).limit(limit)
-
-    def confirm_email(self):
-        self.email_confirmed = True
-        self.confirmed_dt = datetime.datetime.utcnow()
-
-    def clear_email_confirmation(self):
-        self.email_confirmed = False
-        self.confirmed_dt = self.confirmation_token = self.confirmation_sent_dt = None
 
 
 @db.event.listens_for(User, 'before_insert')
@@ -102,17 +73,9 @@ class Blog(db.Model, TextProcessingMixin):
     slug = db.Column(db.String(200), index=True)
     blurb = db.Column(db.Text)
     blurb_html = db.Column(db.Text)
-    blurb_markup_type = db.Column(db.String(50))
-    active = db.Column(db.Boolean, default=True)
-    public = db.Column(db.Boolean, default=True)
     default = db.Column(db.Boolean, default=False)
     language = db.Column(db.String(20))
-
-    __table_args__ = (db.Index('ix_blog_active_public', 'active', 'public'),)
-
-    @property
-    def effective_public(self):
-        return self.public and self.user.public
+    active = db.Column(db.Boolean, default=True)
 
     @property
     def effective_language(self):
@@ -120,11 +83,7 @@ class Blog(db.Model, TextProcessingMixin):
 
     @classmethod
     def markup_fields(cls):
-        return [
-            MarkupField(
-                source='blurb', dest='blurb_html', processor='blurb_markup_type'
-            )
-        ]
+        return [MarkupField(source='blurb', dest='blurb_html')]
 
     @classmethod
     def slug_fields(cls):
@@ -153,17 +112,11 @@ class Post(db.Model, TextProcessingMixin):
     slug = db.Column(db.String(200), index=True)
     text = db.Column(db.Text)
     text_html = db.Column(db.Text)
-    text_markup_type = db.Column(db.String(50))
-    summary_html = db.Column(db.Text)
+    summary = db.Column(db.Text)
     mood = db.Column(db.String(50))
-    public = db.Column(db.Boolean, default=True, index=True)
     draft = db.Column(db.Boolean, default=True)
     pinned = db.Column(db.Boolean, default=False)
     language = db.Column(db.String(20))
-
-    @property
-    def effective_public(self):
-        return self.public and self.blog.effective_public
 
     @observes('updated')
     def update_observer(self, updated):
@@ -171,9 +124,7 @@ class Post(db.Model, TextProcessingMixin):
 
     @classmethod
     def markup_fields(cls):
-        return [
-            MarkupField(source='text', dest='text_html', processor='text_markup_type')
-        ]
+        return [MarkupField(source='text', dest='text_html')]
 
     @classmethod
     def slug_fields(cls):
@@ -183,8 +134,7 @@ class Post(db.Model, TextProcessingMixin):
     def pre_save(cls, mapper, connection, target):
         super().pre_save(mapper, connection, target)
         summary = target.text.split()[:10]
-        summary = ' '.join(summary)
-        target.summary_html = target.markup_to_html(summary, target.text_markup_type)
+        target.summary = ' '.join(summary)
         if target.draft:
             target.published = None
         else:

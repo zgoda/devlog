@@ -12,7 +12,6 @@ class PostFactory(SQLAlchemyModelFactory):
     blog = factory.SubFactory(BlogFactory)
     title = factory.Faker('sentence')
     text = factory.Faker('text')
-    public = True
     draft = True
     pinned = False
 

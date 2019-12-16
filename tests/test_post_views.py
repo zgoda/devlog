@@ -28,14 +28,14 @@ class TestPostCreateView(DevlogTests):
     def test_authenticated_get(self, blog_factory, user_factory):
         blog = blog_factory(name='Infernal Tendencies')
         user = user_factory(name='Ivory Tower', password=self.default_pw)
-        self.login(user.email)
+        self.login(user.name)
         rv = self.client.get(self.url(blog))
         assert rv.status_code == 404
 
     def test_owner_get(self, blog_factory, user_factory):
         user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies', user=user)
-        self.login(user.email)
+        self.login(user.name)
         url = self.url(blog)
         rv = self.client.get(url)
         assert f'action="{url}"' in rv.text
@@ -55,21 +55,21 @@ class TestPostCreateView(DevlogTests):
     def test_authenticated_post_data_ok(self, blog_factory, user_factory):
         blog = blog_factory(name='Infernal Tendencies')
         user = user_factory(name='Ivory Tower', password=self.default_pw)
-        self.login(user.email)
+        self.login(user.name)
         rv = self.client.post(self.url(blog), data=self.DATA_OK)
         assert rv.status_code == 404
 
     def test_authenticated_post_data_incomplete(self, blog_factory, user_factory):
         blog = blog_factory(name='Infernal Tendencies')
         user = user_factory(name='Ivory Tower', password=self.default_pw)
-        self.login(user.email)
+        self.login(user.name)
         rv = self.client.post(self.url(blog), data=self.DATA_INCOMPLETE)
         assert rv.status_code == 404
 
     def test_owner_post_data_ok(self, blog_factory, user_factory):
         user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies', user=user)
-        self.login(user.email)
+        self.login(user.name)
         rv = self.client.post(self.url(blog), data=self.DATA_OK)
         assert rv.status_code == 302
         assert url_for('blog.display', blog_id=blog.id) in rv.headers['Location']
@@ -77,7 +77,7 @@ class TestPostCreateView(DevlogTests):
     def test_owner_post_data_incomplete(self, blog_factory, user_factory):
         user = user_factory(name='Ivory Tower', password=self.default_pw)
         blog = blog_factory(name='Infernal Tendencies', user=user)
-        self.login(user.email)
+        self.login(user.name)
         rv = self.client.post(self.url(blog), data=self.DATA_INCOMPLETE)
         assert 'field is required' in rv.text
 
@@ -93,88 +93,58 @@ class TestPostDisplayView(DevlogTests):
         return url_for('post.display', post_id=post.id)
 
     def test_anon_get_public(self, post_factory, blog_factory):
-        blog = blog_factory(user=self.user, public=True)
+        blog = blog_factory(user=self.user)
         title = 'First post'
-        post = post_factory(blog=blog, public=True, draft=False, title=title)
+        post = post_factory(blog=blog, draft=False, title=title)
         url = self.url(post)
         rv = self.client.get(url)
         assert f'>{title}</h1>' in rv.text
 
-    @pytest.mark.parametrize('public,draft', [
-        (True, True),
-        (False, False),
-        (False, True)
-    ], ids=['public-draft', 'nonpublic-nondraft', 'nonpublic-draft'])
-    def test_anon_get_no_access(self, public, draft, post_factory, blog_factory):
-        blog = blog_factory(user=self.user, public=True)
+    def test_anon_get_no_access(self, post_factory, blog_factory):
+        blog = blog_factory(user=self.user)
         title = 'First post'
-        post = post_factory(blog=blog, public=public, draft=draft, title=title)
+        post = post_factory(blog=blog, draft=True, title=title)
         url = self.url(post)
         rv = self.client.get(url)
         assert rv.status_code == 404
 
     def test_authenticated_get_public(self, post_factory, blog_factory, user_factory):
         user = user_factory(name='Ivory Tower', password=self.default_pw)
-        blog = blog_factory(user=self.user, public=True)
+        blog = blog_factory(user=self.user)
         title = 'First post'
-        post = post_factory(blog=blog, public=True, draft=False, title=title)
-        self.login(user.email)
+        post = post_factory(blog=blog, draft=False, title=title)
+        self.login(user.name)
         url = self.url(post)
         rv = self.client.get(url)
         assert f'>{title}</h1>' in rv.text
 
-    @pytest.mark.parametrize('public,draft', [
-        (True, True),
-        (False, False),
-        (False, True)
-    ], ids=['public-draft', 'nonpublic-nondraft', 'nonpublic-draft'])
     def test_authenticated_get_no_access(
-                self, public, draft, post_factory, blog_factory, user_factory
+                self, post_factory, blog_factory, user_factory
             ):
         user = user_factory(name='Ivory Tower', password=self.default_pw)
-        blog = blog_factory(user=self.user, public=True)
+        blog = blog_factory(user=self.user)
         title = 'First post'
-        post = post_factory(blog=blog, public=public, draft=draft, title=title)
-        self.login(user.email)
+        post = post_factory(blog=blog, draft=True, title=title)
+        self.login(user.name)
         url = self.url(post)
         rv = self.client.get(url)
         assert rv.status_code == 404
 
-    @pytest.mark.parametrize('public,draft', [
-        (True, False),
-        (True, True),
-        (False, False),
-        (False, True),
-    ], ids=[
-        'public-nondraft',
-        'public-draft',
-        'nonpublic-nondraft',
-        'nonpublic-draft',
-    ])
-    def test_owner_get(self, public, draft, post_factory, blog_factory):
-        blog = blog_factory(user=self.user, public=True)
+    @pytest.mark.parametrize('draft', [False, True], ids=['active', 'draft'])
+    def test_owner_get(self, draft, post_factory, blog_factory):
+        blog = blog_factory(user=self.user)
         title = 'First post'
-        post = post_factory(blog=blog, public=True, draft=False, title=title)
-        self.login(self.user.email)
+        post = post_factory(blog=blog, draft=draft, title=title)
+        self.login(self.user.name)
         url = self.url(post)
         rv = self.client.get(url)
         assert f'>{title}</h1>' in rv.text
 
-    @pytest.mark.parametrize('public,draft', [
-        (True, False),
-        (True, True),
-        (False, False),
-        (False, True),
-    ], ids=[
-        'public-nondraft',
-        'public-draft',
-        'nonpublic-nondraft',
-        'nonpublic-draft',
-    ])
-    def test_anon_post_no_access(self, public, draft, post_factory, blog_factory):
-        blog = blog_factory(user=self.user, public=True)
+    @pytest.mark.parametrize('draft', [False, True], ids=['active', 'draft'])
+    def test_anon_post_no_access(self, draft, post_factory, blog_factory):
+        blog = blog_factory(user=self.user)
         title = 'First post'
-        post = post_factory(blog=blog, public=public, draft=draft, title=title)
+        post = post_factory(blog=blog, draft=draft, title=title)
         url = self.url(post)
         data = {
             'title': 'New name',
@@ -182,74 +152,45 @@ class TestPostDisplayView(DevlogTests):
         rv = self.client.post(url, data=data)
         assert rv.status_code == 404
 
-    @pytest.mark.parametrize('public,draft', [
-        (True, False),
-        (True, True),
-        (False, False),
-        (False, True),
-    ], ids=[
-        'public-nondraft',
-        'public-draft',
-        'nonpublic-nondraft',
-        'nonpublic-draft',
-    ])
+    @pytest.mark.parametrize('draft', [False, True], ids=['active', 'draft'])
     def test_authenticated_post_no_access(
-                self, public, draft, post_factory, blog_factory, user_factory
+                self, draft, post_factory, blog_factory, user_factory
             ):
-        blog = blog_factory(user=self.user, public=True)
+        blog = blog_factory(user=self.user)
         title = 'First post'
-        post = post_factory(blog=blog, public=public, draft=draft, title=title)
+        post = post_factory(blog=blog, draft=draft, title=title)
         user = user_factory(name='Ivory Tower')
         url = self.url(post)
-        self.login(user.email)
+        self.login(user.name)
         data = {
             'title': 'New name',
         }
         rv = self.client.post(url, data=data)
         assert rv.status_code == 404
 
-    @pytest.mark.parametrize('public,draft', [
-        (True, False),
-        (True, True),
-        (False, False),
-        (False, True),
-    ], ids=[
-        'public-nondraft',
-        'public-draft',
-        'nonpublic-nondraft',
-        'nonpublic-draft',
-    ])
-    def test_owner_post_ok(self, public, draft, post_factory, blog_factory):
-        blog = blog_factory(user=self.user, public=True)
+    @pytest.mark.parametrize('draft', [False, True], ids=['active', 'draft'])
+    def test_owner_post_ok(self, draft, post_factory, blog_factory):
+        blog = blog_factory(user=self.user)
         title = 'First post'
-        post = post_factory(blog=blog, public=public, draft=draft, title=title)
+        post = post_factory(blog=blog, draft=draft, title=title)
         url = self.url(post)
-        self.login(self.user.email)
+        self.login(self.user.name)
         new_title = 'New name'
         data = {
             'title': new_title,
+            'text': 'this is text'
         }
         rv = self.client.post(url, data=data, follow_redirects=True)
         assert 'post has been saved' in rv.text
         assert f'value="{new_title}"' in rv.text
 
-    @pytest.mark.parametrize('public,draft', [
-        (True, False),
-        (True, True),
-        (False, False),
-        (False, True),
-    ], ids=[
-        'public-nondraft',
-        'public-draft',
-        'nonpublic-nondraft',
-        'nonpublic-draft',
-    ])
-    def test_owner_post_fail(self, public, draft, post_factory, blog_factory):
-        blog = blog_factory(user=self.user, public=True)
+    @pytest.mark.parametrize('draft', [False, True], ids=['active', 'draft'])
+    def test_owner_post_fail(self, draft, post_factory, blog_factory):
+        blog = blog_factory(user=self.user)
         title = 'First post'
-        post = post_factory(blog=blog, public=public, draft=draft, title=title)
+        post = post_factory(blog=blog, draft=draft, title=title)
         url = self.url(post)
-        self.login(self.user.email)
+        self.login(self.user.name)
         new_title = None
         data = {
             'title': new_title,

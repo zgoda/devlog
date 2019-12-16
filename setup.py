@@ -28,7 +28,6 @@ def find_version(*file_paths):
 REQ_BASE = [
     'Flask',
     'Flask-Login',
-    'Flask-FlatPages',
     'Flask-Babel',
     'Flask-WTF',
     'Flask-SQLAlchemy',

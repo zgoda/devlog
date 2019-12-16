@@ -12,8 +12,7 @@ def index() -> Response:
     kw = {
         'limit': current_app.config.get('SHORT_LIST_LIMIT', 5),
     }
-    if current_user.is_authenticated:
-        kw['extra_user'] = current_user
+    kw['active_only'] = not current_user.is_authenticated
     blogs = recent_blogs(**kw)
     posts = recent_posts(**kw)
     context = {

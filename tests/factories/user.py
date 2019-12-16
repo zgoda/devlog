@@ -9,9 +9,7 @@ from devlog.sec import pwd_context
 class UserFactory(SQLAlchemyModelFactory):
 
     name = factory.Faker('name')
-    email = factory.Faker('email')
     password = factory.Faker('password')
-    public = True
     default_language = 'en'
     timezone = 'Europe/London'
 

@@ -29,7 +29,7 @@ def create(blog_id: int) -> Response:
 
 
 def post_display_func(post: Post) -> Response:
-    if (not post.public or post.draft) and current_user != post.blog.user:
+    if post.draft and current_user != post.blog.user:
         abort(404)
     form = None
     if request.method == 'POST':

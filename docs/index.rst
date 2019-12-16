@@ -7,12 +7,9 @@ general. Other goal is to make *ideal package* of Flask based web application,
 with clean structure and modern tooling. I'm almost there with that.
 
 Speaking of functionality, the application implements or aims to implement
-*simple blog*:
-
-* authentication
-* authorization
-* inline content management (no *admin interface*)
-* strict and extensible content access management
+*simple blog*. You may find
+:doc:`detailed functionality description </functionality>` in separate
+document.
 
 Please note this application does not strive to be neither complete nor even
 working. Although it's just a playground, the
@@ -39,6 +36,7 @@ Miscellanea
 .. toctree::
     :maxdepth: 2
 
+    functionality
     concepts
     tools
     tbc

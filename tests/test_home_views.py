@@ -22,7 +22,7 @@ class TestMainPageAccountLinks(DevlogTests):
 
     def test_authenticated_login_urls(self, user_factory):
         user = user_factory(name='Ivory Tower', password=self.default_pw)
-        self.login(user.email)
+        self.login(user.name)
         r = self.client.get(url_for('home.index'))
         assert f'href="{self.login_url}"' not in r.text
         assert f'href="{self.logout_url}"' in r.text

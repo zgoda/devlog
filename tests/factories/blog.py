@@ -12,7 +12,6 @@ class BlogFactory(SQLAlchemyModelFactory):
     name = factory.Faker('name')
     user = factory.SubFactory(UserFactory)
     active = True
-    public = True
     default = False
 
     class Meta:

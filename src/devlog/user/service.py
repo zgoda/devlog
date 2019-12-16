@@ -7,12 +7,12 @@ from ..post.service import get_recent as recent_posts
 
 
 def user_recent_blogs() -> BaseQuery:
-    query = recent_blogs(public_only=False)
+    query = recent_blogs(active_only=False)
     query = query.filter(Blog.user == current_user)
     return query
 
 
 def user_recent_posts() -> BaseQuery:
-    query = recent_posts(public_only=False, drafts=True)
+    query = recent_posts(active_only=False)
     query = query.filter(Blog.user == current_user)
     return query

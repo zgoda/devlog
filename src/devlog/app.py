@@ -14,7 +14,7 @@ from werkzeug.utils import ImportStringError
 from ._version import get_version
 from .auth import auth_bp
 from .blog import blog_bp
-from .ext import babel, csrf, db, login_manager, pages
+from .ext import babel, csrf, db, login_manager
 from .home import home_bp
 from .post import post_bp
 from .templates import setup_template_extensions
@@ -53,15 +53,7 @@ def configure_app(app: Devlog, env: Optional[str]):
         try:
             app.config.from_object(f'devlog.config_{env}')
         except ImportStringError:
-            app.logger.warning(f'no environment config for {env}')
-    config_local = os.environ.get('DEVLOG_CONFIG_LOCAL')
-    if config_local:
-        app.logger.info(f'local configuration loaded from {config_local}')
-        app.config.from_envvar('DEVLOG_CONFIG_LOCAL')
-    config_secrets = os.environ.get('DEVLOG_CONFIG_SECRETS')
-    if config_secrets:
-        app.logger.info(f'secrets loaded from {config_secrets}')
-        app.config.from_envvar('DEVLOG_CONFIG_SECRETS')
+            app.logger.info(f'no environment config for {env}')
     uploads_dir = os.path.join(app.instance_path, app.config['UPLOAD_DIR_NAME'])
     os.makedirs(uploads_dir, exist_ok=True)
 
@@ -90,8 +82,6 @@ def configure_blueprints(app: Devlog, env: Optional[str]):
 def configure_extensions(app: Devlog, env: Optional[str]):
     db.init_app(app)
     csrf.init_app(app)
-    pages.init_app(app)
-    pages.get('foo')  # preload all static pages
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
     login_manager.login_message = _('Please log in to access this page')

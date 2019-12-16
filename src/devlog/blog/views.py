@@ -41,19 +41,10 @@ def create() -> Response:
 @blog_bp.route('/<int:blog_id>')
 def display(blog_id: int) -> Response:
     blog = Blog.query.get_or_404(blog_id)
-    if not (blog.active and blog.public) and (current_user != blog.user):
+    if not blog.active and (current_user != blog.user):
         abort(404)
-    public_only = True
-    with_drafts = False
-    extra_user = None
-    if current_user == blog.user:
-        public_only = False
-        with_drafts = True
-        extra_user = blog.user
-    query = recent_posts(
-        blog=blog, public_only=public_only, drafts=with_drafts,
-        extra_user=extra_user,
-    )
+    active_only = (current_user != blog.user)
+    query = recent_posts(blog=blog, active_only=active_only)
     pagination = paginate(query, size=10)
     context = {
         'blog': blog,
