@@ -55,11 +55,8 @@ def display(post_id: int) -> Response:
 
 @post_bp.route('/recent')
 def recent() -> Response:
-    if current_user.is_authenticated:
-        extra_user = current_user
-    else:
-        extra_user = None
-    query = service.get_recent(extra_user=extra_user)
+    active_only = not current_user.is_authenticated
+    query = service.get_recent(active_only=active_only)
     ctx = {
         'pagination': paginate(query),
     }
