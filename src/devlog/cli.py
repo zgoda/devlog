@@ -1,3 +1,5 @@
+import sys
+
 import click
 from dotenv import find_dotenv, load_dotenv
 from flask.cli import FlaskGroup
@@ -73,6 +75,12 @@ def user_delete(name, substitute):
     sub = User.get_by_name(substitute)
     if sub is None:
         raise click.ClickException(f'substitute user {substitute} not found')
+    if not click.confirm(
+        f'Do you really want to delete account for {name} '
+        f'and move all content to {substitute}?'
+    ):
+        click.echo('operation aborted, no changes made to site')
+        sys.exit(0)
     for blog in Blog.query.filter_by(user=user):
         blog.user = sub
         db.session.add(blog)
