@@ -15,17 +15,22 @@ cli = FlaskGroup(create_app=create_app)
 cli.help = 'This is a management script for the Devlog application.'
 
 
-@cli.command('initdb', short_help='Initialize missing database objects')
+@cli.group(name='db', help='database management commands')
+def db_ops():
+    pass
+
+
+@db_ops.command('init', short_help='initialize missing database objects')
 def initdb():
     db.create_all()
 
 
-@cli.command('cleardb', short_help='Remove all database objects')
+@db_ops.command('clear', short_help='remove all database objects')
 def cleardb():
     db.drop_all()
 
 
-@cli.command('recreatedb', short_help='Recreate all database objects from scratch')
+@db_ops.command('recreate', short_help='recreate all database objects from scratch')
 def recreatedb():
     db.drop_all()
     db.create_all()
