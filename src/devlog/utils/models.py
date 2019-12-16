@@ -19,7 +19,8 @@ SlugField = collections.namedtuple('SlugField', 'source,dest')
 
 class TextProcessingMixin:
 
-    def markup_to_html(self, instr: str) -> str:
+    @staticmethod
+    def markup_to_html(instr: str) -> str:
         return markdown2.markdown(
             instr, safe_mode=True,
             extras={'html-classes': {'img': 'markdown-image'}},
