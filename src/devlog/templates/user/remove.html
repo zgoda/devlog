@@ -5,10 +5,10 @@
 {% block pagetitle %}{{ gettext('remove account') }}{% endblock %}
 
 {% block content %}
-<h1 class="title is-1">{{ gettext('remove account') }}</h1>
 <div class="content">
+  <h1>{{ gettext('remove account') }}</h1>
   <p>{% trans %}Deleting account is destructive process. It can not be reverted. All your content will be deleted and if you decide to rejoin us later, it will be lost so be careful.{% endtrans %}</p>
   <p>{% trans %}You will be logged out and redirected to site home page.{% endtrans %}</p>
+  {{ render_form(delete_form, action=url_for('user.delete')) }}
 </div>
-{{ render_form(delete_form, action=url_for('user.delete')) }}
 {% endblock content %}

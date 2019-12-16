@@ -11,6 +11,24 @@ def get_recent(
             limit: Optional[int] = None, drafts: bool = False,
             blog: Optional[Blog] = None,
         ) -> BaseQuery:
+    """Build query returning recent posts.
+
+    :param public_only: whether only public posts to be included,
+                        defaults to True
+    :type public_only: bool, optional
+    :param extra_user: if non-public posts or drafts have been requested this
+                       is the author of the posts to be included,
+                       defaults to None
+    :type extra_user: Optional[User], optional
+    :param limit: limit to be applied to query, defaults to None
+    :type limit: Optional[int], optional
+    :param drafts: whether to include drafts, defaults to False
+    :type drafts: bool, optional
+    :param blog: limit posts to particular blog, defaults to None
+    :type blog: Optional[Blog], optional
+    :return: query over posts
+    :rtype: BaseQuery
+    """
     query = Post.query.join(Blog)
     if blog is not None:
         query = query.filter(Post.blog == blog)
@@ -35,6 +53,20 @@ def get_recent(
 
 
 def get_by_ident(year: int, month: int, day: int, slug: str) -> Post:
+    """Get post by display ident (year, month, day and slug). Raises 404
+    if not found.
+
+    :param year: post year
+    :type year: int
+    :param month: post month
+    :type month: int
+    :param day: post day
+    :type day: int
+    :param slug: post slug
+    :type slug: str
+    :return: post instance
+    :rtype: Post
+    """
     return Post.query.filter(
         db.func.extract('year', Post.created) == year,
         db.func.extract('month', Post.created) == month,

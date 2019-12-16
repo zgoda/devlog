@@ -29,12 +29,14 @@ class RegisterForm(BaseForm):
         db.session.commit()
         return user
 
-    def validate(self):
+    def validate(self) -> bool:
         data_ok = super().validate()
         email_ok = User.get_by_email(self.email.data) is None
         if not email_ok:
             self.email.errors.append(
-                gettext('account %(email)s is already registered', email=self.email.data)
+                gettext(
+                    'account %(email)s is already registered', email=self.email.data
+                )
             )
         return data_ok and email_ok
 

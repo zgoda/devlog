@@ -1,5 +1,4 @@
 import os
-from typing import Optional
 
 from flask import (
     Response, abort, current_app, flash, redirect, render_template, request, url_for,
@@ -9,10 +8,10 @@ from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
 
 from ..ext import db
-from ..models import Blog, Post
+from ..models import Blog
 from ..post.service import get_recent as recent_posts
 from ..utils.forms import Button, DeleteForm
-from ..utils.pagination import get_page
+from ..utils.pagination import paginate
 from . import blog_bp
 from .forms import BlogForm, PostImportForm
 
@@ -39,13 +38,11 @@ def create() -> Response:
     return render_template('blog/create.html', **context)
 
 
-@blog_bp.route('/<int:blog_id>', defaults={'slug': None})
-@blog_bp.route('/<int:blog_id>/<slug>')
-def display(blog_id: int, slug: Optional[str]) -> Response:
+@blog_bp.route('/<int:blog_id>')
+def display(blog_id: int) -> Response:
     blog = Blog.query.get_or_404(blog_id)
     if not (blog.active and blog.public) and (current_user != blog.user):
         abort(404)
-    page = get_page()
     public_only = True
     with_drafts = False
     extra_user = None
@@ -57,7 +54,7 @@ def display(blog_id: int, slug: Optional[str]) -> Response:
         blog=blog, public_only=public_only, drafts=with_drafts,
         extra_user=extra_user,
     )
-    pagination = query.order_by(db.desc(Post.updated)).paginate(page, 10)
+    pagination = paginate(query, size=10)
     context = {
         'blog': blog,
         'posts': pagination,

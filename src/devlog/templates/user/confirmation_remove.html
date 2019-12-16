@@ -5,7 +5,7 @@
 {% block pagetitle %}{{ gettext('change email confirmation status').capitalize() }}{% endblock %}
 
 {% block content %}
-<div class="container content">
+<div class="content">
   <h1>{{ gettext('change email confirmation status').capitalize() }}</h1>
   <p>{% trans %}Please confirm that you want your email to become unconfirmed again by ticking the box below and pressing confirmation button.{% endtrans %}</p>
   {{ render_form(form, request.path) }}

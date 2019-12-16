@@ -3,8 +3,8 @@
 {% block pagetitle %}{{ gettext('Profile page for %(user_name)s', user_name=user.name) }}{% endblock %}
 
 {% block widecontent %}
-<h1 class="title is-1">{{ gettext('Profile page for %(user_name)s', user_name=user.name) }}</h1>
 <div class="content">
+  <h1>{{ gettext('Profile page for %(user_name)s', user_name=user.name) }}</h1>
   {% if user == current_user and not (user.active and user.public) %}
   <p>{{ gettext('Your account is inactive or set as private (or both), no one except you can see this page') }}.</p>
   {% endif %}

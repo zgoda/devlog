@@ -5,9 +5,9 @@
 {% block pagetitle %}{{ gettext('account details').capitalize() }}{% endblock %}
 
 {% block content %}
-<h1 class="title is-1">{{ gettext('account details').capitalize() }}</h1>
-{{ render_form(form, request.path, width=None) }}
 <div class="content">
+  <h1>{{ gettext('account details').capitalize() }}</h1>
+  {{ render_form(form, request.path, width=None) }}
   <h2>{{ gettext('information').capitalize() }}</h2>
   <p><a href="{{ url_for('user.profile', user_id=current_user.id) }}">{{ gettext('view your profile page').capitalize() }}</a></p>
   {% if current_user.email_confirmed %}
@@ -17,9 +17,7 @@
   <p>{% trans %}Your email has not been yet confirmed. This means no communication from us (including lost password recovery!). Please click the button below to begin email confirmation process.{% endtrans %}</p>
   <p class="has-text-centered"><a href="{{ url_for('user.confirmation_start') }}" class="button is-info"><span class="icon"><i class="fas fa-paper-plane"></i></span>&nbsp;<span>{{ gettext('confirm email') }}</span></a></p>
   {% endif %}
-</div>
-<h2 class="title is-2">{{ gettext('remove account').capitalize() }}</h2>
-<div class="content">
+  <h2>{{ gettext('remove account').capitalize() }}</h2>
   <p>{% trans %}You may temporarily deactivate your account using the form above. To completely remove your account click the button below to get to confirmation page. We will miss you.{% endtrans %}</p>
   <p class="has-text-centered"><a href="{{ url_for('user.confirm_delete') }}" class="button is-danger"><span class="icon"><i class="fas fa-skull-crossbones"></i></span>&nbsp;<span>{{ gettext('delete') }}</span></a></p>
 </div>
