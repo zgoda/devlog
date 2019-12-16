@@ -4,7 +4,7 @@ from flask.cli import FlaskGroup
 
 from . import make_app
 from .ext import db
-from .models import User
+from .models import User, Blog
 
 
 def create_app(info):
@@ -57,6 +57,28 @@ def user_create(name, password, language, timezone):
     db.session.add(user)
     db.session.commit()
     click.echo(f'user {name} has been created')
+
+
+@user_ops.command(name='delete')
+@click.argument('name')
+@click.option(
+    '-s', '--substitute', required=True, help='substitute user as owner of blogs',
+)
+def user_delete(name, substitute):
+    user = User.get_by_name(name)
+    if user is None:
+        raise click.ClickException(f'user {name} not found')
+    if User.query.count() == 1:
+        raise click.ClickException('there has to be at least one user')
+    sub = User.get_by_name(substitute)
+    if sub is None:
+        raise click.ClickException(f'substitute user {substitute} not found')
+    for blog in Blog.query.filter_by(user=user):
+        blog.user = sub
+        db.session.add(blog)
+    db.session.delete(user)
+    db.session.commit()
+    click.echo(f'user {name} has been deleted, all content moved to user {substitute}')
 
 
 def main():
