@@ -21,7 +21,16 @@ Accounts and users
 Single user, single account. The account is administrator and owns all items
 in site inventory. Site visitors are either anonymous or it's the site owner.
 There is no account registration, the only user account is created from
-command line.
+command line. If there are more registered users, they all have full
+administrative access to everything.
+
+How about used friendliness of such solution? Well, there is a proverb saying
+that Unix is user friendly but has high standards in deciding who is his
+friend. I generally find command line operations as very friendly towards me
+so I consider CLI as user friendly. Anyway, what's the problem? You login to
+remote site with SSH, you do other site maintenance commands from CLI (like
+create database, lauch nginx, etc) so why not create user accounts from command
+line?
 
 Blogging
 --------
