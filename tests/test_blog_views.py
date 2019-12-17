@@ -33,9 +33,9 @@ class TestBlogCreateView(DevlogTests):
 
     def test_authenticated_post_ok(self, user_factory):
         user = user_factory(name='Ivory Tower', password=self.default_pw)
+        self.login(user.name)
         blog_name = 'Infernal Tendencies'
         data = {'user': user.id, 'name': blog_name}
-        self.login(user.name)
         rv = self.client.post(self.url, data=data, follow_redirects=True)
         assert f'{blog_name} has been created' in rv.text
         assert f'>{blog_name}</h1>' in rv.text

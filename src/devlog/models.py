@@ -105,6 +105,10 @@ class Post(db.Model, TextProcessingMixin):
     blog = db.relationship(
         'Blog', backref=db.backref('posts', lazy='dynamic', cascade='all,delete-orphan')
     )
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'))
+    author = db.relationship(
+        'User', backref=db.backref('posts', lazy='dynamic', cascade='all,delete-orphan')
+    )
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
     updated = db.Column(db.DateTime, onupdate=datetime.datetime.utcnow)
     published = db.Column(db.DateTime, index=True)
@@ -142,6 +146,8 @@ class Post(db.Model, TextProcessingMixin):
                 target.published = datetime.datetime.utcnow()
         if target.language is None:
             target.language = target.blog.effective_language
+        if target.author_id is None:
+            target.author_id = target.blog.user_id
 
     @property
     def ident(self):

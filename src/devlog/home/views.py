@@ -1,23 +1,24 @@
 from flask import Response, current_app, render_template
 from flask_login import current_user
 
-from ..blog.service import get_recent as recent_blogs
+from ..blog.service import get_default, get_recent as recent_blogs
 from ..post.service import get_by_ident, get_recent as recent_posts
 from ..post.views import post_display_func
 from . import home_bp
+from ..utils.pagination import paginate
 
 
 @home_bp.route('/')
 def index() -> Response:
-    kw = {
-        'limit': current_app.config.get('SHORT_LIST_LIMIT', 5),
-    }
-    kw['active_only'] = not current_user.is_authenticated
-    blogs = recent_blogs(**kw)
-    posts = recent_posts(**kw)
+    limit = current_app.config.get('SHORT_LIST_LIMIT', 5)
+    active_only = not current_user.is_authenticated
+    blog = get_default()
+    posts_query = recent_posts(active_only=active_only, blog=blog)
     context = {
-        'blogs': blogs,
-        'posts': posts,
+        'recent_blogs': recent_blogs(active_only=active_only),
+        'recent_posts': recent_posts(active_only=active_only, limit=limit),
+        'blog': blog,
+        'posts': paginate(posts_query),
     }
     return render_template('index.html', **context)
 

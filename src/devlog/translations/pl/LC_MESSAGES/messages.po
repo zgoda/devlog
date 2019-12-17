@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  1.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-15 23:09+0100\n"
+"POT-Creation-Date: 2019-12-17 14:25+0100\n"
 "PO-Revision-Date: 2019-03-12 23:18+0100\n"
 "Last-Translator: Jarek Zgoda <jarek.zgoda@gmail.com>\n"
 "Language: pl\n"
@@ -19,117 +19,90 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: src/devlog/app.py:97
+#: src/devlog/app.py:87
 msgid "Please log in to access this page"
 msgstr "Zaloguj się by otworzyć tę stronę"
 
-#: src/devlog/auth/forms.py:14 src/devlog/auth/forms.py:43
-#: src/devlog/user/forms.py:24
-msgid "email"
-msgstr "email"
-
-#: src/devlog/auth/forms.py:15 src/devlog/templates/user/profile.html:12
-msgid "user name"
-msgstr "nazwa użytkownika"
-
-#: src/devlog/auth/forms.py:16 src/devlog/auth/forms.py:44
-msgid "password"
-msgstr "hasło"
-
-#: src/devlog/auth/forms.py:18
-msgid "repeat password"
-msgstr "powtórz hasło"
-
-#: src/devlog/auth/forms.py:21
-msgid "both password fields must match"
-msgstr "hasła w obu polach muszą być identyczne"
-
-#: src/devlog/auth/forms.py:37
-#, python-format
-msgid "account %(email)s is already registered"
-msgstr "konto %(email)s już istnieje"
-
-#: src/devlog/auth/views.py:19
-#, python-format
-msgid "account for %(email)s has been registered, you are now logged in"
-msgstr "konto %(email)s zostało założone, użytkownik jest zalogowany"
-
-#: src/devlog/auth/views.py:40
-msgid "login failed, either user is not known or password is incorrect"
-msgstr "logowanie nieudane, nie ma takiego konta lub hasło jest nieprawidłowe"
-
-#: src/devlog/auth/views.py:47
-#, python-format
-msgid "user %(email)s logged in"
-msgstr "użytkownik %(email)s został zalogowany"
-
-#: src/devlog/blog/forms.py:16 src/devlog/user/forms.py:15
+#: src/devlog/auth/forms.py:13 src/devlog/blog/forms.py:14
+#: src/devlog/user/forms.py:12
 msgid "name"
 msgstr "nazwa"
 
-#: src/devlog/blog/forms.py:17 src/devlog/user/forms.py:16
+#: src/devlog/auth/forms.py:14
+msgid "password"
+msgstr "hasło"
+
+#: src/devlog/auth/forms.py:17 src/devlog/templates/base.html:42
+msgid "sign in"
+msgstr "zaloguj się"
+
+#: src/devlog/auth/views.py:18
+msgid "login failed, either user is not known or password is incorrect"
+msgstr "logowanie nieudane, nie ma takiego konta lub hasło jest nieprawidłowe"
+
+#: src/devlog/auth/views.py:26
+#, python-format
+msgid "user %(name)s logged in"
+msgstr "użytkownik %(name)s został zalogowany"
+
+#: src/devlog/auth/views.py:39
+#, python-format
+msgid "user %(user)s signed out"
+msgstr "użtykownik %(user)s został wylogowany"
+
+#: src/devlog/blog/forms.py:15 src/devlog/user/forms.py:13
 msgid "blurb"
 msgstr "parę słów"
 
-#: src/devlog/blog/forms.py:19 src/devlog/post/forms.py:15
-#: src/devlog/user/forms.py:18
-msgid "blurb markup processor"
-msgstr "procesor tekstu dla paru słów"
-
-#: src/devlog/blog/forms.py:22 src/devlog/user/forms.py:33
+#: src/devlog/blog/forms.py:16 src/devlog/user/forms.py:21
 msgid "active"
 msgstr "aktywny"
 
-#: src/devlog/blog/forms.py:23 src/devlog/post/forms.py:21
-#: src/devlog/user/forms.py:34
-msgid "public"
-msgstr "publiczny"
-
-#: src/devlog/blog/forms.py:24
+#: src/devlog/blog/forms.py:17
 msgid "default"
 msgstr "domyślny"
 
-#: src/devlog/blog/forms.py:33
+#: src/devlog/blog/forms.py:26
 msgid "files"
 msgstr "pliki"
 
-#: src/devlog/blog/forms.py:36
+#: src/devlog/blog/forms.py:29
 msgid "import"
 msgstr "importowanie"
 
-#: src/devlog/blog/views.py:24
+#: src/devlog/blog/views.py:23
 msgid "your account is inactive"
 msgstr "twoje konto nie jest aktywne"
 
-#: src/devlog/blog/views.py:32
+#: src/devlog/blog/views.py:31
 #, python-format
 msgid "Your blog %(name)s has been created"
 msgstr "Twój blog %(name)s został utworzony"
 
-#: src/devlog/blog/views.py:80
+#: src/devlog/blog/views.py:68
 #, python-format
 msgid "blog %(name)s has been modified"
 msgstr "blog %(name)s został zmodyfikowany"
 
-#: src/devlog/blog/views.py:97
+#: src/devlog/blog/views.py:89
 msgid "no files uploaded"
 msgstr "nic nie zostało wgrane"
 
-#: src/devlog/blog/views.py:106
+#: src/devlog/blog/views.py:98
 msgid "no valid files uploaded"
 msgstr "żaden poprawny plik nie został wgrany"
 
-#: src/devlog/blog/views.py:118
+#: src/devlog/blog/views.py:110
 #, python-format
 msgid "import of post file %(file_name)s has been scheduled"
 msgstr "import postu z pliku %(file_name)s został zlecony"
 
-#: src/devlog/blog/views.py:139
+#: src/devlog/blog/views.py:136
 #, python-format
 msgid "your blog %(blog_name)s has been completely removed from the site"
 msgstr "blog %(blog_name)s został usunięty"
 
-#: src/devlog/blog/views.py:147 src/devlog/utils/forms.py:50
+#: src/devlog/blog/views.py:144 src/devlog/utils/forms.py:50
 #: src/devlog/utils/forms.py:52
 msgid "confirm"
 msgstr "potwierdź"
@@ -142,15 +115,15 @@ msgstr "tytuł"
 msgid "text"
 msgstr "tekst"
 
-#: src/devlog/post/forms.py:20
+#: src/devlog/post/forms.py:14
 msgid "mood"
 msgstr "nastrój"
 
-#: src/devlog/post/forms.py:22 src/devlog/templates/post/display.html:10
+#: src/devlog/post/forms.py:15 src/devlog/templates/post/display.html:11
 msgid "draft"
 msgstr "szkic"
 
-#: src/devlog/post/forms.py:23
+#: src/devlog/post/forms.py:16
 msgid "pinned"
 msgstr "przypięty"
 
@@ -166,10 +139,6 @@ msgstr "główna nawigacja"
 msgid "top menu"
 msgstr "menu"
 
-#: src/devlog/templates/base.html:34
-msgid "account tools"
-msgstr "narzędzia konta"
-
 #: src/devlog/templates/base.html:37
 msgid "account"
 msgstr "konto"
@@ -178,15 +147,7 @@ msgstr "konto"
 msgid "sign out"
 msgstr "wylogowanie"
 
-#: src/devlog/templates/base.html:40
-msgid "sign up"
-msgstr "załóż konto"
-
-#: src/devlog/templates/base.html:41
-msgid "sign in"
-msgstr "zaloguj się"
-
-#: src/devlog/templates/base.html:81
+#: src/devlog/templates/base.html:80
 #, python-format
 msgid "version %(ver)s"
 msgstr "wersja %(ver)s"
@@ -195,37 +156,46 @@ msgstr "wersja %(ver)s"
 msgid "and other logs"
 msgstr "i inne logi"
 
-#: src/devlog/templates/blog/display.html:24 src/devlog/templates/index.html:10
+#: src/devlog/templates/blog/display.html:24 src/devlog/templates/index.html:13
 #: src/devlog/templates/post/list.html:6 src/devlog/templates/post/list.html:10
-#: src/devlog/templates/user/base.html:27
+#: src/devlog/templates/user/base.html:30
 msgid "recent posts"
 msgstr "ostatnie posty"
 
-#: src/devlog/templates/index.html:17 src/devlog/templates/index.html:30
-#: src/devlog/templates/user/base.html:17
-#: src/devlog/templates/user/base.html:37
-msgid "see more"
-msgstr "zobacz więcej"
+#: src/devlog/templates/index.html:19 src/devlog/templates/macros/blog.html:9
+#, python-format
+msgid "created on %(date)s"
+msgstr "utworzony %(date)s"
 
-#: src/devlog/templates/blog/display.html:29 src/devlog/templates/index.html:19
-#: src/devlog/templates/user/base.html:39
-msgid "no posts yet"
-msgstr "nie ma jeszcze postów"
+#: src/devlog/templates/index.html:19
+#, python-format
+msgid "in %(blog)s"
+msgstr "w blogu %(blog)s"
 
-#: src/devlog/templates/index.html:23
-msgid "recent blogs"
-msgstr "ostatnie blogi"
+#: src/devlog/templates/index.html:19
+#, python-format
+msgid "by %(user)s"
+msgstr "przez %(user)s"
 
-#: src/devlog/templates/index.html:32 src/devlog/templates/user/base.html:19
-msgid "no blogs yet"
-msgstr "nie ma jeszcze blogów"
+#: src/devlog/templates/index.html:24 src/devlog/templates/post/list.html:32
+msgid "no posts found"
+msgstr "nie znaleziono żadnych postów"
 
-#: src/devlog/templates/index.html:36
-msgid "recently active"
-msgstr "ostatnio aktywne"
+#: src/devlog/templates/index.html:32
+msgid "recently active blogs"
+msgstr "ostatnio aktywne blogi"
+
+#: src/devlog/templates/index.html:38
+#, python-format
+msgid "updated %(date)s"
+msgstr "zaktualizowany %(date)s"
+
+#: src/devlog/templates/index.html:43
+msgid "no blogs found"
+msgstr "nie znaleziono żadnych blogów"
 
 #: src/devlog/templates/auth/login.html:7
-#: src/devlog/templates/auth/login.html:10
+#: src/devlog/templates/auth/login.html:11
 msgid "Devlog login"
 msgstr "logowanie do serwisu"
 
@@ -239,7 +209,7 @@ msgid "Fill out the form below to register new account at Devlog."
 msgstr "Wypełnij formularz by zarejestrować nowe konto na Devlogu."
 
 #: src/devlog/templates/blog/create.html:7
-#: src/devlog/templates/blog/create.html:10
+#: src/devlog/templates/blog/create.html:11
 msgid "create new blog"
 msgstr "utwórz nowy blog"
 
@@ -248,7 +218,7 @@ msgid "Fill out the form below to create new blog"
 msgstr "Wypełnij formularz by utworzyć nowy blog"
 
 #: src/devlog/templates/blog/delete.html:5
-#: src/devlog/templates/blog/delete.html:8
+#: src/devlog/templates/blog/delete.html:9
 msgid "confirm blog delete"
 msgstr "potwierdź usunięcie bloga"
 
@@ -263,7 +233,7 @@ msgstr ""
 " nieodwracalna i cała zawartość zostanie usunięta."
 
 #: src/devlog/templates/blog/details.html:9
-#: src/devlog/templates/blog/details.html:12
+#: src/devlog/templates/blog/details.html:13
 #, python-format
 msgid "Details for blog %(name)s"
 msgstr "Szczegóły bloga %(name)s"
@@ -272,15 +242,18 @@ msgstr "Szczegóły bloga %(name)s"
 msgid "display blog"
 msgstr "wyświetl bloga"
 
-#: src/devlog/templates/blog/details.html:17
+#: src/devlog/templates/blog/details.html:16
+#: src/devlog/templates/blog/display.html:18
+#: src/devlog/templates/blog/import.html:5
+#: src/devlog/templates/blog/import.html:9
 msgid "import posts"
 msgstr "importowanie postów"
 
-#: src/devlog/templates/blog/details.html:22
+#: src/devlog/templates/blog/details.html:18
 msgid "blog removal"
 msgstr "usuwanie bloga"
 
-#: src/devlog/templates/blog/details.html:24
+#: src/devlog/templates/blog/details.html:19
 msgid ""
 "The above form allows to hide your blog or temporarily to make it "
 "inactive. Click the button below to go to blog deletion confirmation page"
@@ -290,16 +263,15 @@ msgstr ""
 "nieaktywny. Kliknij przycisk poniżej aby ostatecznie usunąć bloga. "
 "Wymagane będzie dodatkowe potwierdzenie tej czynności."
 
-#: src/devlog/templates/blog/details.html:25
-#: src/devlog/templates/user/details.html:24
+#: src/devlog/templates/blog/details.html:20
 msgid "delete"
 msgstr "usuń"
 
-#: src/devlog/templates/blog/display.html:17
+#: src/devlog/templates/blog/display.html:16
 msgid "edit blog"
 msgstr "edytuj bloga"
 
-#: src/devlog/templates/blog/display.html:18
+#: src/devlog/templates/blog/display.html:17
 msgid "add post"
 msgstr "dodaj post"
 
@@ -307,7 +279,41 @@ msgstr "dodaj post"
 msgid "tools"
 msgstr "narzędzia"
 
-#: src/devlog/templates/errors/403.html:6
+#: src/devlog/templates/blog/display.html:28
+#: src/devlog/templates/user/base.html:43
+msgid "no posts yet"
+msgstr "nie ma jeszcze postów"
+
+#: src/devlog/templates/blog/import.html:10
+msgid ""
+"You may import posts from Markdown files. Each file must contain one post"
+" and provide at least title in YAML metadata, date is optional but if "
+"provided it will be set as post creation date, otherwise current date and"
+" time will be used."
+msgstr ""
+"Możesz zaimportować posty z plików Markdown. Każdy plik to jeden post i "
+"musi zawierać przynajmniej pole title (tytuł) w metadanych YAML. Pole "
+"date (data) jest opcjonalne, jeżeli zostanie znalezione wtedy data "
+"utworzenia postu będzie ustawiona na jego zawartość, w innym przypadku "
+"zostanie użyta bieżąca data i czas."
+
+#: src/devlog/templates/blog/import.html:11
+msgid "example content"
+msgstr "przykładowa zawartość"
+
+#: src/devlog/templates/blog/import.html:22
+msgid ""
+"The form below allows to upload multiple files at once. Only valid files "
+"will be processed and import will report failure if none of uploaded "
+"files is valid. Importing takes some time but usually your posts should "
+"appear on site within couple minutes."
+msgstr ""
+"Poniższy formularz pozwala zaimportować wiele plików na raz. Tylko "
+"poprawne pliki zostaną przetworzone, a proces importu zgłosi błąd jeżeli "
+"żaden z wgranych plików nie będzie poprawny. Importowanie zajmuje trochę "
+"czasu, ale zazwyczaj posty powinny się pojawić w ciągu kilku minut."
+
+#: src/devlog/templates/errors/403.html:7
 msgid "access forbidden"
 msgstr "brak dostępu"
 
@@ -316,7 +322,7 @@ msgid "Access to the page you're trying to open is forbidden."
 msgstr "Nie masz dostępu do tej strony"
 
 #: src/devlog/templates/errors/404.html:3
-#: src/devlog/templates/errors/404.html:6
+#: src/devlog/templates/errors/404.html:7
 msgid "page not found"
 msgstr "strony nie znaleziono"
 
@@ -325,7 +331,7 @@ msgid "The page you requested could not be found"
 msgstr "Podana strona nie istnieje"
 
 #: src/devlog/templates/errors/500.html:3
-#: src/devlog/templates/errors/500.html:6
+#: src/devlog/templates/errors/500.html:7
 msgid "server error"
 msgstr "błąd serwera"
 
@@ -335,20 +341,20 @@ msgid ""
 "unrecoverable."
 msgstr "Serwer napotkał błąd którego nie był w stanie obsłużyć"
 
-#: src/devlog/templates/macros/blog.html:11
+#: src/devlog/templates/macros/blog.html:12
 msgid "read more"
 msgstr "czytaj więcej"
 
-#: src/devlog/templates/macros/blog.html:21
+#: src/devlog/templates/macros/blog.html:22
 msgid "created"
 msgstr "utworzony"
 
-#: src/devlog/templates/macros/blog.html:26
+#: src/devlog/templates/macros/blog.html:27
 msgid "updated"
 msgstr "zaktualizowany"
 
-#: src/devlog/templates/macros/blog.html:31
-#: src/devlog/templates/post/display.html:10
+#: src/devlog/templates/macros/blog.html:32
+#: src/devlog/templates/post/display.html:11
 msgid "published"
 msgstr "opublikowany"
 
@@ -378,22 +384,27 @@ msgstr "następna"
 msgid "page %(page_no)s"
 msgstr "strona %(page_no)s"
 
-#: src/devlog/templates/post/create.html:5
-#: src/devlog/templates/post/create.html:8
+#: src/devlog/templates/post/create.html:6
+#: src/devlog/templates/post/create.html:10
 msgid "create new post"
 msgstr "utwórz nowy post"
 
-#: src/devlog/templates/post/create.html:10
+#: src/devlog/templates/post/create.html:11
 #, python-format
 msgid "Fill out the form below to create new post in blog %(name)s"
 msgstr "Wypełnij formularz by utworzyć nowy post w blogu %(name)s"
+
+#: src/devlog/templates/post/create.html:13
+#: src/devlog/templates/post/display.html:30
+msgid "preview"
+msgstr "podgląd"
 
 #: src/devlog/templates/post/display.html:13
 #, python-format
 msgid "mood: %(mood)s"
 msgstr "nastrój: %(mood)s"
 
-#: src/devlog/templates/post/display.html:25
+#: src/devlog/templates/post/display.html:24
 msgid "edit post"
 msgstr "edytuj post"
 
@@ -405,134 +416,30 @@ msgstr "data"
 msgid "blog"
 msgstr "blog"
 
-#: src/devlog/templates/post/list.html:32
-msgid "no posts found"
-msgstr "nie znaleziono żadnych postów"
-
-#: src/devlog/templates/user/base.html:7
+#: src/devlog/templates/user/base.html:9
 msgid "blogs"
 msgstr "blogi"
 
-#: src/devlog/templates/user/base.html:21
+#: src/devlog/templates/user/base.html:19
+#: src/devlog/templates/user/base.html:40
+msgid "see more"
+msgstr "zobacz więcej"
+
+#: src/devlog/templates/user/base.html:22
+msgid "no blogs yet"
+msgstr "nie ma jeszcze blogów"
+
+#: src/devlog/templates/user/base.html:25
 msgid "create new"
 msgstr "utwórz nowy"
 
-#: src/devlog/templates/user/confirmation_remove.html:5
-#: src/devlog/templates/user/confirmation_remove.html:9
-msgid "change email confirmation status"
-msgstr "zmień status potwierdzenia adresu email"
-
-#: src/devlog/templates/user/confirmation_remove.html:10
-msgid ""
-"Please confirm that you want your email to become unconfirmed again by "
-"ticking the box below and pressing confirmation button."
-msgstr ""
-"Potwierdź że na pewno chcesz by twój email miał ponownie status "
-"niepotwierdzony."
-
-#: src/devlog/templates/user/confirmation_start.html:3
-#: src/devlog/templates/user/confirmation_start.html:7
-msgid "user email confirmation"
-msgstr "potwierdzanie emaila użytkownika"
-
-#: src/devlog/templates/user/confirmation_start.html:8
-msgid "How user email confirmation procedure works? What are the steps?"
-msgstr "Jak się odbywa potwierdzanie emaila użytkownika? Jakie są kroki?"
-
-#: src/devlog/templates/user/confirmation_start.html:10
-msgid ""
-"we send an email to your provided address; this email contains "
-"verification link that you need to follow by clicking on it or copying it"
-" and pasting in you web browser address bar"
-msgstr ""
-"wysyłamy maila na podany przez ciebie adres; w tej wiadomości jest "
-"umieszczony link potwierdzający, w który trzeba kliknąć lub skopiować go "
-"do paska adresu przeglądarki i otworzyć stronę"
-
-#: src/devlog/templates/user/confirmation_start.html:11
-msgid ""
-"if your session is not active when you click the link in an email, you "
-"will be redirected to login page then after succesful login brought back "
-"to verification page"
-msgstr ""
-"aplikacja zaloguje cię jeżeli akurat nie będziesz miał aktywnej sesji, a "
-"potem przeniesie cię na stronę weryfikacji adresu email"
-
-#: src/devlog/templates/user/confirmation_start.html:12
-msgid ""
-"that's it, your email is confirmed, so says message on the page; you may "
-"want to test messages you will receive from our service by sending test "
-"email on notification preferences page"
-msgstr ""
-"i to już wszystko, twój adres został potwierdzony; jeżeli chcesz to "
-"możesz sprawdzić jak wyglądają wiadomości z serwisu wysyłając do siebie "
-"testową wiadomość na stronie ustawień powiadomień"
-
-#: src/devlog/templates/user/confirmation_start.html:14
-msgid "send me confirmation link"
-msgstr "wyślij link potwierdzający"
-
 #: src/devlog/templates/user/details.html:5
-#: src/devlog/templates/user/details.html:8
+#: src/devlog/templates/user/details.html:9
 msgid "account details"
 msgstr "szczegóły konta"
 
-#: src/devlog/templates/user/details.html:11
-msgid "information"
-msgstr "informacje"
-
-#: src/devlog/templates/user/details.html:12
-msgid "view your profile page"
-msgstr "zobacz swój profil"
-
-#: src/devlog/templates/user/details.html:14
-#, python-format
-msgid ""
-"Your email has been confirmed on %(confirmation_dt)s. Click the button "
-"below to clear email confirmation status (this will cease all "
-"communication from us)."
-msgstr ""
-"Twój adres został potwierdzony %(confirmation_dt)s. Kliknij przycisk "
-"poniżej aby przywrócić mu status niepotwoerdzony (nie wysyłamy żadnych "
-"wiadomości na adresy niepotwierdzone)."
-
-#: src/devlog/templates/user/details.html:15
-msgid "clear email confirmation"
-msgstr "przywróć stan niepotwierdzony"
-
-#: src/devlog/templates/user/details.html:17
-msgid ""
-"Your email has not been yet confirmed. This means no communication from "
-"us (including lost password recovery!). Please click the button below to "
-"begin email confirmation process."
-msgstr ""
-"Twój adres email nie został jeszcze potwierdzony. Oznacza to że nie "
-"dostaniesz od nas żadnych wiadomości (w tym nie będziesz mógł odzyskać "
-"hasła). Kliknij przycisk poniżej by rozpocząć proces potwierdzania adresu"
-" email."
-
-#: src/devlog/templates/user/details.html:18
-msgid "confirm email"
-msgstr "potwierdź email"
-
-#: src/devlog/templates/user/details.html:21
-#: src/devlog/templates/user/remove.html:5
-#: src/devlog/templates/user/remove.html:8
-msgid "remove account"
-msgstr "usuń konto"
-
-#: src/devlog/templates/user/details.html:23
-msgid ""
-"You may temporarily deactivate your account using the form above. To "
-"completely remove your account click the button below to get to "
-"confirmation page. We will miss you."
-msgstr ""
-"Używając powyższego formularza możesz czasowo wyłączyć swoje konto. Aby "
-"ostatecznie usunąć konto kliknij przycisk poniżej. Konieczne będzie "
-"dodatkowe potwierdzenie tej czynności. Będziemy tęsknić."
-
 #: src/devlog/templates/user/profile.html:3
-#: src/devlog/templates/user/profile.html:6
+#: src/devlog/templates/user/profile.html:7
 #, python-format
 msgid "Profile page for %(user_name)s"
 msgstr "Profil użytkownika %(user_name)s"
@@ -545,9 +452,18 @@ msgstr ""
 "Twoje konto jest oznaczone jako prywatne lub nie jest aktywne, nikt "
 "oprócz ciebie nie może zobaczyć tej strony"
 
+#: src/devlog/templates/user/profile.html:12
+msgid "user name"
+msgstr "nazwa użytkownika"
+
 #: src/devlog/templates/user/profile.html:14
 msgid "date joined"
 msgstr "data dołączenia"
+
+#: src/devlog/templates/user/remove.html:5
+#: src/devlog/templates/user/remove.html:9
+msgid "remove account"
+msgstr "usuń konto"
 
 #: src/devlog/templates/user/remove.html:10
 msgid ""
@@ -563,85 +479,18 @@ msgstr ""
 msgid "You will be logged out and redirected to site home page."
 msgstr "Nastąpi wylogowanie i przeniesienie na stronę główną serwisu."
 
-#: src/devlog/templates/user/email/confirmation.html:1
-msgid ""
-"You asked for email confirmation in Devlog. Please click the link below "
-"to verify your email."
-msgstr ""
-"Otrzymaliśmy od ciebie prośbę o potwierdzenie adresu email w serwisie "
-"Devlog. Kliknij na przycisk poniżej by zweryfikować i potwierdzić swój "
-"adres."
-
-#: src/devlog/templates/user/email/confirmation.html:4
-msgid "Devlog team"
-msgstr "Zespół serwisu Devlog"
-
-#: src/devlog/user/forms.py:27
+#: src/devlog/user/forms.py:15
 msgid "default language"
 msgstr "domyślny język"
 
-#: src/devlog/user/forms.py:31
+#: src/devlog/user/forms.py:19
 msgid "timezone"
 msgstr "strefa czasowa"
 
-#: src/devlog/user/forms.py:42
-msgid "user can not be activated without email"
-msgstr "nie można aktywować konta bez podania adresu email"
-
-#: src/devlog/user/views.py:27
+#: src/devlog/user/views.py:19
 #, python-format
-msgid "user %(email)s details have been saved"
-msgstr "dane użytkownika %(email)s zostały zapisane"
-
-#: src/devlog/user/views.py:34
-msgid "email address has been changed, new email will have to be confirmed again"
-msgstr "adres email został zmieniony, nowy adres będzie musiał zostać potwierdzony"
-
-#: src/devlog/user/views.py:67
-msgid "Devlog email confirmation"
-msgstr "Weryfikacja adresu email w serwisie Devlog"
-
-#: src/devlog/user/views.py:70
-msgid ""
-"confirmation email has been sent to your email address, please check your"
-" mailbox"
-msgstr ""
-"Wiadomość email z linkiem potwierdzającym została wysłana na podany przez"
-" ciebie adres, proszę sprawdzić swoją skrzynkę pocztową"
-
-#: src/devlog/user/views.py:87
-#, python-format
-msgid "user %(email)s not found"
-msgstr "nie znaleziono użytkownika %(email)s"
-
-#: src/devlog/user/views.py:95
-msgid "your email has been succesfully confirmed"
-msgstr "twój adres email został potwierdzony"
-
-#: src/devlog/user/views.py:101
-msgid "the token has expired, please start new confirmation process again"
-msgstr "link stracił ważność, proszę zacząć proces potwierdzania ponownie"
-
-#: src/devlog/user/views.py:105
-msgid "the token is invalid"
-msgstr "link jest nieprawidłowy"
-
-#: src/devlog/user/views.py:107
-msgid "token check failed"
-msgstr "nie udało się zweryfikować podanego linku"
-
-#: src/devlog/user/views.py:135
-msgid "your email is now unconfirmed again"
-msgstr "twój adres email jest ponownie niepotwierdzony"
-
-#: src/devlog/user/views.py:158
-msgid "no name"
-msgstr "bez nazwy"
-
-#: src/devlog/user/views.py:163
-#, python-format
-msgid "Account for user %(name)s deleted"
-msgstr "Konto użytkownika %(name)s zostało usunięte"
+msgid "user %(name)s details have been saved"
+msgstr "dane użytkownika %(name)s zostały zapisane"
 
 #: src/devlog/utils/forms.py:63
 msgid "save"
@@ -659,7 +508,82 @@ msgstr "Polski"
 msgid "English"
 msgstr "Angielski"
 
-#: src/devlog/utils/models.py:31
-msgid "None"
-msgstr "Żaden"
+#~ msgid "recent blogs"
+#~ msgstr "ostatnie blogi"
+
+#~ msgid "change email confirmation status"
+#~ msgstr "zmień status potwierdzenia adresu email"
+
+#~ msgid ""
+#~ "Please confirm that you want your "
+#~ "email to become unconfirmed again by "
+#~ "ticking the box below and pressing "
+#~ "confirmation button."
+#~ msgstr ""
+#~ "Potwierdź że na pewno chcesz by "
+#~ "twój email miał ponownie status "
+#~ "niepotwierdzony."
+
+#~ msgid "user email confirmation"
+#~ msgstr "potwierdzanie emaila użytkownika"
+
+#~ msgid "How user email confirmation procedure works? What are the steps?"
+#~ msgstr "Jak się odbywa potwierdzanie emaila użytkownika? Jakie są kroki?"
+
+#~ msgid ""
+#~ "we send an email to your provided"
+#~ " address; this email contains verification"
+#~ " link that you need to follow "
+#~ "by clicking on it or copying it"
+#~ " and pasting in you web browser "
+#~ "address bar"
+#~ msgstr ""
+#~ "wysyłamy maila na podany przez ciebie"
+#~ " adres; w tej wiadomości jest "
+#~ "umieszczony link potwierdzający, w który "
+#~ "trzeba kliknąć lub skopiować go do "
+#~ "paska adresu przeglądarki i otworzyć "
+#~ "stronę"
+
+#~ msgid ""
+#~ "if your session is not active when"
+#~ " you click the link in an "
+#~ "email, you will be redirected to "
+#~ "login page then after succesful login"
+#~ " brought back to verification page"
+#~ msgstr ""
+#~ "aplikacja zaloguje cię jeżeli akurat nie"
+#~ " będziesz miał aktywnej sesji, a "
+#~ "potem przeniesie cię na stronę "
+#~ "weryfikacji adresu email"
+
+#~ msgid ""
+#~ "that's it, your email is confirmed, "
+#~ "so says message on the page; you"
+#~ " may want to test messages you "
+#~ "will receive from our service by "
+#~ "sending test email on notification "
+#~ "preferences page"
+#~ msgstr ""
+#~ "i to już wszystko, twój adres "
+#~ "został potwierdzony; jeżeli chcesz to "
+#~ "możesz sprawdzić jak wyglądają wiadomości "
+#~ "z serwisu wysyłając do siebie testową"
+#~ " wiadomość na stronie ustawień powiadomień"
+
+#~ msgid "send me confirmation link"
+#~ msgstr "wyślij link potwierdzający"
+
+#~ msgid ""
+#~ "You asked for email confirmation in "
+#~ "Devlog. Please click the link below "
+#~ "to verify your email."
+#~ msgstr ""
+#~ "Otrzymaliśmy od ciebie prośbę o "
+#~ "potwierdzenie adresu email w serwisie "
+#~ "Devlog. Kliknij na przycisk poniżej by"
+#~ " zweryfikować i potwierdzić swój adres."
+
+#~ msgid "Devlog team"
+#~ msgstr "Zespół serwisu Devlog"
 

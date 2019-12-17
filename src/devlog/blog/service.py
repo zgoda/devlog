@@ -14,3 +14,7 @@ def get_recent(active_only: bool = True, limit: Optional[int] = None) -> BaseQue
     if limit is not None:
         query = query.limit(limit)
     return query
+
+
+def get_default() -> Optional[Blog]:
+    return Blog.query.filter_by(default=True).first()

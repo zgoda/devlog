@@ -1,6 +1,6 @@
 from flask import Response, flash, redirect, render_template, request, session
 from flask_babel import lazy_gettext as gettext
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, current_user
 
 from ..utils.views import next_redirect
 from . import auth_bp
@@ -34,5 +34,7 @@ def login() -> Response:
 @auth_bp.route('/logout')
 @login_required
 def logout() -> Response:
+    user_name = current_user.name
     logout_user()
+    flash(gettext('user %(user)s signed out', user=user_name), category='success')
     return redirect(next_redirect('home.index'))

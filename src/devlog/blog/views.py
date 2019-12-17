@@ -14,6 +14,7 @@ from ..utils.forms import Button, DeleteForm
 from ..utils.pagination import paginate
 from . import blog_bp
 from .forms import BlogForm, PostImportForm
+from .service import get_default
 
 
 @blog_bp.route('/create', methods=['POST', 'GET'])
@@ -22,18 +23,19 @@ def create() -> Response:
     if not current_user.active:
         flash(gettext('your account is inactive'), category='warning')
         return redirect(url_for('user.account'))
-    form = None
-    if request.method == 'POST':
-        form = BlogForm()
-        if form.validate_on_submit():
-            blog = form.save()
-            flash(
-                gettext('Your blog %(name)s has been created', name=blog.name),
-                category='success',
-            )
-            return redirect(url_for('.display', blog_id=blog.id))
+    form = BlogForm()
+    if form.validate_on_submit():
+        blog = form.save(save=False)
+        blog.default = get_default() is None
+        db.session.add(blog)
+        db.session.commit()
+        flash(
+            gettext('Your blog %(name)s has been created', name=blog.name),
+            category='success',
+        )
+        return redirect(url_for('.display', blog_id=blog.id))
     context = {
-        'form': form or BlogForm(),
+        'form': form,
     }
     return render_template('blog/create.html', **context)
 

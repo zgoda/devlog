@@ -67,7 +67,6 @@ def configure_rq(app: Devlog, env: Optional[str]):
     app.redis = redis_conn_cls.from_url(app.config['REDIS_URL'])
     app.queues = {
         'import': rq.Queue('devlog-import', is_async=run_async, connection=app.redis),
-        'mail': rq.Queue('devlog-mail', is_async=run_async, connection=app.redis),
     }
 
 
