@@ -61,10 +61,15 @@ Practicalia
 Rants
 -----
 
+Usually only lightly related to project's topic, and not always make sense.
+I'd say, usually they do not.
+
 .. toctree::
     :maxdepth: 1
 
     rants/cssframeworks
+    rants/miguel
+    rants/flask_is_good
 
 Project documentation
 ---------------------
