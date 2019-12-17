@@ -4,8 +4,8 @@ python:
   - "3.7"
   - "3.8"
 install:
-  - pip install -q -U Sphinx wheel
   - pip install -q -e .[test]
+  - pip install -q -U Sphinx wheel
   - pip install -q -U codacy-coverage
 script:
   - pytest --cov-branch --cov-report xml --cov=devlog tests
