@@ -1,0 +1,5 @@
+[Unit]
+Description=Devlog things
+
+[Install]
+WantedBy=multi-user.target
