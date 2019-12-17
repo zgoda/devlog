@@ -6,12 +6,16 @@ from wtforms.validators import InputRequired
 from wtforms_components.fields import EmailField
 
 from ..models import User
-from ..utils.forms import BaseForm
+from ..utils.forms import BaseForm, Button
 
 
 class LoginForm(BaseForm):
     name = EmailField(gettext('name'), validators=[InputRequired()])
     password = PasswordField(gettext('password'), validators=[InputRequired()])
+
+    buttons = [
+        Button(text=gettext('sign in'), icon='sign-in-alt'),
+    ]
 
     def login(self) -> Optional[User]:
         user = User.get_by_name(self.name.data)

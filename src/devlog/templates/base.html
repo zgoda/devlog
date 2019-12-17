@@ -32,14 +32,14 @@
           <div class="navbar-end">
             {% if current_user.is_authenticated %}
             <div class="navbar-item has-dropdown">
-              <a class="navbar-link"><span class="fas fa-user-alt"></span>&nbsp;<span>{{ current_user.display_name }}</span></a>
+              <a class="navbar-link"><span class="fas fa-user-alt"></span><span>&nbsp;&nbsp;{{ current_user.name }}</span></a>
               <div class="navbar-dropdown">
-                <a class="navbar-item" href="{{ url_for('user.account') }}"><span class="icon"><i class="fas fa-user-cog"></i></span>&nbsp;<span>{{ gettext('account') }}</span></a>
-                <a class="navbar-item" href="{{ url_for('auth.logout') }}"><span class="icon"><i class="fas fa-sign-out-alt"></i></span>&nbsp;<span>{{ gettext('sign out') }}</span></a>
+                <a class="navbar-item" href="{{ url_for('user.account') }}"><span class="icon"><i class="fas fa-user-cog"></i></span><span>&nbsp;&nbsp;{{ gettext('account') }}</span></a>
+                <a class="navbar-item" href="{{ url_for('auth.logout') }}"><span class="icon"><i class="fas fa-sign-out-alt"></i></span><span>&nbsp;&nbsp;{{ gettext('sign out') }}</span></a>
               </div>
             </div>
             {% else %}
-            <a class="navbar-item" href="{{ url_for('auth.login') }}"><span class="fas fa-signin-alt"></span>&nbsp;<span>{{ gettext('sign in') }}</span></a>
+            <a class="navbar-item" href="{{ url_for('auth.login') }}"><span class="fas fa-sign-in-alt"></span><span>&nbsp;&nbsp;{{ gettext('sign in') }}</span></a>
             {% endif %}
           </div>
         </div>
