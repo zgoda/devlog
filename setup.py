@@ -36,7 +36,6 @@ REQ_BASE = [
     'text-unidecode',
     'python-dateutil',
     'passlib[argon2]',
-    'requests',
     'itsdangerous',
     # Sentry
     'sentry-sdk[flask]',
@@ -87,7 +86,6 @@ REQ_DEV = REQ_TEST + [
 REQ_PROD = [
     'psycopg2-binary',
     'uwsgi',
-    'supervisor',
 ]
 
 

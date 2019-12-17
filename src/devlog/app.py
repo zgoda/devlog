@@ -4,12 +4,11 @@ from typing import Optional
 
 import rq
 import sentry_sdk
-from fakeredis import FakeStrictRedis
 from flask import render_template
 from flask_babel import gettext as _
 from redis import Redis
 from sentry_sdk.integrations.flask import FlaskIntegration
-from werkzeug.utils import ImportStringError
+from werkzeug.utils import ImportStringError, import_string
 
 from ._version import get_version
 from .auth import auth_bp
@@ -38,9 +37,9 @@ def make_app(env: Optional[str] = None) -> Devlog:
             )
     app = Devlog()
     configure_app(app, env)
-    configure_rq(app, env)
     configure_extensions(app, env)
     with app.app_context():
+        configure_rq(app, env)
         configure_blueprints(app, env)
         configure_error_handlers(app)
         setup_template_extensions(app)
@@ -62,11 +61,11 @@ def configure_rq(app: Devlog, env: Optional[str]):
     redis_conn_cls = Redis
     run_async = True
     if app.testing:
-        redis_conn_cls = FakeStrictRedis
+        redis_conn_cls = import_string('fakeredis.FakeStrictRedis')
         run_async = False
     app.redis = redis_conn_cls.from_url(app.config['REDIS_URL'])
     app.queues = {
-        'import': rq.Queue('devlog-import', is_async=run_async, connection=app.redis),
+        'tasks': rq.Queue('devlog-tasks', is_async=run_async, connection=app.redis),
     }
 
 

@@ -106,7 +106,7 @@ def import_posts(blog_id: int) -> Response:
             )
             file_path = os.path.join(upload_dir, file_name)
             fs.save(file_path)
-            queue = current_app.queues['import']
+            queue = current_app.queues['tasks']
             queue.enqueue('devlog.tasks.import_post', file_path, blog_id)
             flash(
                 gettext(

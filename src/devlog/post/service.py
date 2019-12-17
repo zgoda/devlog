@@ -15,7 +15,7 @@ def get_recent(
         query = query.filter(Post.blog == blog)
     if active_only:
         query = query.filter(Post.draft.is_(False))
-    query = query.order_by(db.desc(Post.updated))
+    query = query.order_by(db.desc(Post.created))
     if limit is not None:
         query = query.limit(limit)
     return query

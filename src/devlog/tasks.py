@@ -1,12 +1,10 @@
 import re
-from typing import List, Optional
 
 import markdown2
 from dateutil.parser import isoparse
 
 from .app import make_app
 from .models import Blog, Post, db
-from .utils import email
 
 app = make_app()
 app.app_context().push()
@@ -36,25 +34,10 @@ def import_post(file_name: str, blog_id: int):
         post_date = text_html.metadata.get('date')
         if post_date:
             created_dt = isoparse(post_date)
-        post = Post(
-            blog=blog, title=title, text=plain_text, text_markup_type='markdown',
-            public=blog.effective_public, created=created_dt,
-        )
+        post = Post(blog=blog, title=title, text=plain_text, created=created_dt)
         db.session.add(post)
         db.session.commit()
     except Exception:
         app.logger.exception(
             f'Unhandled exception when importing post file {file_name}'
-        )
-
-
-def send_email(
-            recipients: List[str], subject: str, html_body: str,
-            text_body: Optional[str] = None,
-        ):
-    try:
-        email.send_email(recipients, subject, html_body, text_body)
-    except Exception:
-        app.logger.exception(
-            f'Unhandled exception when sending email {subject} to {recipients}',
         )
