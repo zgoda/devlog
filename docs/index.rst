@@ -14,7 +14,7 @@ document.
 Please note this application does not strive to be neither complete nor even
 working. Although it's just a playground, the
 `application is deployed <https://devlog.zgodowie.org>`_ and can be seen live.
-Changes are deployed with every tag.
+Changes are deployed at least with every tag but usually more often.
 
 Why that? I already have a pet project that I use on daily basis, the
 `Brewlog project <https://github.com/zgoda/brewlog>`_. It's running fine but I
@@ -28,7 +28,10 @@ years, and development of Python web application does not look like before.
 The tooling is pretty standard, and in fact that did not change much, it's
 still Flask with SQLAlchemy but in the course Bootstrap got updated to version
 4, OAuth support library got deprecated and superseded, packaging tools greatly
-improved and VPS instances became really cheap.
+improved and VPS instances became really cheap. Meanwhile EU adopted GDPR and
+it become apparent that providing federated logins requires that you register
+as *personal data collector on behalf*. Oh my, what a mess. So I need a
+playground for testing and this is why Devlog started.
 
 Miscellanea
 -----------
