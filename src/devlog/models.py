@@ -9,6 +9,7 @@ from sqlalchemy_utils import observes
 from .sec import pwd_context
 from .ext import db
 from .utils.models import MarkupField, SlugField, TextProcessingMixin
+from .utils.text import stripping_markdown
 
 
 class User(db.Model, UserMixin, TextProcessingMixin):
@@ -137,7 +138,9 @@ class Post(db.Model, TextProcessingMixin):
     @classmethod
     def pre_save(cls, mapper, connection, target):
         super().pre_save(mapper, connection, target)
-        summary = target.text.split()[:10]
+        md = stripping_markdown()
+        plain_text = md.convert(target.text)
+        summary = plain_text.split()[:10]
         target.summary = ' '.join(summary)
         if target.draft:
             target.published = None

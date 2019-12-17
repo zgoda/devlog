@@ -1,6 +1,6 @@
 import collections
 
-import markdown2
+import markdown
 from flask_sqlalchemy.model import Model as BaseModel
 
 from .text import slugify
@@ -21,9 +21,8 @@ class TextProcessingMixin:
 
     @staticmethod
     def markup_to_html(instr: str) -> str:
-        return markdown2.markdown(
-            instr, safe_mode=True,
-            extras={'html-classes': {'img': 'markdown-image'}},
+        return markdown.markdown(
+            instr, extensions=['fenced_code', 'codehilite'], output_format='html'
         )
 
     @classmethod

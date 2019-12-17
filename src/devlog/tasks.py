@@ -1,6 +1,6 @@
 import re
 
-import markdown2
+import markdown
 from dateutil.parser import isoparse
 
 from .app import make_app
@@ -17,10 +17,9 @@ def import_post(file_name: str, blog_id: int):
     try:
         with open(file_name) as fp:
             text = fp.read()
-        text_html = markdown2.markdown(
-            text, safe_mode=True, extras=['metadata']
-        )
-        if not text_html.metadata or not text_html.metadata.get('title'):
+        md = markdown.Markdown(extensions=['meta'])
+        md.convert(text)
+        if not md.Meta or not md.Meta.get('title'):
             raise ValueError(
                 f'Post file {file_name} does not provide post title in metadata'
             )
@@ -28,13 +27,17 @@ def import_post(file_name: str, blog_id: int):
         if blog is None:
             raise ValueError(f'Blog ID {blog_id} not found')
         plain_text = METADATA_RE.sub('', text, count=1).strip()
-        title = text_html.metadata['title']
+        title = ' '.join(md.Meta['title']).strip()
         title = title.replace("'", '')
         created_dt = None
-        post_date = text_html.metadata.get('date')
+        post_date = ' '.join(md.Meta.get('date', [])).strip()
         if post_date:
             created_dt = isoparse(post_date)
-        post = Post(blog=blog, title=title, text=plain_text, created=created_dt)
+        is_draft = ' '.join(md.Meta.get('draft', [])).strip()
+        is_draft = 'false' not in is_draft.lower()
+        post = Post(
+            blog=blog, title=title, text=plain_text, created=created_dt, draft=is_draft
+        )
         db.session.add(post)
         db.session.commit()
     except Exception:

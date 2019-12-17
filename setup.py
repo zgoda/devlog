@@ -40,9 +40,8 @@ REQ_BASE = [
     # Sentry
     'sentry-sdk[flask]',
     # simplified markup processors
-    'docutils',
-    'textile',
-    'markdown2',
+    'markdown',
+    'pygments',
     # RQ requirements
     'rq',
     'hiredis',

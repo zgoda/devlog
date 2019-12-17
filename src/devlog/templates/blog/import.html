@@ -5,7 +5,7 @@
 {% block pagetitle %}{{ gettext('import posts').capitalize() }}{% endblock %}
 
 {% block widecontent %}
-<div class="content">
+<div class="content has-raw-code">
   <h1>{{ gettext('import posts').capitalize() }}</h1>
   <p>{% trans %}You may import posts from Markdown files. Each file must contain one post and provide at least title in YAML metadata, date is optional but if provided it will be set as post creation date, otherwise current date and time will be used.{% endtrans %}</p>
   <h2>{{ gettext('example content').capitalize() }}</h2>

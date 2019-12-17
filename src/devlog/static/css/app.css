@@ -1,9 +1,9 @@
-.markdown-image {
+.post p img {
     display: block;
     margin: 0 auto;
 }
 
-pre code {
+.has-raw-code pre code {
     background-color: #eee;
     border: 1px solid #999;
     display: block;

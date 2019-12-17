@@ -5,8 +5,12 @@
 
 {% block pagetitle %}{{ post.title }}{% endblock %}
 
+{% block extracss %}
+<link rel="stylesheet" href="/static/css/pgm_friendly.css">
+{% endblock %}
+
 {% block widecontent %}
-<div class="content">
+<div class="content post">
   <h1>{{ post.title }}</h1>
   <h3>{% if post.published %}{{ gettext('published').capitalize() }}: {{ post.published|datetimeformat('long') }}{% else %}{{ gettext('draft') }}{% endif %}</h3>
   {% if post.mood %}
