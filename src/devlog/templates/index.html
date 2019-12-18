@@ -2,6 +2,7 @@
 
 {% from "macros/blog.html" import post_url, render_post_headline %}
 {% from "macros/menus.html" import tool_dropdown %}
+{% from "macros/pagination.html" import render_pagination %}
 
 {% block pagetitle %}Devlog {{ gettext('and other logs') }}{% endblock %}
 
@@ -20,14 +21,18 @@
   {{ tool_dropdown(gettext('tools'), menu_items, 'owner-tools-menu') }}
   {% endif %}
   <hr class="is-large">
-  <div class="box">
-    <h2>{{ gettext('recent posts').capitalize() }}</h2>
-    {% for post in posts.items %}
-    {{ render_post_headline(post) }}
-    {% else %}
+</div>
+<div class="box">
+  {% if posts %}
+  {% for post in posts.items %}
+  {{ render_post_headline(post) }}
+  {% endfor %}
+  {{ render_pagination(posts) }}
+  {% else %}
+  <div class="content">
     <p>{{ gettext('no posts yet').capitalize() }}.</p>
-    {% endfor %}
   </div>
+  {% endif %}
 </div>
 {% endblock %}
 

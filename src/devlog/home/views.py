@@ -18,7 +18,7 @@ def index() -> Response:
         'recent_blogs': recent_blogs(active_only=active_only),
         'recent_posts': recent_posts(active_only=active_only, limit=limit),
         'blog': blog,
-        'posts': paginate(posts_query),
+        'posts': paginate(posts_query, size=10),
     }
     return render_template('index.html', **context)
 

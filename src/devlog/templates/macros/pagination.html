@@ -1,8 +1,8 @@
 {% macro render_pagination(pagination) %}
 {% if pagination.pages > 1 %}
 <nav class="pagination" role="navigation" aria-label="{{ gettext('pages') }}">
-  <a class="pagination-previous" title="{{ gettext('previous') }}" {% if not pagination.has_prev %}disabled{% endif %}>{{ gettext('previous') }}</a>
-  <a class="pagination-next" title="{{ gettext('next') }}" {% if not pagination.has_next %}disabled{% endif %}>{{ gettext('next') }}</a>
+  <a class="pagination-previous" title="{{ gettext('previous') }}" href="{{ url_for_other_page(pagination.page-1) }}" {% if not pagination.has_prev %}disabled{% endif %}>{{ gettext('previous') }}</a>
+  <a class="pagination-next" title="{{ gettext('next') }}" href="{{ url_for_other_page(pagination.page+1) }}" {% if not pagination.has_next %}disabled{% endif %}>{{ gettext('next') }}</a>
   <ul class="pagination-list">
     {% for page in pagination.iter_pages() %}
     {% if page %}

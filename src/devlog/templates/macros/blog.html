@@ -3,10 +3,10 @@
 {% endmacro %}
 
 {% macro render_post_headline(post) %}
-<div class="card">
+<div class="card content">
   <div class="card-content">
     <h3 class="title is-3">{{ post.title }}</h3>
-    <h4 class="subtitle is-4">{{ gettext('created on %(date)s', date=format_datetime(post.created, 'short')) }}</h4>
+    <h4 class="subtitle is-4"><a href="{{ post_url(post) }}">{{ gettext('created on %(date)s', date=format_datetime(post.created, 'short')) }}</a></h4>
     <div class="content">
       <p class="card-text">{{ post.summary }}</p>
       <a href="{{ post_url(post) }}" class="card-link">{{ gettext('read more') }}</a>
