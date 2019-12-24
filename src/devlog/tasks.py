@@ -1,6 +1,7 @@
 import re
 
 import markdown
+import pytz
 from dateutil.parser import isoparse
 
 from .app import make_app
@@ -33,6 +34,8 @@ def import_post(file_name: str, blog_id: int):
         post_date = ' '.join(md.Meta.get('date', [])).strip()
         if post_date:
             created_dt = isoparse(post_date)
+            if created_dt.tzinfo is not None:
+                created_dt = created_dt.astimezone(pytz.utc)
         is_draft = ' '.join(md.Meta.get('draft', [])).strip()
         is_draft = 'false' not in is_draft.lower()
         post = Post(

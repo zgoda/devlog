@@ -35,6 +35,7 @@ REQ_BASE = [
     'SQLAlchemy-Utils',
     'text-unidecode',
     'python-dateutil',
+    'pytz',
     'passlib[argon2]',
     'itsdangerous',
     # Sentry
