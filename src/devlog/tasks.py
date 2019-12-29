@@ -34,7 +34,10 @@ def import_post(file_name: str, blog_id: int):
         post_date = ' '.join(md.Meta.get('date', [])).strip()
         if post_date:
             created_dt = isoparse(post_date)
-            if created_dt.tzinfo is not None:
+            if created_dt.tzinfo is None:
+                tz = pytz.timezone(app.config['BABEL_DEFAULT_TIMEZONE'])
+                created_dt = created_dt.astimezone(tz).astimezone(pytz.utc)
+            else:
                 created_dt = created_dt.astimezone(pytz.utc)
         is_draft = ' '.join(md.Meta.get('draft', [])).strip()
         is_draft = 'false' not in is_draft.lower()
