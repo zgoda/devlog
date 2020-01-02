@@ -35,6 +35,14 @@ scope of provided information is very similar but you need to know what you're
 looking for on Code Climate. On the other hand, Codacy immediately shows
 what's important.
 
+.. note::
+
+    Nime months after writing this I settled with Code Climate. While Codacy
+    UI better visualises issues and progress, I still encountered issues with
+    some parts not working, like broken receiver for coverage reports, or
+    suddenly failing analysis runs. Their support is awesome, but things should
+    work without calling 911.
+
 Black
 -----
 
