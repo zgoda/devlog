@@ -22,6 +22,7 @@ deploy:
     keep-history: true
     on:
       branch: master
+      python: "3.8"
   - provider: releases
     api_key: $GH_TOKEN
     skip_cleanup: true
@@ -29,3 +30,4 @@ deploy:
     file: dist/*
     on:
       tags: true
+      python: "3.8"
