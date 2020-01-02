@@ -2,17 +2,16 @@ from datetime import datetime
 from typing import Optional
 
 from flask_babel import lazy_gettext as gettext
-from wtforms import validators
 from wtforms.fields import BooleanField, StringField, TextAreaField
 
 from ..ext import db
 from ..models import Blog, Post
-from ..utils.forms import ObjectForm
+from ..utils.forms import ObjectForm, input_required_validator
 
 
 class PostForm(ObjectForm):
-    title = StringField(gettext('title'), validators=[validators.InputRequired()])
-    text = TextAreaField(gettext('text'), validators=[validators.InputRequired()])
+    title = StringField(gettext('title'), validators=[input_required_validator])
+    text = TextAreaField(gettext('text'), validators=[input_required_validator])
     mood = StringField(gettext('mood'))
     draft = BooleanField(gettext('draft'), default=True)
     pinned = BooleanField(gettext('pinned'), default=False)

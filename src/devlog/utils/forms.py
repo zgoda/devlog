@@ -5,6 +5,7 @@ from flask import Markup, render_template_string
 from flask_babel import lazy_gettext as gettext
 from flask_wtf import FlaskForm
 from wtforms.fields import BooleanField
+from wtforms.validators import InputRequired
 
 from ..ext import db
 
@@ -75,3 +76,6 @@ class ObjectForm(BaseForm):
         else:
             db.session.flush()
         return obj
+
+
+input_required_validator = InputRequired()

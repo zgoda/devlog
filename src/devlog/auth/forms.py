@@ -2,15 +2,14 @@ from typing import Optional
 
 from flask_babel import lazy_gettext as gettext
 from wtforms.fields import PasswordField, StringField
-from wtforms.validators import InputRequired
 
 from ..models import User
-from ..utils.forms import BaseForm, Button
+from ..utils.forms import BaseForm, Button, input_required_validator
 
 
 class LoginForm(BaseForm):
-    name = StringField(gettext('name'), validators=[InputRequired()])
-    password = PasswordField(gettext('password'), validators=[InputRequired()])
+    name = StringField(gettext('name'), validators=[input_required_validator])
+    password = PasswordField(gettext('password'), validators=[input_required_validator])
 
     buttons = [
         Button(text=gettext('sign in'), icon='sign-in-alt'),

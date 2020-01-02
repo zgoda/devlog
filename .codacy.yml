@@ -4,13 +4,12 @@ engines:
     enabled: true
 exclude_paths:
   - 'docs/**'
-  - 'secrets/**'
   - 'tests/**'
   - 'conf/**'
-  - 'requirements/**'
   - '**/config*'
   - '**/app.py'
   - '**/cli.py'
+  - '**/rqsettings.py'
   - '*.py'
   - '*.md'
   - '*.yml'

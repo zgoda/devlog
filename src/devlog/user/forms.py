@@ -1,15 +1,14 @@
 from flask_babel import lazy_gettext as gettext
 from wtforms.fields import BooleanField, SelectField, StringField, TextAreaField
-from wtforms.validators import InputRequired
 
-from ..utils.forms import ObjectForm
+from ..utils.forms import ObjectForm, input_required_validator
 from ..utils.i18n import (
     DEFAULT_LANGUAGE, DEFAULT_TIMEZONE, SUPPORTED_LANGUAGE_CHOICES, TIMEZONE_CHOICES,
 )
 
 
 class UserForm(ObjectForm):
-    name = StringField(gettext('name'), validators=[InputRequired()])
+    name = StringField(gettext('name'), validators=[input_required_validator])
     blurb = TextAreaField(gettext('blurb'))
     default_language = SelectField(
         gettext('default language'), choices=SUPPORTED_LANGUAGE_CHOICES,
