@@ -4,8 +4,8 @@ from flask_login import current_user
 from ..blog.service import get_default, get_recent as recent_blogs
 from ..post.service import get_by_ident, get_recent as recent_posts
 from ..post.views import post_display_func
-from . import home_bp
 from ..utils.pagination import paginate
+from . import home_bp
 
 
 @home_bp.route('/')

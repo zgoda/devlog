@@ -31,8 +31,6 @@ REQ_BASE = [
     'Flask-Babel',
     'Flask-WTF',
     'Flask-SQLAlchemy',
-    'WTForms-Components',
-    'SQLAlchemy-Utils',
     'text-unidecode',
     'python-dateutil',
     'pytz',

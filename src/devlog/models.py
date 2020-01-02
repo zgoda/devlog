@@ -4,10 +4,9 @@ import datetime
 from typing import Optional
 
 from flask_login import UserMixin
-from sqlalchemy_utils import observes
 
-from .sec import pwd_context
 from .ext import db
+from .sec import pwd_context
 from .utils.models import MarkupField, SlugField, TextProcessingMixin
 from .utils.text import stripping_markdown
 
@@ -122,10 +121,6 @@ class Post(db.Model, TextProcessingMixin):
     draft = db.Column(db.Boolean, default=True)
     pinned = db.Column(db.Boolean, default=False)
     language = db.Column(db.String(20))
-
-    @observes('updated')
-    def update_observer(self, updated):
-        self.blog.updated = updated
 
     @classmethod
     def markup_fields(cls):
