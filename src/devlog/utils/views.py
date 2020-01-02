@@ -1,7 +1,10 @@
-from typing import Optional
+import os
+from typing import List, Optional
 from urllib.parse import urljoin, urlparse
 
-from flask import request, session, url_for
+from flask import current_app, request, session, url_for
+from werkzeug.datastructures import FileStorage
+from werkzeug.utils import secure_filename
 
 
 def next_redirect(fallback_endpoint: str, *args, **kwargs) -> str:
@@ -34,3 +37,34 @@ def is_redirect_safe(target: Optional[str]) -> bool:
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+
+
+def valid_files(files: List[FileStorage]) -> List:
+    """Retrieve list of valid file storage objects from request data.
+
+    :param files: list of file uploads
+    :type files: List[FileStorage]
+    :return: list of valid file names
+    :rtype: List
+    """
+    valid_files = []
+    for fs in files:
+        if fs.filename != '' and \
+                fs.filename.endswith(current_app.config['ALLOWED_UPLOAD_EXTENSIONS']):
+            valid_files.append(fs)
+    return valid_files
+
+
+def path_for_file_upload(fs: FileStorage) -> str:
+    """Generate path where uploaded file should be saved.
+
+    :param fs: file upload object
+    :type fs: FileStorage
+    :return: file system path to save uploaded file
+    :rtype: str
+    """
+    file_name = secure_filename(fs.filename)
+    upload_dir = os.path.join(
+        current_app.instance_path, current_app.config['UPLOAD_DIR_NAME']
+    )
+    return os.path.join(upload_dir, file_name)

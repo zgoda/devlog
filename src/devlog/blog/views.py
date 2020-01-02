@@ -5,13 +5,13 @@ from flask import (
 )
 from flask_babel import lazy_gettext as gettext
 from flask_login import current_user, login_required
-from werkzeug.utils import secure_filename
 
 from ..ext import db
 from ..models import Blog
 from ..post.service import get_recent as recent_posts
 from ..utils.forms import Button, DeleteForm
 from ..utils.pagination import paginate
+from ..utils.views import path_for_file_upload, valid_files
 from . import blog_bp
 from .forms import BlogForm, PostImportForm
 from .service import get_default
@@ -90,28 +90,19 @@ def import_posts(blog_id: int) -> Response:
         if 'files' not in request.files:
             flash(gettext('no files uploaded'), category='warning')
             return final
-        file_storages = request.files.getlist('files')
-        valid_files = []
-        for fs in file_storages:
-            if fs.filename != '' and \
-                    fs.filename.endswith(current_app.config['ALLOWED_UPLOAD_EXTENSIONS']):  # noqa: E501
-                valid_files.append(fs)
-        if not valid_files:
+        valid_uploads = valid_files(request.files.getlist('files'))
+        if not valid_uploads:
             flash(gettext('no valid files uploaded'), category='warning')
             return final
-        for fs in valid_files:
-            file_name = secure_filename(fs.filename)
-            upload_dir = os.path.join(
-                current_app.instance_path, current_app.config['UPLOAD_DIR_NAME']
-            )
-            file_path = os.path.join(upload_dir, file_name)
+        for fs in valid_uploads:
+            file_path = path_for_file_upload(fs)
             fs.save(file_path)
             queue = current_app.queues['tasks']
             queue.enqueue('devlog.tasks.import_post', file_path, blog_id)
             flash(
                 gettext(
                     'import of post file %(file_name)s has been scheduled',
-                    file_name=file_name,
+                    file_name=os.path.split(file_path)[-1],
                 ),
                 category='success'
             )
