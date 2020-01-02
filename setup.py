@@ -35,7 +35,6 @@ REQ_BASE = [
     'python-dateutil',
     'pytz',
     'passlib[argon2]',
-    'itsdangerous',
     # Sentry
     'sentry-sdk[flask]',
     # simplified markup processors
