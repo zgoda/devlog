@@ -17,8 +17,9 @@ Apparently the COC document does not boost this project's _community status_ bec
 
 Because badges are meh spies.
 
-* [Codacy quality report](https://www.codacy.com/app/jarek.zgoda/devlog)
 * [Travis CI Build Status](https://travis-ci.com/zgoda/devlog)
+* [Code Climate maintainability report](https://codeclimate.com/github/zgoda/devlog/maintainability)
+* [Code Climate test coverage report](https://codeclimate.com/github/zgoda/devlog/test_coverages)
 
 ## Governance
 
