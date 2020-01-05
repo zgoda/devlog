@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+from datetime import datetime
 from typing import Optional
 
 from flask_login import UserMixin
@@ -67,8 +67,8 @@ class Blog(db.Model, TextProcessingMixin):
     user = db.relationship(
         'User', backref=db.backref('blogs', lazy='dynamic', cascade='all,delete-orphan')
     )
-    created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
-    updated = db.Column(db.DateTime, onupdate=datetime.datetime.utcnow, index=True)
+    created = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    updated = db.Column(db.DateTime, onupdate=datetime.utcnow, index=True)
     name = db.Column(db.String(200), nullable=False, index=True)
     slug = db.Column(db.String(200), index=True)
     blurb = db.Column(db.Text)
@@ -109,8 +109,8 @@ class Post(db.Model, TextProcessingMixin):
     author = db.relationship(
         'User', backref=db.backref('posts', lazy='dynamic', cascade='all,delete-orphan')
     )
-    created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
-    updated = db.Column(db.DateTime, onupdate=datetime.datetime.utcnow)
+    created = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     published = db.Column(db.DateTime, index=True)
     title = db.Column(db.String(200), nullable=False)
     slug = db.Column(db.String(200), index=True)
@@ -141,7 +141,7 @@ class Post(db.Model, TextProcessingMixin):
             target.published = None
         else:
             if target.published is None:
-                target.published = datetime.datetime.utcnow()
+                target.published = datetime.utcnow()
         if target.language is None:
             target.language = target.blog.effective_language
         if target.author_id is None:
