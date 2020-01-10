@@ -41,10 +41,10 @@ def make_app(env: Optional[str] = None) -> Devlog:
             )
     app = Devlog()
     configure_app(app, env)
-    configure_extensions(app, env)
+    configure_extensions(app)
     with app.app_context():
-        configure_rq(app, env)
-        configure_blueprints(app, env)
+        configure_rq(app)
+        configure_blueprints(app)
         configure_error_handlers(app)
         setup_template_extensions(app)
     return app
@@ -61,7 +61,7 @@ def configure_app(app: Devlog, env: Optional[str]):
     os.makedirs(uploads_dir, exist_ok=True)
 
 
-def configure_rq(app: Devlog, env: Optional[str]):
+def configure_rq(app: Devlog):
     redis_conn_cls = Redis
     run_async = True
     if app.testing:
@@ -73,7 +73,7 @@ def configure_rq(app: Devlog, env: Optional[str]):
     }
 
 
-def configure_blueprints(app: Devlog, env: Optional[str]):
+def configure_blueprints(app: Devlog):
     app.register_blueprint(home_bp)
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(user_bp, url_prefix='/user')
@@ -81,7 +81,7 @@ def configure_blueprints(app: Devlog, env: Optional[str]):
     app.register_blueprint(post_bp, url_prefix='/post')
 
 
-def configure_extensions(app: Devlog, env: Optional[str]):
+def configure_extensions(app: Devlog):
     db.init_app(app)
     csrf.init_app(app)
     login_manager.init_app(app)
