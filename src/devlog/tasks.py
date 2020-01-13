@@ -41,7 +41,7 @@ def import_post(file_name: str, blog_id: int):
         summary = ' '.join(plain_text.split()[:10])
         title = ' '.join(md.Meta['title']).strip()
         title = title.replace("'", '')
-        created_dt = None
+        created_dt = updated = datetime.utcnow()
         post_date = ' '.join(md.Meta.get('date', [])).strip()
         if post_date:
             created_dt = isoparse(post_date)
@@ -54,7 +54,6 @@ def import_post(file_name: str, blog_id: int):
                 created_dt = created_dt.astimezone(pytz.utc)
         is_draft = ' '.join(md.Meta.get('draft', [])).strip()
         is_draft = 'false' not in is_draft.lower()
-        updated = datetime.utcnow()
         published = None
         if not is_draft:
             published = updated
