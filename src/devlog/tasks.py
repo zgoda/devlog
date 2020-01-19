@@ -52,6 +52,7 @@ def import_post(file_name: str, blog_id: int):
                 created_dt = created_dt.astimezone(tz).astimezone(pytz.utc)
             else:
                 created_dt = created_dt.astimezone(pytz.utc)
+            created_dt = created_dt.replace(tzinfo=None)
         is_draft = ' '.join(md.Meta.get('draft', [])).strip()
         is_draft = 'false' not in is_draft.lower()
         published = None
