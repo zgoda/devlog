@@ -9,8 +9,7 @@ from dateutil.parser import isoparse
 
 from .utils.text import slugify, stripping_markdown
 
-
-METADATA_RE = re.compile(r'\A---(.|\n)*?---')
+METADATA_RE = re.compile(r'\A---.*?---', re.S | re.MULTILINE)
 
 
 def import_post(file_name: str, blog_id: int):
