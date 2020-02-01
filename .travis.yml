@@ -1,6 +1,8 @@
 os: linux
 language: python
 cache: pip
+git:
+  quiet: true
 python:
   - "3.7"
   - "3.8"
@@ -21,7 +23,7 @@ deploy:
   - provider: pages
     local_dir: build/sphinx/html
     committer_from_gh: true
-    skip_cleanup: true
+    cleanup: false
     token: $GH_TOKEN
     keep_history: true
     on:
@@ -29,9 +31,9 @@ deploy:
       python: "3.8"
   - provider: releases
     token: $GH_TOKEN
-    skip_cleanup: true
+    cleanup: false
     file_glob: true
     file: dist/*
     on:
       tags: true
-      python: "3.8"
+      python: "3.7"

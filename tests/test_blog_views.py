@@ -24,6 +24,13 @@ class TestBlogCreateView(DevlogTests):
         assert rv.status_code == 200
         assert f'action="{self.url}"' in rv.text
 
+    def test_inactive_get(self, user_factory):
+        user = user_factory(name='Ivory Tower', password=self.default_pw, active=False)
+        self.login(user.name)
+        rv = self.client.get(self.url)
+        assert rv.status_code == 302
+        assert url_for('user.account') in rv.headers['Location']
+
     def test_anon_post(self, user_factory):
         user = user_factory(name='Ivory Tower')
         data = {'user': user.id, 'name': 'Infernal Tendencies'}
@@ -47,6 +54,14 @@ class TestBlogCreateView(DevlogTests):
         rv = self.client.post(self.url, data=data, follow_redirects=True)
         assert f'field is required' in rv.text
         assert f'has been created' not in rv.text
+
+    def test_inactive_post(self, user_factory):
+        user = user_factory(name='Ivory Tower', password=self.default_pw, active=False)
+        data = {'user': user.id}
+        self.login(user.name)
+        rv = self.client.post(self.url, data=data)
+        assert rv.status_code == 302
+        assert url_for('user.account') in rv.headers['Location']
 
 
 @pytest.mark.usefixtures('client_class')
@@ -187,3 +202,42 @@ class TestBlogDeleteView(DevlogTests):
         rv = self.client.post(url, data={'delete_it': True})
         assert rv.status_code == 302
         assert url_for('home.index') in rv.headers['Location']
+
+
+@pytest.mark.usefixtures('client_class')
+class TestBlogPostImportView(DevlogTests):
+
+    def url(self, blog):
+        return url_for('blog.import_posts', blog_id=blog.id)
+
+    @pytest.fixture(autouse=True)
+    def set_up(self, blog_factory, user_factory):
+        self.author = user_factory(name='Ivory Tower', password=self.default_pw)
+        self.blog = blog_factory(name='Infernal Tendencies', user=self.author)
+
+    def test_get_anon(self):
+        url = self.url(self.blog)
+        rv = self.client.get(url)
+        assert rv.status_code == 302
+        assert url_for('auth.login') in rv.headers['Location']
+
+    def test_get_authenticated_non_existing(self, user_factory):
+        user = user_factory(name='Heather Brinks', password=self.default_pw)
+        self.login(user.name)
+        url = url_for('blog.import_posts', blog_id=9000)
+        rv = self.client.get(url)
+        assert rv.status_code == 404
+
+    def test_get_authenticated_not_owner(self, user_factory):
+        user = user_factory(name='Heather Brinks', password=self.default_pw)
+        self.login(user.name)
+        url = self.url(self.blog)
+        rv = self.client.get(url)
+        assert rv.status_code == 403
+
+    def test_get_owner(self):
+        self.login(self.author.name)
+        url = self.url(self.blog)
+        rv = self.client.get(url)
+        assert rv.status_code == 200
+        assert f'action="{url}"' in rv.text

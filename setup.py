@@ -41,8 +41,9 @@ REQ_BASE = [
     # simplified markup processors
     'markdown',
     'pygments',
-    # RQ requirements
+    # RQ & requirements
     'rq',
+    'redis<3.4.0',
     'hiredis',
 ]
 

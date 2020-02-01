@@ -89,6 +89,10 @@ class Blog(db.Model, TextProcessingMixin):
     def slug_fields(cls):
         return [SlugField(source='name', dest='slug')]
 
+    @classmethod
+    def get_by_name(cls, user: User, name: str) -> Blog:
+        return cls.query.filter_by(name=name, user=user).first()
+
 
 @db.event.listens_for(Blog, 'before_insert')
 @db.event.listens_for(Blog, 'before_update')
