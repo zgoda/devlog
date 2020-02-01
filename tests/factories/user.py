@@ -3,7 +3,7 @@ from factory.alchemy import SQLAlchemyModelFactory
 
 from devlog.ext import db
 from devlog.models import User
-from devlog.sec import pwd_context
+from werkzeug.security import generate_password_hash
 
 
 class UserFactory(SQLAlchemyModelFactory):
@@ -20,5 +20,5 @@ class UserFactory(SQLAlchemyModelFactory):
 
     @classmethod
     def _adjust_kwargs(cls, **kwargs):
-        kwargs['password'] = pwd_context.hash(kwargs['password'])
+        kwargs['password'] = generate_password_hash(kwargs['password'])
         return kwargs

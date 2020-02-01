@@ -34,7 +34,8 @@ REQ_BASE = [
     'text-unidecode',
     'python-dateutil',
     'pytz',
-    'passlib[argon2]',
+    'werkzeug',
+    'pytz',
     # Sentry
     'sentry-sdk[flask]',
     # simplified markup processors
