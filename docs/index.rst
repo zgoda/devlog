@@ -44,6 +44,7 @@ Miscellanea
     tools
     tbc
     todo
+    notable
 
 Caveats
 -------
