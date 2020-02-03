@@ -46,6 +46,14 @@ def db_recreate():
 @db_ops.command(name='export', help='export application data')
 @click.option('-o', '--output-dir', help='where to write result [default: .]')
 def db_export(output_dir):
+
+    def dump(data, directory: str, datatype: str):
+        if data:
+            fn = os.path.join(directory, f'{datatype}.json')
+            with open(fn, mode='w') as fp:
+                json.dump(data, fp)
+            click.echo(f'{datatype} data written to {fn}')
+
     if output_dir is None:
         output_dir = os.getcwd()
     output_dir = os.path.abspath(os.path.normpath(output_dir))
@@ -60,11 +68,7 @@ def db_export(output_dir):
             'timezone': user.timezone,
             'active': user.active
         })
-    if data:
-        users_fn = os.path.join(output_dir, 'users.json')
-        with open(users_fn, mode='w') as fp:
-            json.dump(data, fp)
-        click.echo(f'users data written to {users_fn}')
+    dump(data, output_dir, 'users')
     click.echo('exporting blog data')
     data = []
     for blog in Blog.query:
@@ -82,11 +86,7 @@ def db_export(output_dir):
         else:
             blog_data['updated'] = None
         data.append(blog_data)
-    if data:
-        blog_fn = os.path.join(output_dir, 'blog.json')
-        with open(blog_fn, mode='w') as fp:
-            json.dump(data, fp)
-        click.echo(f'blog data written to {blog_fn}')
+    dump(data, output_dir, 'blog')
     click.echo('exporting posts')
     data = []
     for post in Post.query:
@@ -111,11 +111,7 @@ def db_export(output_dir):
         else:
             post_data['published'] = None
         data.append(post_data)
-    if data:
-        post_fn = os.path.join(output_dir, 'post.json')
-        with open(post_fn, mode='w') as fp:
-            json.dump(data, fp)
-        click.echo(f'posts data written to {post_fn}')
+    dump(data, output_dir, 'post')
     click.echo('export complete')
 
 
