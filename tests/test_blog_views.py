@@ -299,6 +299,7 @@ class TestBlogPostImportView(DevlogTests):
                 (io.BytesIO(file_content), fname)
             ]
         }
+        mocker.patch.dict('os.environ', {'SQLALCHEMY_DATABASE_URI': 'dummy'})
         mocker.patch('devlog.tasks.sqlalchemy')
         rv = self.client.post(url, data=data, follow_redirects=True)
         assert f'of post file {fname} has been scheduled' in rv.text
