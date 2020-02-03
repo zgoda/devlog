@@ -303,3 +303,26 @@ class TestBlogPostImportView(DevlogTests):
         mocker.patch('devlog.tasks.sqlalchemy')
         rv = self.client.post(url, data=data, follow_redirects=True)
         assert f'of post file {fname} has been scheduled' in rv.text
+
+    def test_post_ok_mixed(self, mocker):
+        self.login(self.author.name)
+        fname = 'dummy.md'
+        url = self.url(self.blog)
+        file_content = '\n'.join([
+            '---',
+            'title: some title',
+            '---',
+            '',
+            'post text'
+        ]).encode('utf-8')
+        data = {
+            'files': [
+                (io.BytesIO(file_content), fname),
+                (io.BytesIO(b'some data'), 'dummy.xlsx'),
+                (io.BytesIO(b'some data'), ''),
+            ]
+        }
+        mocker.patch.dict('os.environ', {'SQLALCHEMY_DATABASE_URI': 'dummy'})
+        mocker.patch('devlog.tasks.sqlalchemy')
+        rv = self.client.post(url, data=data, follow_redirects=True)
+        assert f'of post file {fname} has been scheduled' in rv.text
