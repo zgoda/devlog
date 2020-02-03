@@ -1,6 +1,7 @@
-from flask import url_for
+import io
 
 import pytest
+from flask import url_for
 
 from . import DevlogTests
 
@@ -241,3 +242,63 @@ class TestBlogPostImportView(DevlogTests):
         rv = self.client.get(url)
         assert rv.status_code == 200
         assert f'action="{url}"' in rv.text
+
+    def test_post_no_files(self):
+        self.login(self.author.name)
+        url = self.url(self.blog)
+        rv = self.client.post(url, data={}, follow_redirects=True)
+        assert 'no files uploaded' in rv.text
+
+    def test_post_invalid_file_ext(self):
+        self.login(self.author.name)
+        url = self.url(self.blog)
+        data = {
+            'files': [
+                (io.BytesIO(b'some data'), 'dummy.xlsx')
+            ]
+        }
+        rv = self.client.post(url, data=data, follow_redirects=True)
+        assert 'no valid files uploaded' in rv.text
+
+    def test_post_empty_filename(self):
+        self.login(self.author.name)
+        url = self.url(self.blog)
+        data = {
+            'files': [
+                (io.BytesIO(b'some data'), '')
+            ]
+        }
+        rv = self.client.post(url, data=data, follow_redirects=True)
+        assert 'no valid files uploaded' in rv.text
+
+    def test_post_multiple_failures(self):
+        self.login(self.author.name)
+        url = self.url(self.blog)
+        data = {
+            'files': [
+                (io.BytesIO(b'some data'), 'dummy.xlsx'),
+                (io.BytesIO(b'some data'), ''),
+            ]
+        }
+        rv = self.client.post(url, data=data, follow_redirects=True)
+        assert 'no valid files uploaded' in rv.text
+
+    def test_post_ok_single(self, mocker):
+        self.login(self.author.name)
+        fname = 'dummy.md'
+        url = self.url(self.blog)
+        file_content = '\n'.join([
+            '---',
+            'title: some title',
+            '---',
+            '',
+            'post text'
+        ]).encode('utf-8')
+        data = {
+            'files': [
+                (io.BytesIO(file_content), fname)
+            ]
+        }
+        mocker.patch('devlog.tasks.sqlalchemy')
+        rv = self.client.post(url, data=data, follow_redirects=True)
+        assert f'of post file {fname} has been scheduled' in rv.text

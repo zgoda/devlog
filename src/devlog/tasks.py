@@ -4,7 +4,7 @@ from datetime import datetime
 
 import markdown
 import pytz
-import sqlalchemy as sa
+import sqlalchemy
 from dateutil.parser import isoparse
 
 from .utils.text import slugify, stripping_markdown
@@ -13,7 +13,7 @@ METADATA_RE = re.compile(r'\A---.*?---', re.S | re.MULTILINE)
 
 
 def import_post(file_name: str, blog_id: int):
-    engine = sa.create_engine(os.environ['SQLALCHEMY_DATABASE_URI'])
+    engine = sqlalchemy.create_engine(os.environ['SQLALCHEMY_DATABASE_URI'])
     cn = engine.connect()
     try:
         with open(file_name) as fp:
@@ -26,7 +26,7 @@ def import_post(file_name: str, blog_id: int):
             raise ValueError(
                 f'Post file {file_name} does not provide post title in metadata'
             )
-        blog_sql = sa.text(
+        blog_sql = sqlalchemy.text(
             'select id, user_id from blog where id = :blog_id'
         ).bindparams(blog_id=blog_id)
         blog_rv = cn.execute(blog_sql)
@@ -57,7 +57,7 @@ def import_post(file_name: str, blog_id: int):
         published = None
         if not is_draft:
             published = updated
-        post_sql = sa.text(
+        post_sql = sqlalchemy.text(
             '''
             insert into post (
                 blog_id, author_id, title, slug, text, text_html,
