@@ -43,7 +43,7 @@ REQ_BASE = [
     'pygments',
     # RQ & requirements
     'rq',
-    'redis<3.4.0',
+    'redis',
     'hiredis',
 ]
 
