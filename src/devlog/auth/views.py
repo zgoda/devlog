@@ -1,6 +1,8 @@
+from typing import Union
+
 from flask import Response, flash, redirect, render_template, request, session
 from flask_babel import lazy_gettext as gettext
-from flask_login import login_required, login_user, logout_user, current_user
+from flask_login import current_user, login_required, login_user, logout_user
 
 from ..utils.views import next_redirect
 from . import auth_bp
@@ -8,7 +10,7 @@ from .forms import LoginForm
 
 
 @auth_bp.route('/login', methods=['POST', 'GET'])
-def login() -> Response:
+def login() -> Union[str, Response]:
     logout_user()
     form = LoginForm()
     if form.validate_on_submit():

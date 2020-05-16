@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 
 from flask_login import UserMixin
+from flask_sqlalchemy import BaseQuery
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from .ext import db
@@ -24,31 +25,31 @@ class User(db.Model, UserMixin, TextProcessingMixin):
     timezone = db.Column(db.String(80), default='Europe/Warsaw')
     active = db.Column(db.Boolean, default=True)
 
-    def set_password(self, password):
+    def set_password(self, password: str):
         self.password = generate_password_hash(password)
 
-    def check_password(self, s):
+    def check_password(self, s: str) -> bool:
         return check_password_hash(self.password, s)
 
     @classmethod
-    def markup_fields(cls):
+    def markup_fields(cls) -> List[MarkupField]:
         return [MarkupField(source='blurb', dest='blurb_html')]
 
     @classmethod
-    def slug_fields(cls):
+    def slug_fields(cls) -> List[SlugField]:
         return [SlugField(source='name', dest='slug')]
 
-    def is_active(self):
+    def is_active(self) -> bool:
         return self.active
 
     @classmethod
     def get_by_name(cls, name: str) -> Optional[User]:
         return cls.query.filter_by(name=name).first()
 
-    def has_blogs(self):
+    def has_blogs(self) -> bool:
         return self.blogs.count() > 0
 
-    def recent_blogs(self, limit=5):
+    def recent_blogs(self, limit=5) -> BaseQuery:
         return self.blogs.order_by(db.desc(Blog.updated)).limit(limit)
 
 
@@ -78,15 +79,15 @@ class Blog(db.Model, TextProcessingMixin):
     active = db.Column(db.Boolean, default=True)
 
     @property
-    def effective_language(self):
+    def effective_language(self) -> str:
         return self.language or self.user.default_language
 
     @classmethod
-    def markup_fields(cls):
+    def markup_fields(cls) -> List[MarkupField]:
         return [MarkupField(source='blurb', dest='blurb_html')]
 
     @classmethod
-    def slug_fields(cls):
+    def slug_fields(cls) -> List[SlugField]:
         return [SlugField(source='name', dest='slug')]
 
     @classmethod
@@ -127,11 +128,11 @@ class Post(db.Model, TextProcessingMixin):
     language = db.Column(db.String(20))
 
     @classmethod
-    def markup_fields(cls):
+    def markup_fields(cls) -> List[MarkupField]:
         return [MarkupField(source='text', dest='text_html')]
 
     @classmethod
-    def slug_fields(cls):
+    def slug_fields(cls) -> List[SlugField]:
         return [SlugField(source='title', dest='slug')]
 
     @classmethod
@@ -152,7 +153,7 @@ class Post(db.Model, TextProcessingMixin):
             target.author_id = target.blog.user_id
 
     @property
-    def ident(self):
+    def ident(self) -> dict:
         if self.draft:
             return {'post_id': self.id}
         else:

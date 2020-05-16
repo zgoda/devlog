@@ -14,7 +14,7 @@ def slugify(text: str, delim: str = '-') -> str:
     return delim.join(result)
 
 
-def unmark_element(element, stream=None):
+def unmark_element(element, stream=None) -> str:
     if stream is None:
         stream = io.StringIO()
     if element.text:

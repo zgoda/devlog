@@ -1,4 +1,5 @@
 import os
+from typing import Union
 
 from flask import (
     Response, abort, current_app, flash, redirect, render_template, request, url_for,
@@ -19,7 +20,7 @@ from .service import get_default
 
 @blog_bp.route('/create', methods=['POST', 'GET'])
 @login_required
-def create() -> Response:
+def create() -> Union[str, Response]:
     if not current_user.active:
         flash(gettext('your account is inactive'), category='warning')
         return redirect(url_for('user.account'))
@@ -41,7 +42,7 @@ def create() -> Response:
 
 
 @blog_bp.route('/<int:blog_id>')
-def display(blog_id: int) -> Response:
+def display(blog_id: int) -> Union[str, Response]:
     blog = Blog.query.get_or_404(blog_id)
     if not blog.active and (current_user != blog.user):
         abort(404)
@@ -57,7 +58,7 @@ def display(blog_id: int) -> Response:
 
 @blog_bp.route('/<int:blog_id>/details', methods=['POST', 'GET'])
 @login_required
-def details(blog_id: int) -> Response:
+def details(blog_id: int) -> Union[str, Response]:
     blog = Blog.query.get_or_404(blog_id)
     if current_user != blog.user:
         abort(404)
@@ -81,7 +82,7 @@ def details(blog_id: int) -> Response:
 
 @blog_bp.route('/<int:blog_id>/contentimport', methods=['POST', 'GET'])
 @login_required
-def import_posts(blog_id: int) -> Response:
+def import_posts(blog_id: int) -> Union[str, Response]:
     blog = Blog.query.get_or_404(blog_id)
     if blog.user != current_user:
         abort(403)
@@ -116,7 +117,7 @@ def import_posts(blog_id: int) -> Response:
 
 @blog_bp.route('/<int:blog_id>/delete', methods=['POST', 'GET'])
 @login_required
-def delete(blog_id: int) -> Response:
+def delete(blog_id: int) -> Union[str, Response]:
     blog = Blog.query.get_or_404(blog_id)
     if current_user != blog.user:
         abort(404)

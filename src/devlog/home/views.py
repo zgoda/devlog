@@ -1,3 +1,5 @@
+from typing import Union
+
 from flask import Response, current_app, render_template
 from flask_login import current_user
 
@@ -9,7 +11,7 @@ from . import home_bp
 
 
 @home_bp.route('/')
-def index() -> Response:
+def index() -> str:
     limit = current_app.config.get('SHORT_LIST_LIMIT', 5)
     active_only = not current_user.is_authenticated
     blog = get_default()
@@ -24,6 +26,6 @@ def index() -> Response:
 
 
 @home_bp.route('/<int:y>/<int:m>/<int:d>/<slug>', endpoint='post')
-def display_single_post(y: int, m: int, d: int, slug: str) -> Response:
+def display_single_post(y: int, m: int, d: int, slug: str) -> Union[str, Response]:
     post = get_by_ident(y, m, d, slug)
     return post_display_func(post)

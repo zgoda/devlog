@@ -1,3 +1,5 @@
+from typing import Union
+
 from flask import Response, abort, flash, redirect, render_template, request, url_for
 from flask_babel import lazy_gettext as gettext
 from flask_login import current_user, login_required
@@ -10,7 +12,7 @@ from ..utils.pagination import paginate
 
 @post_bp.route('/inblog/<int:blog_id>', methods=['POST', 'GET'])
 @login_required
-def create(blog_id: int) -> Response:
+def create(blog_id: int) -> Union[str, Response]:
     blog = Blog.query.get_or_404(blog_id)
     if blog.user != current_user:
         abort(404)
@@ -28,7 +30,7 @@ def create(blog_id: int) -> Response:
     return render_template('post/create.html', **context)
 
 
-def post_display_func(post: Post) -> Response:
+def post_display_func(post: Post) -> Union[str, Response]:
     if post.draft and current_user != post.blog.user:
         abort(404)
     form = None
@@ -48,13 +50,13 @@ def post_display_func(post: Post) -> Response:
 
 
 @post_bp.route('/<int:post_id>', methods=['POST', 'GET'])
-def display(post_id: int) -> Response:
+def display(post_id: int) -> Union[str, Response]:
     post = Post.query.get_or_404(post_id)
     return post_display_func(post)
 
 
 @post_bp.route('/recent')
-def recent() -> Response:
+def recent() -> str:
     active_only = not current_user.is_authenticated
     query = service.get_recent(active_only=active_only)
     ctx = {

@@ -9,6 +9,7 @@ from flask_babel import gettext as _
 from redis import Redis
 from sentry_sdk.integrations.flask import FlaskIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
+from sentry_sdk.integrations.rq import RqIntegration
 from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 from werkzeug.utils import ImportStringError, import_string
 
@@ -37,6 +38,7 @@ def make_app(env: Optional[str] = None) -> Devlog:
                 release=f'devlog@{version}',
                 integrations=[
                     FlaskIntegration(), RedisIntegration(), SqlalchemyIntegration(),
+                    RqIntegration(),
                 ],
             )
     app = Devlog()

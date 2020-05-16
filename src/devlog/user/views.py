@@ -1,3 +1,5 @@
+from typing import Union
+
 from flask import Response, flash, redirect, render_template, request
 from flask_babel import get_locale, lazy_gettext
 from flask_login import current_user, login_required
@@ -9,7 +11,7 @@ from .forms import UserForm
 
 @user_bp.route('/account', methods=['POST', 'GET'])
 @login_required
-def account() -> Response:
+def account() -> Union[str, Response]:
     form = None
     if request.method == 'POST':
         form = UserForm()
