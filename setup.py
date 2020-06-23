@@ -22,24 +22,17 @@ def find_version(*where):
 
 REQ_BASE = [
     'Flask',
-    'Flask-Login',
     'Flask-Babel',
-    'Flask-WTF',
-    'Flask-SQLAlchemy',
+    'Peewee',
     'text-unidecode',
     'python-dateutil',
     'pytz',
-    'werkzeug',
-    'pytz',
+    'python-dotenv',
     # Sentry
     'sentry-sdk[flask]',
     # simplified markup processors
     'markdown',
     'pygments',
-    # RQ & requirements
-    'rq',
-    'redis',
-    'hiredis',
 ]
 
 REQ_TEST = [
@@ -65,20 +58,16 @@ REQ_DEV = REQ_TEST + [
     'pep8-naming',
     'dlint',
     'rstcheck',
-    'pyroma',
     'rope',
     'isort',
-    'towncrier',
     'Sphinx',
-    'python-dotenv',
     'flask-shell-ipython',
     'termcolor',
     'watchdog',
 ]
 
 REQ_PROD = [
-    'psycopg2-binary',
-    'uwsgi',
+    'gunicorn',
 ]
 
 
@@ -107,7 +96,6 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Natural Language :: English',
-        'Natural Language :: Polish',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary',
     ],

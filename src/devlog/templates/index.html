@@ -4,23 +4,11 @@
 {% from "macros/menus.html" import tool_dropdown %}
 {% from "macros/pagination.html" import render_pagination %}
 
-{% block pagetitle %}Devlog {{ gettext('and other logs') }}{% endblock %}
+{% block pagetitle %}Devlog{% endblock %}
 
 {% block content %}
 <div class="content">
-  <h1>{{ blog.name }}</h1>
-  {% if blog.blurb_html %}
-  {{ blog.blurb_html|safe }}
-  {% endif %}
-  {% if current_user == blog.user %}
-  {% set menu_items = [
-    (url_for('blog.details', blog_id=blog.id), gettext('edit blog')),
-    (url_for('post.create', blog_id=blog.id), gettext('add post')),
-    (url_for('blog.import_posts', blog_id=blog.id), gettext('import posts')),
-  ] %}
-  {{ tool_dropdown(gettext('tools'), menu_items, 'owner-tools-menu') }}
-  {% endif %}
-  <hr class="is-large">
+  <h1>Devlog</h1>
 </div>
 <div class="box">
   {% if posts %}

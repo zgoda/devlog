@@ -1,13 +1,14 @@
 <!doctype html>
-<html lang="{{ get_locale().language }}">
+<html lang="pl">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block pagetitle %}{% endblock %}</title>
-    <link rel="stylesheet" href="/static/vendor/bulma.min.css">
     <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="/static/css/app.css">
+    <link rel="stylesheet" href="/static/vendor/normalize.css">
+    <link rel="stylesheet" href="/static/vendor/milligram.min.css">
     {% block extracss %}
     {% endblock %}
     {% block headjs %}
@@ -30,17 +31,7 @@
         </div>
         <div class="navbar-menu" id="navMenu">
           <div class="navbar-end">
-            {% if current_user.is_authenticated %}
-            <div class="navbar-item has-dropdown">
-              <a class="navbar-link"><span class="fas fa-user-alt"></span><span>&nbsp;&nbsp;{{ current_user.name }}</span></a>
-              <div class="navbar-dropdown">
-                <a class="navbar-item" href="{{ url_for('user.account') }}"><span class="icon"><i class="fas fa-user-cog"></i></span><span>&nbsp;&nbsp;{{ gettext('account') }}</span></a>
-                <a class="navbar-item" href="{{ url_for('auth.logout') }}"><span class="icon"><i class="fas fa-sign-out-alt"></i></span><span>&nbsp;&nbsp;{{ gettext('sign out') }}</span></a>
-              </div>
-            </div>
-            {% else %}
-            <a class="navbar-item" href="{{ url_for('auth.login') }}"><span class="fas fa-sign-in-alt"></span><span>&nbsp;&nbsp;{{ gettext('sign in') }}</span></a>
-            {% endif %}
+            <a class="navbar-item" href=""><span class="fas fa-sign-in-alt"></span><span>&nbsp;&nbsp;{{ gettext('sign in') }}</span></a>
           </div>
         </div>
       </div>

@@ -1,12 +1,8 @@
-import sys
-
-import click
 from dotenv import find_dotenv, load_dotenv
 from flask.cli import FlaskGroup
 
 from . import make_app
-from .ext import db
-from .models import Blog, Post, User
+from .models import Post, Tag, TaggedPost, db
 
 
 def create_app(info):
@@ -24,12 +20,12 @@ def db_ops():
 
 @db_ops.command(name='init', short_help='initialize missing database objects')
 def db_init():
-    db.create_all()
+    db.create_tables([Post, Tag, TaggedPost])
 
 
 @db_ops.command(name='clear', short_help='remove all database objects')
 def db_clear():
-    db.drop_all()
+    db.drop_tables([TaggedPost, Tag, Post])
 
 
 @db_ops.command(
@@ -38,60 +34,6 @@ def db_clear():
 def db_recreate():
     db.drop_all()
     db.create_all()
-
-
-@cli.group(name='user', help='user account management commands')
-def user_ops():
-    pass
-
-
-@user_ops.command(name='create', help='create new user account')
-@click.argument('name')
-@click.password_option('-p', '--password', help='account password', required=True)
-@click.option('-l', '--language', default='pl', help='user language [default: pl]')
-@click.option(
-    '-z', '--timezone', default='Europe/Warsaw',
-    help='user time zone [default: Europe/Warsaw]',
-)
-def user_create(name, password, language, timezone):
-    if User.get_by_name(name) is not None:
-        raise click.ClickException(f'user {name} is already registered')
-    user = User(name=name, default_language=language, timezone=timezone)
-    user.set_password(password)
-    db.session.add(user)
-    db.session.commit()
-    click.echo(f'user {name} has been created')
-
-
-@user_ops.command(name='delete')
-@click.argument('name')
-@click.option(
-    '-s', '--substitute', required=True, help='substitute user as owner of blogs',
-)
-def user_delete(name, substitute):
-    user = User.get_by_name(name)
-    if user is None:
-        raise click.ClickException(f'user {name} not found')
-    if User.query.count() == 1:
-        raise click.ClickException('there has to be at least one user')
-    sub = User.get_by_name(substitute)
-    if sub is None:
-        raise click.ClickException(f'substitute user {substitute} not found')
-    if not click.confirm(
-        f'Do you really want to delete account for {name} '
-        f'and move all content to {substitute}?'
-    ):
-        click.echo('operation aborted, no changes made to site')
-        sys.exit(0)
-    for blog in Blog.query.filter_by(user=user):
-        blog.user = sub
-        db.session.add(blog)
-    for post in Post.query.filter_by(author=user):
-        post.author = sub
-        db.session.add(post)
-    db.session.delete(user)
-    db.session.commit()
-    click.echo(f'user {name} has been deleted, all content moved to user {substitute}')
 
 
 def main():
