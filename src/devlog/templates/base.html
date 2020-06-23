@@ -5,10 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block pagetitle %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/vendor/mustard/css/mustard-ui.min.css">
     <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="/static/css/app.css">
-    <link rel="stylesheet" href="/static/vendor/normalize.css">
-    <link rel="stylesheet" href="/static/vendor/milligram.min.css">
     {% block extracss %}
     {% endblock %}
     {% block headjs %}
@@ -19,87 +18,51 @@
   </head>
   <body>
 
-    <nav class="navbar is-dark" role="navigation" aria-label="{{ gettext('main navigation') }}">
-      <div class="container">
-        <div class="navbar-brand">
-          <a class="navbar-item" href="/">Devlog</a>
-          <a role="button" class="navbar-burger" aria-label="{{ gettext('top menu') }}" aria-expanded="false" data-target="navMenu">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-          </a>
+    <nav role="navigation" aria-label="główny panel nawigacji">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <a href="/">Devlog</a>
         </div>
-        <div class="navbar-menu" id="navMenu">
-          <div class="navbar-end">
-            <a class="navbar-item" href=""><span class="fas fa-sign-in-alt"></span><span>&nbsp;&nbsp;{{ gettext('sign in') }}</span></a>
-          </div>
+        <ul class="nav-links">
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="https://github.com/zgoda">Kod</a></li>
+          <li><a href="/o">O</a></li>
+          <li><a href="/uploads/cv.pdf">Resumé</a></li>
         </div>
       </div>
     </nav>
 
-    <section class="section">
+    <section>
       <div class="container">
         {% with flashes = get_flashed_messages(with_categories=True) %}
         {% for category, flash in flashes %}
-        <div class="notification is-{{ category }}" role="alert">
+        <div class="alert alert-{{ category }}" role="alert">
           <button class="delete"></button>
           {{ flash }}
         </div>
         {% endfor %}
         {% endwith %}
-        <div class="columns is-centered">
-          <div class="column is-four-fifths">
-          {% block widecontent %}
-          {% endblock %}
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column is-three-quarters">
-          {% block content %}
-          {% endblock %}
-          </div>
-          <div class="column is-one-quarter">
-          {% block sidebar %}
-          {% endblock %}
-          </div>
-        </div>
+        {% block content %}
+        {% endblock %}
       </div>
     </section>
 
-    <footer class="footer">
-      <div class="content has-text-centered">
-        <p>Copyright: &copy; 2019 Jarek Zgoda, {{ gettext('version %(ver)s', ver=version) }}</p>
+    <footer>
+      <div class="footer-text">
+        <p class="footer-links">Zmontowane własnoręcznie przy użyciu <a href="https://palletsprojects.com/p/flask/">Flask</a>, <a href="http://docs.peewee-orm.com/en/latest/">Peewee</a>, <a href="https://kylelogue.github.io/mustard-ui/">Mustard-UI</a> i z dużą dozą przyjemności. Kod dostępny w <a href="https://github.com/zgoda/devlog">repozytorium na Githubie</a> na licencji MIT.</p>
+        <p class="align-center footer-links"><a href="/blog">blog</a> <strong>&middot;</strong> <a href="/o">informacje</a></p>
       </div>
+      <p class="copyright align-center">Copyright: &copy; 2019 Jarek Zgoda, wersja {{ version }}</p>
     </footer>
 
     <script type="text/javascript">
       document.addEventListener('DOMContentLoaded', () => {
-        (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+        (document.querySelectorAll('.alert .delete') || []).forEach(($delete) => {
           const $notification = $delete.parentNode;
           $delete.addEventListener('click', () => {
             $notification.parentNode.removeChild($notification);
           });
         });
-        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-        if ($navbarBurgers.length > 0) {
-          $navbarBurgers.forEach(el => {
-            el.addEventListener('click', () => {
-              const target = el.dataset.target;
-              const $target = document.getElementById(target);
-              el.classList.toggle('is-active');
-              $target.classList.toggle('is-active');
-            });
-          });
-        }
-        const $dropdowns = Array.prototype.slice.call(document.querySelectorAll('.dropdown, .has-dropdown'), 0);
-        if ($dropdowns.length > 0) {
-          $dropdowns.forEach(el => {
-            el.addEventListener('click', function(event) {
-              event.stopPropagation();
-              el.classList.toggle('is-active');
-            });
-          });
-        };
       });
     </script>
 
