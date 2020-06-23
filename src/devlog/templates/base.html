@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block pagetitle %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/vendor/normalize.css">
     <link rel="stylesheet" href="/static/vendor/mustard/css/mustard-ui.min.css">
-    <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="/static/css/app.css">
     {% block extracss %}
     {% endblock %}
@@ -24,10 +24,12 @@
           <a href="/">Devlog</a>
         </div>
         <ul class="nav-links">
+          {% block topnav %}
           <li><a href="/blog">Blog</a></li>
           <li><a href="https://github.com/zgoda">Kod</a></li>
-          <li><a href="/o">O</a></li>
           <li><a href="/uploads/cv.pdf">Resumé</a></li>
+          <li><a href="/kontakt">Kontakt</a></li>
+          {% endblock %}
         </div>
       </div>
     </nav>
@@ -48,9 +50,9 @@
     </section>
 
     <footer>
-      <div class="footer-text">
-        <p class="footer-links">Zmontowane własnoręcznie przy użyciu <a href="https://palletsprojects.com/p/flask/">Flask</a>, <a href="http://docs.peewee-orm.com/en/latest/">Peewee</a>, <a href="https://kylelogue.github.io/mustard-ui/">Mustard-UI</a> i z dużą dozą przyjemności. Kod dostępny w <a href="https://github.com/zgoda/devlog">repozytorium na Githubie</a> na licencji MIT.</p>
-        <p class="align-center footer-links"><a href="/blog">blog</a> <strong>&middot;</strong> <a href="/o">informacje</a></p>
+      <div class="footer-text align-center">
+        <p class="footer-links">Zmontowane własnoręcznie przy użyciu <a href="https://palletsprojects.com/p/flask/">Flask</a>, <a href="http://docs.peewee-orm.com/en/latest/">Peewee</a>, <a href="https://sqlite.org">SQLite</a>, <a href="https://kylelogue.github.io/mustard-ui/">Mustard-UI</a> i z dużą dozą przyjemności. Kod dostępny w <a href="https://github.com/zgoda/devlog">repozytorium na Githubie</a> na licencji MIT.</p>
+        <p class="footer-links"><a href="/blog">blog</a> <strong>&middot;</strong> <a href="/o">informacje</a> <strong>&middot;</strong> <a href="/kontakt">kontakt</a></p>
       </div>
       <p class="copyright align-center">Copyright: &copy; 2019 Jarek Zgoda, wersja {{ version }}</p>
     </footer>
