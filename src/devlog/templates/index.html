@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% from "macros/blog.html" import render_post_headline %}
+
 {% block pagetitle %}Devlog &middot; Jarek Zgoda{% endblock %}
 
 {% block content %}
@@ -14,6 +16,9 @@
 <section>
 <h2>Ostatnie posty w blogu</h2>
 {% if posts %}
+{% for post in posts %}
+{{ render_post_headline(post) }}
+{% endfor %}
 {% else %}
 <p>Nie ma jeszcze żadnych postów.</p>
 {% endif %}

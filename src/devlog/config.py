@@ -13,4 +13,5 @@ POST_INCOMING_DIR = os.environ.get('POST_INCOMING_DIR', 'incoming')
 REDIS_URL = os.environ.get('REDIS_URL')
 
 # babel
+BABEL_DEFAULT_LOCALE = 'pl_PL'
 BABEL_DEFAULT_TIMEZONE = 'Europe/Warsaw'

@@ -14,3 +14,8 @@ def index():
         .limit(5)
     )
     return render_template('index.html', posts=posts)
+
+
+@bp.route('/<int:y>/<int:m>/<int:d>/<slug>')
+def post(y, m, d, slug):
+    return render_template('blog/post.html')
