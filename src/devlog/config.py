@@ -9,6 +9,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 SECRET_KEY = os.environ.get('SECRET_KEY')
 SESSION_COOKIE_HTTPONLY = True
 
+POST_INCOMING_DIR = os.environ.get('POST_INCOMING_DIR', 'incoming')
 REDIS_URL = os.environ.get('REDIS_URL')
 
 # babel

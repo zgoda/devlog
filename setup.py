@@ -25,13 +25,13 @@ REQ_BASE = [
     'Flask-Babel',
     'Peewee',
     'text-unidecode',
-    'python-dateutil',
     'pytz',
     'python-dotenv',
     # Sentry
     'sentry-sdk[flask]',
     # simplified markup processors
     'markdown',
+    'markdown-full-yaml-metadata',
     'pygments',
 ]
 
@@ -62,7 +62,6 @@ REQ_DEV = REQ_TEST + [
     'isort',
     'Sphinx',
     'flask-shell-ipython',
-    'termcolor',
     'watchdog',
 ]
 
@@ -109,6 +108,7 @@ setup(
     entry_points={
         'console_scripts': [
             'devlog=devlog.cli:main',
+            'postimport=devlog.tasks:import_posts',
         ],
     },
     python_requires='~=3.7',
