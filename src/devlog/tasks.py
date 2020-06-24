@@ -53,7 +53,11 @@ def import_posts():
             continue
         plain_content = METADATA_RE.sub('', text, count=1).strip()
         plain_text = SM.convert(plain_content)
-        summary = ' '.join(plain_text.split()[:50])
+        summary_end_pos = plain_text.find('<!-- more -->')
+        if summary_end_pos > -1:
+            summary = plain_text[:summary_end_pos].strip()
+        else:
+            summary = ' '.join(plain_text.split()[:50])
         title = MD.Meta['title'].strip().replace("'", '')
         created_dt = updated = datetime.utcnow()
         post_date = MD.Meta.get('date')
@@ -77,6 +81,7 @@ def import_posts():
             published = updated
         post_tags = MD.Meta.get('tags', [])
         with db.atomic():
+            MD.reset()
             post = Post.create(
                 author=author, created=created_dt, updated=updated,
                 published=published, title=title, slug=slugify(title),
