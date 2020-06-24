@@ -34,39 +34,19 @@
       </div>
     </nav>
 
-    <section>
-      <div class="container">
-        {% with flashes = get_flashed_messages(with_categories=True) %}
-        {% for category, flash in flashes %}
-        <div class="alert alert-{{ category }}" role="alert">
-          <button class="delete"></button>
-          {{ flash }}
-        </div>
-        {% endfor %}
-        {% endwith %}
-        {% block content %}
-        {% endblock %}
-      </div>
-    </section>
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
 
     <footer>
       <div class="footer-text align-center">
-        <p class="footer-links">Zmontowane własnoręcznie przy użyciu <a href="https://palletsprojects.com/p/flask/">Flask</a>, <a href="http://docs.peewee-orm.com/en/latest/">Peewee</a>, <a href="https://sqlite.org">SQLite</a>, <a href="https://kylelogue.github.io/mustard-ui/">Mustard-UI</a> i z dużą dozą przyjemności. Kod dostępny w <a href="https://github.com/zgoda/devlog">repozytorium na Githubie</a> na licencji MIT.</p>
+        <p class="footer-links">Zmontowane własnoręcznie przy użyciu <a href="https://palletsprojects.com/p/flask/">Flask</a>, <a href="http://docs.peewee-orm.com/en/latest/">Peewee</a>, <a href="https://sqlite.org">SQLite</a>, <a href="https://kylelogue.github.io/mustard-ui/">Mustard-UI</a> i z dużą dozą przyjemności.</p>
+        <p class="footer-links">Kod dostępny w <a href="https://github.com/zgoda/devlog">repozytorium na Githubie</a> na licencji MIT. Treść udostępniana na <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">licencji Creative Commons Uznanie autorstwa-Na tych samych warunkach 4.0 Międzynarodowe</a>.</p>
         <p class="footer-links"><a href="/blog">blog</a> <strong>&middot;</strong> <a href="/o">informacje</a> <strong>&middot;</strong> <a href="/kontakt">kontakt</a></p>
       </div>
       <p class="copyright align-center">Copyright: &copy; 2019 Jarek Zgoda, wersja {{ version }}</p>
     </footer>
-
-    <script type="text/javascript">
-      document.addEventListener('DOMContentLoaded', () => {
-        (document.querySelectorAll('.alert .delete') || []).forEach(($delete) => {
-          const $notification = $delete.parentNode;
-          $delete.addEventListener('click', () => {
-            $notification.parentNode.removeChild($notification);
-          });
-        });
-      });
-    </script>
 
     {% block extrajs %}
     {% endblock %}
