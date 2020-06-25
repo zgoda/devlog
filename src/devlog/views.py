@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, abort
+from flask import Blueprint, abort, render_template
 
 from .models import Post
 
@@ -22,7 +22,8 @@ def post(y, m, d, slug):
         Post.c_year == y,
         Post.c_month == m,
         Post.c_day == d,
-        Post.slug == slug
+        Post.slug == slug,
+        Post.published.is_null(False),
     )
     if post is None:
         abort(404)
