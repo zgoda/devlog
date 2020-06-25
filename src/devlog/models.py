@@ -4,7 +4,8 @@ from datetime import datetime
 
 import peewee
 from peewee import (
-    AutoField, CharField, DateTimeField, ForeignKeyField, SqliteDatabase, TextField,
+    AutoField, CharField, DateTimeField, ForeignKeyField, IntegerField, SqliteDatabase,
+    TextField,
 )
 
 db = SqliteDatabase(None)
@@ -20,13 +21,21 @@ class Post(Model):
     pk = AutoField()
     author = TextField()
     created = DateTimeField(index=True, default=datetime.utcnow)
+    c_year = IntegerField(null=True)
+    c_month = IntegerField(null=True)
+    c_day = IntegerField(null=True)
     updated = DateTimeField(default=datetime.utcnow)
     published = DateTimeField(null=True)
     title = CharField(max_length=240)
-    slug = CharField(max_length=240, index=True, null=True)
+    slug = CharField(max_length=240, null=True)
     text = TextField()
     text_html = TextField(null=True)
     summary = TextField(null=True)
+
+    class Meta:
+        indexes = (
+            (('c_year', 'c_month', 'c_day', 'slug'), True),
+        )
 
 
 class Tag(Model):

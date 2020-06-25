@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, abort
 
 from .models import Post
 
@@ -18,4 +18,12 @@ def index():
 
 @bp.route('/<int:y>/<int:m>/<int:d>/<slug>')
 def post(y, m, d, slug):
-    return render_template('blog/post.html')
+    post = Post.get_or_none(
+        Post.c_year == y,
+        Post.c_month == m,
+        Post.c_day == d,
+        Post.slug == slug
+    )
+    if post is None:
+        abort(404)
+    return render_template('blog/post.html', post=post)

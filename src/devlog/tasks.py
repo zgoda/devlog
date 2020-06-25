@@ -86,6 +86,7 @@ def import_posts():
                 author=author, created=created_dt, updated=updated,
                 published=published, title=title, slug=slugify(title),
                 text=plain_content, text_html=html_text, summary=summary,
+                c_year=created_dt.year, c_month=created_dt.month, c_day=created_dt.day,
             )
             for tag_s in post_tags:
                 tag, _ = Tag.get_or_create(
