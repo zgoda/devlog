@@ -20,12 +20,10 @@ os.makedirs(app.instance_path, exist_ok=True)
 
 METADATA_RE = re.compile(r'\A---.*?---', re.S | re.MULTILINE)
 
-MD = markdown.Markdown(
-    extensions=[
-        'full_yaml_metadata', 'fenced_code', 'codehilite', CenterBlockExtension()
-    ],
-    output_format='html'
-)
+MD_EXTENSIONS = [
+    'full_yaml_metadata', 'fenced_code', 'codehilite', CenterBlockExtension()
+]
+MD = markdown.Markdown(extensions=MD_EXTENSIONS, output_format='html')
 SM = stripping_markdown()
 
 
@@ -60,7 +58,10 @@ def import_posts():
         if summary_end_pos > -1:
             summary = rich_summary(plain_content)
         else:
-            summary = MD.convert(' '.join(plain_text.split()[:50]))
+            summary = markdown.markdown(
+                ' '.join(plain_text.split()[:50]), extensions=MD_EXTENSIONS,
+                output_format='html',
+            )
         title = MD.Meta['title'].strip().replace("'", '')
         created_dt = updated = datetime.utcnow()
         post_date = MD.Meta.get('date')
