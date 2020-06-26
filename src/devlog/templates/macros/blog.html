@@ -3,7 +3,7 @@
   <h3>{{ post.title }}</h3>
   <h4><a href="{{ url_for('main.post', y=post.created.year, m=post.created.month, d=post.created.day, slug=post.slug) }}">{{ format_datetime(post.created, 'short') }}</a></h4>
   <div>
-    <p>{{ post.summary }}</p>
+    {{ post.summary|safe }}
     <p class="align-right"><a href="{{ url_for('main.post', y=post.created.year, m=post.created.month, d=post.created.day, slug=post.slug) }}">więcej...</a></p>
   </div>
 </div>

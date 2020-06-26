@@ -5,3 +5,7 @@
 {% endblock %}
 
 {% block pagetitle %}{{ post.title }}{% endblock %}
+
+{% block content %}
+{{ post.text_html|safe }}
+{% endblock %}

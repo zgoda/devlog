@@ -1,10 +1,8 @@
 {% extends "errors/base.html" %}
 
-{% block pagetitle %}Forbidden{% endblock %}
+{% block pagetitle %}403: Forbidden{% endblock %}
 
-{% block widecontent %}
-<div class="content">
-  <h1>{{ gettext('access forbidden').capitalize() }}</h1>
-  <p>{% trans %}Access to the page you're trying to open is forbidden.{% endtrans %}</p>
-</div>
+{% block content %}
+<h1>Nie ma wejścia</h1>
+<p>Na tę stronę nie ma wejścia.</p>
 {% endblock %}

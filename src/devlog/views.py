@@ -10,7 +10,7 @@ def index():
     posts = (
         Post.select()
         .where(Post.published.is_null(False))
-        .order_by(Post.published.desc())
+        .order_by(Post.created.desc())
         .limit(5)
     )
     return render_template('index.html', posts=posts)

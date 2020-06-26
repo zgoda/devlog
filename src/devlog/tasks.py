@@ -3,7 +3,7 @@ import os
 import re
 import stat
 import sys
-from datetime import datetime, date
+from datetime import date, datetime
 
 import markdown
 import pytz
@@ -11,7 +11,7 @@ from dotenv import find_dotenv, load_dotenv
 
 from .app import make_app
 from .models import Post, Tag, TaggedPost, db
-from .utils.text import slugify, stripping_markdown
+from .utils.text import CenterBlockExtension, rich_summary, slugify, stripping_markdown
 
 load_dotenv(find_dotenv())
 
@@ -21,7 +21,10 @@ os.makedirs(app.instance_path, exist_ok=True)
 METADATA_RE = re.compile(r'\A---.*?---', re.S | re.MULTILINE)
 
 MD = markdown.Markdown(
-    extensions=['full_yaml_metadata', 'fenced_code', 'codehilite'], output_format='html'
+    extensions=[
+        'full_yaml_metadata', 'fenced_code', 'codehilite', CenterBlockExtension()
+    ],
+    output_format='html'
 )
 SM = stripping_markdown()
 
@@ -55,9 +58,9 @@ def import_posts():
         plain_text = SM.convert(plain_content)
         summary_end_pos = plain_text.find('<!-- more -->')
         if summary_end_pos > -1:
-            summary = plain_text[:summary_end_pos].strip()
+            summary = rich_summary(plain_content)
         else:
-            summary = ' '.join(plain_text.split()[:50])
+            summary = MD.convert(' '.join(plain_text.split()[:50]))
         title = MD.Meta['title'].strip().replace("'", '')
         created_dt = updated = datetime.utcnow()
         post_date = MD.Meta.get('date')
