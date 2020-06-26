@@ -1,6 +1,9 @@
+import math
+
 from flask import Blueprint, abort, render_template
 
 from .models import Post
+from .utils.pagination import get_page
 
 bp = Blueprint('main', __name__)
 
@@ -14,6 +17,30 @@ def index():
         .limit(5)
     )
     return render_template('index.html', posts=posts)
+
+
+@bp.route('/blog')
+def blog():
+    page_size = 10
+    page = get_page()
+    post_count = (
+        Post.select()
+        .where(Post.published.is_null(False))
+        .count()
+    )
+    num_pages = math.ceil(post_count / page_size)
+    posts = (
+        Post.select()
+        .where(Post.published.is_null(False))
+        .order_by(Post.created.desc())
+        .paginate(page, page_size)
+    )
+    ctx = {
+        'page': page,
+        'num_pages': num_pages,
+        'posts': posts,
+    }
+    return render_template('blog/home.html', **ctx)
 
 
 @bp.route('/<int:y>/<int:m>/<int:d>/<slug>')
