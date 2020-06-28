@@ -37,6 +37,19 @@ class Post(Model):
             (('c_year', 'c_month', 'c_day', 'slug'), True),
         )
 
+    def tags(self, order=None):
+        q = (
+            TaggedPost.select(TaggedPost, Tag)
+            .join(Tag)
+            .switch(TaggedPost)
+            .where(TaggedPost.post == self)
+        )
+        if isinstance(order, str):
+            order = getattr(self, order, None)
+        if order is not None:
+            q = q.order_by(order)
+        return q
+
 
 class Tag(Model):
     pk = AutoField()

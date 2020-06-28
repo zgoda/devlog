@@ -9,6 +9,11 @@ from text_unidecode import unidecode
 
 _punctuation_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
 
+DEFAULT_MD_EXTENSIONS = [
+    'abbr', 'def_list', 'full_yaml_metadata', 'fenced_code', 'codehilite',
+    'centerblock',
+]
+
 
 def slugify(text: str, delim: str = '-') -> str:
     result = []
@@ -40,10 +45,7 @@ def rich_summary(post_text: str) -> str:
     summary_end_pos = post_text.find('<!-- more -->')
     raw_summary = post_text[:summary_end_pos].strip()
     md = Markdown(
-        extensions=[
-            'full_yaml_metadata', 'fenced_code', 'codehilite', CenterBlockExtension()
-        ],
-        output_format='html'
+        extensions=DEFAULT_MD_EXTENSIONS, output_format='html'
     )
     return md.convert(raw_summary)
 

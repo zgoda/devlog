@@ -110,6 +110,9 @@ setup(
             'devlog=devlog.cli:main',
             'postimport=devlog.tasks:import_posts',
         ],
+        'markdown.extensions': [
+            'centerblock=devlog.utils.text:CenterBlockExtension',
+        ]
     },
     python_requires='~=3.7',
 )

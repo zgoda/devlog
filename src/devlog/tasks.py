@@ -11,7 +11,7 @@ from dotenv import find_dotenv, load_dotenv
 
 from .app import make_app
 from .models import Post, Tag, TaggedPost, db
-from .utils.text import CenterBlockExtension, rich_summary, slugify, stripping_markdown
+from .utils.text import DEFAULT_MD_EXTENSIONS, rich_summary, slugify, stripping_markdown
 
 load_dotenv(find_dotenv())
 
@@ -20,10 +20,7 @@ os.makedirs(app.instance_path, exist_ok=True)
 
 METADATA_RE = re.compile(r'\A---.*?---', re.S | re.MULTILINE)
 
-MD_EXTENSIONS = [
-    'full_yaml_metadata', 'fenced_code', 'codehilite', CenterBlockExtension()
-]
-MD = markdown.Markdown(extensions=MD_EXTENSIONS, output_format='html')
+MD = markdown.Markdown(extensions=DEFAULT_MD_EXTENSIONS, output_format='html')
 SM = stripping_markdown()
 
 
@@ -59,7 +56,7 @@ def import_posts():
             summary = rich_summary(plain_content)
         else:
             summary = markdown.markdown(
-                ' '.join(plain_text.split()[:50]), extensions=MD_EXTENSIONS,
+                ' '.join(plain_text.split()[:50]), extensions=DEFAULT_MD_EXTENSIONS,
                 output_format='html',
             )
         title = MD.Meta['title'].strip().replace("'", '')

@@ -2,7 +2,7 @@ import math
 
 from flask import Blueprint, abort, render_template
 
-from .models import Post
+from .models import Post, Tag
 from .utils.pagination import get_page
 
 bp = Blueprint('main', __name__)
@@ -36,8 +36,8 @@ def blog():
         .paginate(page, page_size)
     )
     ctx = {
-        'page': page,
         'num_pages': num_pages,
+        'page': page,
         'posts': posts,
     }
     return render_template('blog/home.html', **ctx)
@@ -54,4 +54,5 @@ def post(y, m, d, slug):
     )
     if post is None:
         abort(404)
-    return render_template('blog/post.html', post=post)
+    tags = post.tags(order=Tag.name)
+    return render_template('blog/post.html', post=post, tags=tags)
