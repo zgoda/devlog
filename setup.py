@@ -23,6 +23,7 @@ def find_version(*where):
 REQ_BASE = [
     'Flask',
     'Flask-Babel',
+    'Flask-FlatPages',
     'Peewee',
     'text-unidecode',
     'pytz',
@@ -41,7 +42,6 @@ REQ_TEST = [
     'pytest-cov',
     'pytest-factoryboy',
     'pytest-flask',
-    'fakeredis',
 ]
 
 REQ_DEV = REQ_TEST + [

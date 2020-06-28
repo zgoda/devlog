@@ -29,7 +29,7 @@
           <li><a href="{{ url_for('main.blog') }}">Blog</a></li>
           <li><a href="https://github.com/zgoda">Kod</a></li>
           <li><a href="/uploads/cv.pdf">Resumé</a></li>
-          <li><a href="/kontakt">Kontakt</a></li>
+          <li><a href="{{ url_for('main.page', path='kontakt') }}">Kontakt</a></li>
           {% endblock %}
         </div>
       </div>
@@ -44,7 +44,7 @@
       <div class="footer-text align-center">
         <p class="footer-links">Zmontowane własnoręcznie przy użyciu <a href="https://palletsprojects.com/p/flask/">Flask</a>, <a href="http://docs.peewee-orm.com/en/latest/">Peewee</a>, <a href="https://sqlite.org">SQLite</a>, <a href="https://kylelogue.github.io/mustard-ui/">Mustard-UI</a> i z dużą dozą przyjemności.</p>
         <p class="footer-links">Kod dostępny w <a href="https://github.com/zgoda/devlog">repozytorium na Githubie</a> na licencji MIT. Treść udostępniana na <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">licencji Creative Commons Uznanie autorstwa-Na tych samych warunkach 4.0 Międzynarodowe</a>.</p>
-        <p class="footer-links"><a href="{{ url_for('main.blog') }}">blog</a> <strong>&middot;</strong> <a href="/o">informacje</a> <strong>&middot;</strong> <a href="/kontakt">kontakt</a></p>
+        <p class="footer-links"><a href="{{ url_for('main.blog') }}">blog</a> <strong>&middot;</strong> <a href="{{ url_for('main.page', path='o') }}">informacje</a> <strong>&middot;</strong> <a href="{{ url_for('main.page', path='kontakt') }}">kontakt</a></p>
       </div>
       <p class="copyright align-center">Copyright: &copy; 2019 Jarek Zgoda, wersja {{ version }}</p>
     </footer>

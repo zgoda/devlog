@@ -6,14 +6,9 @@ After=network.target
 User=username
 Group=www-data
 WorkingDirectory=/home/username/devlog
-Environment="FLASK_ENV=production"
-Environment="SENTRY_PUBKEY=your-sentry-pub-key"
-Environment="SENTRY_PROJECT=your-sentry-project-id"
-Environment="SQLALCHEMY_DATABASE_URI=postgresql://username:password@localhost:5432/dbname"
-Environment="SECRET_KEY=your-application-secret-key"
-Environment="REDIS_URL=redis://"
-ExecStart=/home/username/devlog/venv/bin/uwsgi --ini config/uwsgi.ini
+EnvironmentFile=/home/username/devlog/config/devlog.env
+ExecStart=/home/username/devlog/venv/bin/gunicorn --workers 2 --bind unix:/tmp/devlog.sock -m 007 devlog.wsgi:application
 Restart=always
 
 [Install]
-WantedBy=devlog.target
+WantedBy=multi-user.target

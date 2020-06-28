@@ -1,5 +1,0 @@
-[Unit]
-Description=Devlog RQ worker pool
-
-[Install]
-WantedBy=devlog.target

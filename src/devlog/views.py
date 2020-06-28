@@ -2,6 +2,7 @@ import math
 
 from flask import Blueprint, abort, render_template
 
+from .ext import pages
 from .models import Post, Tag
 from .utils.pagination import get_page
 
@@ -17,6 +18,13 @@ def index():
         .limit(5)
     )
     return render_template('index.html', posts=posts)
+
+
+@bp.route('/strona/<path:path>')
+def page(path):
+    page = pages.get_or_404(path)
+    template = page.meta.get('template', 'flatpage.html')
+    return render_template(template, page=page)
 
 
 @bp.route('/blog')

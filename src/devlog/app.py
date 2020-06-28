@@ -9,7 +9,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 from werkzeug.utils import ImportStringError
 
 from ._version import get_version
-from .ext import babel
+from .ext import babel, pages
 from .models import db
 from .templates import setup_template_extensions
 from .utils.app import Devlog
@@ -28,7 +28,11 @@ def make_app(env: Optional[str] = None) -> Devlog:
                 release=f'devlog@{version}',
                 integrations=[FlaskIntegration()],
             )
-    app = Devlog(__name__.split('.')[0])
+    extra = {}
+    instance_path = os.environ.get('INSTANCE_PATH')
+    if instance_path is not None:
+        extra['instance_path'] = instance_path
+    app = Devlog(__name__.split('.')[0], **extra)
     configure_app(app, env)
     with app.app_context():
         configure_database(app)
@@ -83,6 +87,7 @@ def configure_hooks(app: Devlog):
 
 def configure_extensions(app: Devlog):
     babel.init_app(app)
+    pages.init_app(app)
 
 
 def configure_blueprint(app: Devlog):
