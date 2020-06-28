@@ -2,6 +2,7 @@ import io
 import re
 import xml.etree.ElementTree as etree  # noqa: DUO107,N813
 
+import markdown
 from markdown import Markdown
 from markdown.blockprocessors import BlockProcessor
 from markdown.extensions import Extension
@@ -13,6 +14,8 @@ DEFAULT_MD_EXTENSIONS = [
     'abbr', 'def_list', 'full_yaml_metadata', 'fenced_code', 'codehilite',
     'centerblock',
 ]
+
+METADATA_RE = re.compile(r'\A---.*?---', re.S | re.MULTILINE)
 
 
 def slugify(text: str, delim: str = '-') -> str:
@@ -48,6 +51,17 @@ def rich_summary(post_text: str) -> str:
         extensions=DEFAULT_MD_EXTENSIONS, output_format='html'
     )
     return md.convert(raw_summary)
+
+
+def post_summary(text: str) -> str:
+    plain_text = stripping_markdown().convert(text)
+    summary_end_pos = plain_text.find('<!-- more -->')
+    if summary_end_pos > -1:
+        return rich_summary(text)
+    return markdown.markdown(
+        ' '.join(plain_text.split()[:50]), extensions=DEFAULT_MD_EXTENSIONS,
+        output_format='html',
+    )
 
 
 class CenterBlockProcessor(BlockProcessor):

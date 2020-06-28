@@ -1,6 +1,5 @@
 import fcntl
 import os
-import re
 import stat
 import sys
 from datetime import date, datetime
@@ -11,14 +10,14 @@ from dotenv import find_dotenv, load_dotenv
 
 from .app import make_app
 from .models import Post, Tag, TaggedPost, db
-from .utils.text import DEFAULT_MD_EXTENSIONS, rich_summary, slugify, stripping_markdown
+from .utils.text import (
+    DEFAULT_MD_EXTENSIONS, METADATA_RE, post_summary, slugify, stripping_markdown,
+)
 
 load_dotenv(find_dotenv())
 
 app = make_app(os.environ.get('ENV'))
 os.makedirs(app.instance_path, exist_ok=True)
-
-METADATA_RE = re.compile(r'\A---.*?---', re.S | re.MULTILINE)
 
 MD = markdown.Markdown(extensions=DEFAULT_MD_EXTENSIONS, output_format='html')
 SM = stripping_markdown()
@@ -50,15 +49,7 @@ def import_posts():
             )
             continue
         plain_content = METADATA_RE.sub('', text, count=1).strip()
-        plain_text = SM.convert(plain_content)
-        summary_end_pos = plain_text.find('<!-- more -->')
-        if summary_end_pos > -1:
-            summary = rich_summary(plain_content)
-        else:
-            summary = markdown.markdown(
-                ' '.join(plain_text.split()[:50]), extensions=DEFAULT_MD_EXTENSIONS,
-                output_format='html',
-            )
+        summary = post_summary(plain_content)
         title = MD.Meta['title'].strip().replace("'", '')
         created_dt = updated = datetime.utcnow()
         post_date = MD.Meta.get('date')

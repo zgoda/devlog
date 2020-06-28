@@ -5,51 +5,78 @@ from flask import url_for
 
 from devlog.utils.text import slugify
 
-from . import DevlogTests
+
+def test_index_no_posts(client):
+    url = url_for('main.index')
+    rv = client.get(url)
+    assert rv.status_code == 200
+    assert 'żadnych postów' in rv.text
+
+
+def test_index_one_post(client, post_factory):
+    d = datetime.utcnow()
+    post = post_factory(created=d, published=d)
+    url = url_for('main.index')
+    rv = client.get(url)
+    assert rv.status_code == 200
+    assert f'<h3>{post.title}</h3>' in rv.text
+
+
+def test_flatpages(client):
+    pages = ['o', 'kontakt']
+    for page in pages:
+        url = url_for('main.page', path=page)
+        rv = client.get(url)
+        assert rv.status_code == 200
 
 
 @pytest.mark.usefixtures('client_class')
-class TestMainPageAccountLinks(DevlogTests):
+class TestBlogHomeView:
 
     @pytest.fixture(autouse=True)
     def set_up(self):
-        self.login_url = url_for('auth.login')
-        self.logout_url = url_for('auth.logout')
-        self.account_url = url_for('user.account')
+        self.url = url_for('main.blog')
 
-    def test_anon_login_urls(self):
-        r = self.client.get(url_for('home.index'))
-        assert f'href="{self.login_url}"' in r.text
-        assert f'href="{self.logout_url}"' not in r.text
-        assert f'href="{self.account_url}"' not in r.text
+    def test_no_posts(self):
+        rv = self.client.get(self.url)
+        assert rv.status_code == 200
+        assert 'żadnych postów' in rv.text
 
-    def test_authenticated_login_urls(self, user_factory):
-        user = user_factory(name='Ivory Tower', password=self.default_pw)
-        self.login(user.name)
-        r = self.client.get(url_for('home.index'))
-        assert f'href="{self.login_url}"' not in r.text
-        assert f'href="{self.logout_url}"' in r.text
-        assert f'href="{self.account_url}"' in r.text
+    def test_one_post(self, post_factory):
+        d = datetime.utcnow()
+        post = post_factory(created=d, published=d)
+        rv = self.client.get(self.url)
+        assert rv.status_code == 200
+        assert f'<h3>{post.title}</h3>' in rv.text
+
+    def test_many_pages(self, post_factory):
+        post_num = 24
+        d = datetime.utcnow()
+        post_factory.create_batch(post_num, created=d, published=d)
+        rv = self.client.get(self.url)
+        assert rv.status_code == 200
+        assert '>Poprzednia (' not in rv.text
+        assert '>Następna (2 / 3)' in rv.text
 
 
 @pytest.mark.usefixtures('client_class')
-class TestViewSinglePost(DevlogTests):
+class TestPostView:
 
     def test_ok(self, post_factory):
         title = 'test post 1'
         slug = slugify(title)
         y, m, d = 2020, 2, 2
         created = datetime(y, m, d)
-        post_factory(title=title, created=created, draft=False)
-        url = url_for('home.post', y=y, m=m, d=d, slug=slug)
+        post_factory(title=title, created=created, published=created)
+        url = url_for('main.post', y=y, m=m, d=d, slug=slug)
         rv = self.client.get(url)
         assert rv.status_code == 200
-        assert f'<h1>{title}</h1>' in rv.text
+        assert f'<h2>{title}</h2>' in rv.text
 
     def test_fail(self):
         title = 'test post 1'
         slug = slugify(title)
         y, m, d = 2020, 2, 2
-        url = url_for('home.post', y=y, m=m, d=d, slug=slug)
+        url = url_for('main.post', y=y, m=m, d=d, slug=slug)
         rv = self.client.get(url)
         assert rv.status_code == 404

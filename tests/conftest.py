@@ -6,13 +6,13 @@ from pytest_factoryboy import register
 from werkzeug.utils import cached_property
 
 from devlog import make_app
-from devlog.ext import db
+from devlog.models import db, Post, Tag, TaggedPost
 
-from .factories import BlogFactory, UserFactory, PostFactory
+from .factories import PostFactory, TagFactory, TaggedPostFactory
 
-register(UserFactory)
-register(BlogFactory)
+register(TagFactory)
 register(PostFactory)
+register(TaggedPostFactory)
 
 
 class TestResponse(Response):
@@ -24,13 +24,18 @@ class TestResponse(Response):
         return self.data
 
 
+@pytest.fixture(scope='session', autouse=True)
+def faker_session_locale():
+    return ['pl_PL']
+
+
 @pytest.fixture
 def app():
     os.environ['FLASK_ENV'] = 'test'
     app = make_app(env='test')
     app.response_class = TestResponse
+    models = [Post, Tag, TaggedPost]
     with app.app_context():
-        db.create_all()
+        db.create_tables(models)
         yield app
-        db.session.remove()
-        db.drop_all()
+        db.drop_tables(models)
