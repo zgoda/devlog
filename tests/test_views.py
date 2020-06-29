@@ -22,6 +22,15 @@ def test_index_one_post(client, post_factory):
     assert f'<h3>{post.title}</h3>' in rv.text
 
 
+def test_index_many_posts(client, post_factory):
+    d = datetime.utcnow()
+    post_factory.create_batch(6, created=d, published=d)
+    url = url_for('main.index')
+    rv = client.get(url)
+    assert rv.status_code == 200
+    assert rv.text.count('<h3>') == 5
+
+
 def test_flatpages(client):
     pages = ['o', 'kontakt']
     for page in pages:

@@ -2,25 +2,16 @@ import fcntl
 import os
 import stat
 import sys
-from datetime import date, datetime
 
-import markdown
-import pytz
 from dotenv import find_dotenv, load_dotenv
 
 from .app import make_app
-from .models import Post, Tag, TaggedPost, db
-from .utils.text import (
-    DEFAULT_MD_EXTENSIONS, METADATA_RE, post_summary, slugify, stripping_markdown,
-)
+from .utils.blog import post_from_markdown
 
 load_dotenv(find_dotenv())
 
 app = make_app(os.environ.get('ENV'))
 os.makedirs(app.instance_path, exist_ok=True)
-
-MD = markdown.Markdown(extensions=DEFAULT_MD_EXTENSIONS, output_format='html')
-SM = stripping_markdown()
 
 
 def import_posts():
@@ -42,49 +33,7 @@ def import_posts():
         file_path = os.path.join(incoming_dir, file_name)
         with open(file_path) as fp:
             text = fp.read()
-        html_text = MD.convert(text)
-        if not MD.Meta or not MD.Meta.get('title'):
-            app.logger.warning(
-                f'Post file {file_name} does not provide post title in metadata'
-            )
-            continue
-        plain_content = METADATA_RE.sub('', text, count=1).strip()
-        summary = post_summary(plain_content)
-        title = MD.Meta['title'].strip().replace("'", '')
-        created_dt = updated = datetime.utcnow()
-        post_date = MD.Meta.get('date')
-        author = MD.Meta.get('author', '').strip()
-        if post_date:
-            if isinstance(post_date, date):
-                post_date = datetime.utcnow().replace(
-                    year=post_date.year, month=post_date.month, day=post_date.day
-                )
-            if post_date.tzinfo is None:
-                tz = pytz.timezone(
-                    os.environ.get('BABEL_DEFAULT_TIMEZONE', 'Europe/Warsaw')
-                )
-                post_date = post_date.astimezone(tz).astimezone(pytz.utc)
-            else:
-                post_date = post_date.astimezone(pytz.utc)
-            created_dt = post_date.replace(tzinfo=None)
-        is_draft = MD.Meta.get('draft', False)
-        published = None
-        if not is_draft:
-            published = updated
-        post_tags = MD.Meta.get('tags', [])
-        with db.atomic():
-            MD.reset()
-            post = Post.create(
-                author=author, created=created_dt, updated=updated,
-                published=published, title=title, slug=slugify(title),
-                text=plain_content, text_html=html_text, summary=summary,
-                c_year=created_dt.year, c_month=created_dt.month, c_day=created_dt.day,
-            )
-            for tag_s in post_tags:
-                tag, _ = Tag.get_or_create(
-                    name=tag_s, defaults={'slug': slugify(tag_s)}
-                )
-                TaggedPost.create(post=post, tag=tag)
-            os.remove(file_path)
+        post_from_markdown(text)
+        os.remove(file_path)
     os.close(lf_fd)
     os.remove(lf)
