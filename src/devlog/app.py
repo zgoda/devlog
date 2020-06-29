@@ -1,28 +1,18 @@
 import os
+import tempfile
 from logging.config import dictConfig
 from typing import Optional
 
-import rq
 import sentry_sdk
 from flask import render_template
-from flask_babel import gettext as _
-from redis import Redis
 from sentry_sdk.integrations.flask import FlaskIntegration
-from sentry_sdk.integrations.redis import RedisIntegration
-from sentry_sdk.integrations.rq import RqIntegration
-from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
-from werkzeug.utils import ImportStringError, import_string
+from werkzeug.utils import ImportStringError
 
 from ._version import get_version
-from .auth import auth_bp
-from .blog import blog_bp
-from .ext import babel, csrf, db, login_manager
-from .home import home_bp
-from .post import post_bp
+from .ext import babel, pages
+from .models import db
 from .templates import setup_template_extensions
-from .user import user_bp
 from .utils.app import Devlog
-from .utils.i18n import get_user_language, get_user_timezone
 
 
 def make_app(env: Optional[str] = None) -> Devlog:
@@ -36,17 +26,19 @@ def make_app(env: Optional[str] = None) -> Devlog:
             sentry_sdk.init(
                 dsn=f'https://{sentry_pubkey}@sentry.io/{sentry_project}',
                 release=f'devlog@{version}',
-                integrations=[
-                    FlaskIntegration(), RedisIntegration(), SqlalchemyIntegration(),
-                    RqIntegration(),
-                ],
+                integrations=[FlaskIntegration()],
             )
-    app = Devlog()
+    extra = {}
+    instance_path = os.environ.get('INSTANCE_PATH')
+    if instance_path is not None:
+        extra['instance_path'] = instance_path
+    app = Devlog(__name__.split('.')[0], **extra)
     configure_app(app, env)
-    configure_extensions(app)
     with app.app_context():
-        configure_rq(app)
-        configure_blueprints(app)
+        configure_database(app)
+        configure_hooks(app)
+        configure_extensions(app)
+        configure_blueprint(app)
         configure_error_handlers(app)
         setup_template_extensions(app)
     return app
@@ -59,53 +51,48 @@ def configure_app(app: Devlog, env: Optional[str]):
             app.config.from_object(f'devlog.config_{env}')
         except ImportStringError:
             app.logger.info(f'no environment config for {env}')
-    uploads_dir = os.path.join(app.instance_path, app.config['UPLOAD_DIR_NAME'])
-    os.makedirs(uploads_dir, exist_ok=True)
 
 
-def configure_rq(app: Devlog):
-    redis_conn_cls = Redis
-    run_async = True
+def configure_database(app: Devlog):
     if app.testing:
-        redis_conn_cls = import_string('fakeredis.FakeStrictRedis')
-        run_async = False
-    app.redis = redis_conn_cls.from_url(app.config['REDIS_URL'])
-    app.queues = {
-        'tasks': rq.Queue('devlog-tasks', is_async=run_async, connection=app.redis),
+        tmp_dir = tempfile.mkdtemp()
+        db_name = os.path.join(tmp_dir, 'db.sqlite3')
+    else:
+        db_name = os.getenv('DB_NAME')
+    kw = {
+        'pragmas': {
+            'journal_mode': 'wal',
+            'cache_size': -1 * 64000,
+            'foreign_keys': 1,
+            'ignore_check_constraints': 0,
+        }
     }
+    if db_name is None:
+        db_name = ':memory:'
+        kw = {}
+    db.init(db_name, **kw)
 
 
-def configure_blueprints(app: Devlog):
-    app.register_blueprint(home_bp)
-    app.register_blueprint(auth_bp, url_prefix='/auth')
-    app.register_blueprint(user_bp, url_prefix='/user')
-    app.register_blueprint(blog_bp, url_prefix='/blog')
-    app.register_blueprint(post_bp, url_prefix='/post')
+def configure_hooks(app: Devlog):
+
+    @app.before_request
+    def db_connect():
+        db.connect(reuse_if_open=True)
+
+    @app.teardown_request
+    def db_close(exc):
+        if not db.is_closed():
+            db.close()
 
 
 def configure_extensions(app: Devlog):
-    db.init_app(app)
-    csrf.init_app(app)
-    login_manager.init_app(app)
-    login_manager.login_view = 'auth.login'
-    login_manager.login_message = _('Please log in to access this page')
-    login_manager.login_message_category = 'warning'
-
-    @login_manager.user_loader
-    def get_user(userid):
-        from .models import User
-        return User.query.get(userid)
-
-    if not app.testing:
-        @babel.localeselector
-        def get_locale():
-            return get_user_language()
-
-        @babel.timezoneselector
-        def get_timezone():
-            return get_user_timezone()
-
     babel.init_app(app)
+    pages.init_app(app)
+
+
+def configure_blueprint(app: Devlog):
+    from .views import bp
+    app.register_blueprint(bp)
 
 
 def configure_logging():

@@ -1,5 +1,4 @@
-from flask_babel import format_datetime, get_locale
-from wtforms.fields import HiddenField
+from flask_babel import format_datetime
 
 from ._version import get_version
 from .utils.app import Devlog
@@ -13,10 +12,8 @@ def setup_filters(application: Devlog):
 def setup_globals(application: Devlog):
     application.jinja_env.globals.update({
         'format_datetime': format_datetime,
-        'get_locale': get_locale,
         'url_for_other_page': url_for_other_page,
         'version': get_version(),
-        'is_hidden_field': lambda x: isinstance(x, HiddenField),
     })
 
 

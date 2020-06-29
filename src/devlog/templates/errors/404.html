@@ -1,10 +1,8 @@
 {% extends "errors/base.html" %}
 
-{% block pagetitle %}{{ gettext('page not found').capitalize() }}{% endblock %}
+{% block pagetitle %}404: Page not found{% endblock %}
 
-{% block widecontent %}
-<div class="content">
-  <h1>{{ gettext('page not found').capitalize() }}</h1>
-  <p>{% trans %}The page you requested could not be found{% endtrans %}.</p>
-</div>
+{% block content %}
+<h1>Nie znaleziono strony</h1>
+<p>Ta strona nie istnieje.</p>
 {% endblock %}

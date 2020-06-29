@@ -1,76 +1,39 @@
+import fcntl
 import os
-import re
-from datetime import datetime
+import stat
+import sys
 
-import markdown
-import pytz
-import sqlalchemy
-from dateutil.parser import isoparse
+from dotenv import find_dotenv, load_dotenv
 
-from .utils.text import slugify, stripping_markdown
+from .app import make_app
+from .utils.blog import post_from_markdown
 
-METADATA_RE = re.compile(r'\A---.*?---', re.S | re.MULTILINE)
+load_dotenv(find_dotenv())
+
+app = make_app(os.environ.get('ENV'))
+os.makedirs(app.instance_path, exist_ok=True)
 
 
-def import_post(file_name: str, blog_id: int):
-    engine = sqlalchemy.create_engine(os.environ['SQLALCHEMY_DATABASE_URI'])
-    cn = engine.connect()
+def import_posts():
+    lf = os.path.join(app.instance_path, 'postimport.lock')
+    lf_flags = os.O_WRONLY | os.O_CREAT
+    lf_mode = stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH
+    lf_fd = os.open(lf, lf_flags, lf_mode)
     try:
-        with open(file_name) as fp:
+        fcntl.lockf(lf_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except IOError:
+        sys.exit('Only one instance of post import can be running')
+    incoming_dir = app.config['POST_INCOMING_DIR']
+    if not os.path.isabs(incoming_dir):
+        incoming_dir = os.path.join(app.instance_path, incoming_dir)
+        os.makedirs(incoming_dir, exist_ok=True)
+    for file_name in os.listdir(incoming_dir):
+        if not file_name.endswith('.md'):
+            continue
+        file_path = os.path.join(incoming_dir, file_name)
+        with open(file_path) as fp:
             text = fp.read()
-        md = markdown.Markdown(
-            extensions=['meta', 'fenced_code', 'codehilite'], output_format='html'
-        )
-        html_text = md.convert(text)
-        if not md.Meta or not md.Meta.get('title'):
-            raise ValueError(
-                f'Post file {file_name} does not provide post title in metadata'
-            )
-        blog_sql = sqlalchemy.text(
-            'select id, user_id from blog where id = :blog_id'
-        ).bindparams(blog_id=blog_id)
-        blog_rv = cn.execute(blog_sql)
-        row = blog_rv.first()
-        if row is None:
-            raise ValueError(f'Blog ID {blog_id} not found')
-        user_id = row[1]
-        plain_content = METADATA_RE.sub('', text, count=1).strip()
-        sm = stripping_markdown()
-        plain_text = sm.convert(plain_content)
-        summary = ' '.join(plain_text.split()[:10])
-        title = ' '.join(md.Meta['title']).strip()
-        title = title.replace("'", '')
-        created_dt = updated = datetime.utcnow()
-        post_date = ' '.join(md.Meta.get('date', [])).strip()
-        if post_date:
-            created_dt = isoparse(post_date)
-            if created_dt.tzinfo is None:
-                tz = pytz.timezone(
-                    os.environ.get('BABEL_DEFAULT_TIMEZONE', 'Europe/Warsaw')
-                )
-                created_dt = created_dt.astimezone(tz).astimezone(pytz.utc)
-            else:
-                created_dt = created_dt.astimezone(pytz.utc)
-            created_dt = created_dt.replace(tzinfo=None)
-        is_draft = ' '.join(md.Meta.get('draft', [])).strip()
-        is_draft = 'false' not in is_draft.lower()
-        published = None
-        if not is_draft:
-            published = updated
-        post_sql = sqlalchemy.text(
-            '''
-            insert into post (
-                blog_id, author_id, title, slug, text, text_html,
-                created, updated, published, draft, summary
-            ) values (
-                :blog_id, :author_id, :title, :slug, :text, :text_html,
-                :created, :updated, :published, :draft, :summary
-            )'''
-        ).bindparams(
-            blog_id=blog_id, author_id=user_id, title=title, slug=slugify(title),
-            text=plain_content, text_html=html_text, created=created_dt,
-            updated=updated, published=published, draft=is_draft, summary=summary
-        )
-        cn.execute(post_sql)
-    finally:
-        cn.close()
+        post_from_markdown(text)
+        os.remove(file_path)
+    os.close(lf_fd)
+    os.remove(lf)

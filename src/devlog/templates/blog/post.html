@@ -1,0 +1,16 @@
+{% extends "blog/base.html" %}
+
+{% from "macros/blog.html" import render_tags %}
+
+{% block extracss %}
+<link rel="stylesheet" href="/static/css/pgm_friendly.css">
+{% endblock %}
+
+{% block pagetitle %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ post.title }}</h2>
+<p>{{ format_datetime(post.created, format='short') }}</p>
+{{ render_tags(tags) }}
+{{ post.text_html|safe }}
+{% endblock %}

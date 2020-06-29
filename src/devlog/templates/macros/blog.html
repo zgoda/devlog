@@ -1,50 +1,23 @@
-{% macro post_url(post) %}
-{% if post.draft %}{{ url_for('post.display', **post.ident) }}{% else %}{{ url_for('home.post', **post.ident) }}{% endif %}
-{% endmacro %}
-
 {% macro render_post_headline(post) %}
-<div class="card content">
-  <div class="card-content">
-    <h3 class="title is-3">{{ post.title }}</h3>
-    <h4 class="subtitle is-4"><a href="{{ post_url(post) }}">{{ gettext('created on %(date)s', date=format_datetime(post.created, 'short')) }}</a></h4>
-    <div class="content">
-      <p class="card-text">{{ post.summary }}</p>
-      <a href="{{ post_url(post) }}" class="card-link">{{ gettext('read more') }}</a>
-    </div>
+<div>
+  <h3>{{ post.title }}</h3>
+  <h4><a href="{{ url_for('main.post', y=post.created.year, m=post.created.month, d=post.created.day, slug=post.slug) }}">{{ format_datetime(post.created, 'short') }}</a></h4>
+  <div>
+    {{ render_tags(post.tags('name')) }}
+    {{ post.summary|safe }}
+    <p class="align-right"><a href="{{ url_for('main.post', y=post.created.year, m=post.created.month, d=post.created.day, slug=post.slug) }}">więcej...</a></p>
   </div>
 </div>
 {% endmacro %}
 
-{% macro render_post_pubinfo(post) %}
-<div class="columns">
-  <div class="column">
-    <div class="content">
-      <p><strong>{{ gettext('created') }}:</strong>&nbsp;{{ post.created|datetimeformat('short') }}</p>
-    </div>
-  </div>
-  <div class="column">
-    <div class="content">
-      <p><strong>{{ gettext('updated') }}:</strong>&nbsp;{{ post.updated|datetimeformat('short') }}</p>
-    </div>
-  </div>
-  <div class="column">
-    <div class="content">
-      <p><strong>{{ gettext('published') }}:</strong>&nbsp;{{ post.published|datetimeformat('short') }}</p>
-    </div>
-  </div>
+{% macro render_tags(tags) %}
+{% if tags %}
+<div style="display: flex; justify-content: flex-end">
+  <ul class="tags">
+    {% for taggedpost in tags %}
+    <li class="tag tag-orange">{{ taggedpost.tag.name }}</li>
+    {% endfor %}
+  </ul>
 </div>
-{% endmacro %}
-
-{% macro markdown_preview(src_id) %}
-<div id="markdown-preview">
-</div>
-<script src="/static/vendor/showdown/showdown.min.js"></script>
-<script>
-  const converter = new showdown.Converter();
-  const $el = document.querySelector('.content #markdown-preview');
-  const $src = document.querySelector('#{{ src_id }}');
-  $src.addEventListener('input', () => {
-    $el.innerHTML = converter.makeHtml($src.value);
-  })
-</script>
+{% endif %}
 {% endmacro %}

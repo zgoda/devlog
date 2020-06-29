@@ -1,53 +1,85 @@
+import markdown
 import factory
-from factory.alchemy import SQLAlchemyModelFactory
-from werkzeug.security import generate_password_hash
+from factory.base import Factory, FactoryOptions, OptionDefault
 
-from devlog.ext import db
-from devlog.models import Blog, Post, User
+from devlog.models import Post, Tag, TaggedPost, db
+from devlog.utils.text import DEFAULT_MD_EXTENSIONS, post_summary, slugify
+
+factory.Faker._DEFAULT_LOCALE = 'pl_PL'
 
 
-class BaseFactory(SQLAlchemyModelFactory):
+class PeeweeOptions(FactoryOptions):
+
+    def _build_default_options(self):
+        return super()._build_default_options() + [
+            OptionDefault('database', None, inherit=True),
+        ]
+
+
+class PeeweeModelFactory(Factory):
+
+    _options_class = PeeweeOptions
 
     class Meta:
-        sqlalchemy_session = db.session
-        sqlalchemy_session_persistence = 'flush'
-
-
-class UserFactory(BaseFactory):
-
-    name = factory.Faker('name')
-    password = factory.Faker('password')
-    default_language = 'en'
-    timezone = 'Europe/London'
-
-    class Meta:
-        model = User
+        abstract = True
 
     @classmethod
-    def _adjust_kwargs(cls, **kwargs):
-        kwargs['password'] = generate_password_hash(kwargs['password'])
-        return kwargs
+    def _create(cls, target_class, *args, **kwargs):
+        """Create an instance of the model, and save it to the database."""
+        return target_class.create(**kwargs)
 
 
-class BlogFactory(BaseFactory):
-
-    name = factory.Faker('name')
-    user = factory.SubFactory(UserFactory)
-    active = True
-    default = False
+class BaseFactory(PeeweeModelFactory):
 
     class Meta:
-        model = Blog
+        database = db
 
 
 class PostFactory(BaseFactory):
 
-    blog = factory.SubFactory(BlogFactory)
-    author = factory.SubFactory(UserFactory)
-    title = factory.Faker('sentence')
-    text = factory.Faker('text')
-    draft = True
-    pinned = False
-
     class Meta:
         model = Post
+
+    author = factory.Faker('user_name')
+    title = factory.Faker('sentence')
+    text = factory.Faker('text')
+
+    @factory.lazy_attribute
+    def c_year(self):
+        return self.created.year
+
+    @factory.lazy_attribute
+    def c_month(self):
+        return self.created.month
+
+    @factory.lazy_attribute
+    def c_day(self):
+        return self.created.day
+
+    @factory.lazy_attribute
+    def slug(self):
+        return slugify(self.title)
+
+    @factory.lazy_attribute
+    def summary(self):
+        return post_summary(self.text)
+
+    @factory.lazy_attribute
+    def text_html(self):
+        return markdown.markdown(self.text, extensions=DEFAULT_MD_EXTENSIONS)
+
+
+class TagFactory(BaseFactory):
+
+    class Meta:
+        model = Tag
+
+    @factory.lazy_attribute
+    def slug(self):
+        return slugify(self.name)
+
+
+class TaggedPostFactory(BaseFactory):
+
+    class Meta:
+        model = TaggedPost

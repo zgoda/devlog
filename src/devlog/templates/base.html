@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="{{ get_locale().language }}">
+<html lang="pl">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block pagetitle %}{% endblock %}</title>
-    <link rel="stylesheet" href="/static/vendor/bulma.min.css">
-    <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/static/vendor/normalize.css">
+    <link rel="stylesheet" href="/static/vendor/mustard/css/mustard-ui.min.css">
     <link rel="stylesheet" href="/static/css/app.css">
     {% block extracss %}
     {% endblock %}
@@ -15,102 +15,39 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
     <link rel="icon" type="image/png" sizes="48x48" href="/static/favicon-48.png">
+    <meta name="description" content="{% block pagedescription %}Osobista strona pana Jarka Zgody{% endblock %}">
   </head>
   <body>
 
-    <nav class="navbar is-dark" role="navigation" aria-label="{{ gettext('main navigation') }}">
-      <div class="container">
-        <div class="navbar-brand">
-          <a class="navbar-item" href="/">Devlog</a>
-          <a role="button" class="navbar-burger" aria-label="{{ gettext('top menu') }}" aria-expanded="false" data-target="navMenu">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-          </a>
+    <nav role="navigation" aria-label="główny panel nawigacji">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <a href="/">Devlog</a>
         </div>
-        <div class="navbar-menu" id="navMenu">
-          <div class="navbar-end">
-            {% if current_user.is_authenticated %}
-            <div class="navbar-item has-dropdown">
-              <a class="navbar-link"><span class="fas fa-user-alt"></span><span>&nbsp;&nbsp;{{ current_user.name }}</span></a>
-              <div class="navbar-dropdown">
-                <a class="navbar-item" href="{{ url_for('user.account') }}"><span class="icon"><i class="fas fa-user-cog"></i></span><span>&nbsp;&nbsp;{{ gettext('account') }}</span></a>
-                <a class="navbar-item" href="{{ url_for('auth.logout') }}"><span class="icon"><i class="fas fa-sign-out-alt"></i></span><span>&nbsp;&nbsp;{{ gettext('sign out') }}</span></a>
-              </div>
-            </div>
-            {% else %}
-            <a class="navbar-item" href="{{ url_for('auth.login') }}"><span class="fas fa-sign-in-alt"></span><span>&nbsp;&nbsp;{{ gettext('sign in') }}</span></a>
-            {% endif %}
-          </div>
+        <ul class="nav-links">
+          {% block topnav %}
+          <li><a href="{{ url_for('main.blog') }}">Blog</a></li>
+          <li><a href="https://github.com/zgoda">Kod</a></li>
+          <li><a href="/uploads/cv.pdf">Resumé</a></li>
+          <li><a href="{{ url_for('main.page', path='kontakt') }}">Kontakt</a></li>
+          {% endblock %}
         </div>
       </div>
     </nav>
 
-    <section class="section">
-      <div class="container">
-        {% with flashes = get_flashed_messages(with_categories=True) %}
-        {% for category, flash in flashes %}
-        <div class="notification is-{{ category }}" role="alert">
-          <button class="delete"></button>
-          {{ flash }}
-        </div>
-        {% endfor %}
-        {% endwith %}
-        <div class="columns is-centered">
-          <div class="column is-four-fifths">
-          {% block widecontent %}
-          {% endblock %}
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column is-three-quarters">
-          {% block content %}
-          {% endblock %}
-          </div>
-          <div class="column is-one-quarter">
-          {% block sidebar %}
-          {% endblock %}
-          </div>
-        </div>
-      </div>
-    </section>
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
 
-    <footer class="footer">
-      <div class="content has-text-centered">
-        <p>Copyright: &copy; 2019 Jarek Zgoda, {{ gettext('version %(ver)s', ver=version) }}</p>
+    <footer>
+      <div class="footer-text align-center">
+        <p class="footer-links">Zmontowane własnoręcznie przy użyciu <a href="https://palletsprojects.com/p/flask/">Flask</a>, <a href="http://docs.peewee-orm.com/en/latest/">Peewee</a>, <a href="https://sqlite.org">SQLite</a>, <a href="https://kylelogue.github.io/mustard-ui/">Mustard-UI</a> i z dużą dozą przyjemności.</p>
+        <p class="footer-links">Kod dostępny w <a href="https://github.com/zgoda/devlog">repozytorium na Githubie</a> na licencji MIT. Treść udostępniana na <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">licencji Creative Commons Uznanie autorstwa-Na tych samych warunkach 4.0 Międzynarodowe</a>.</p>
+        <p class="footer-links"><a href="{{ url_for('main.blog') }}">blog</a> <strong>&middot;</strong> <a href="{{ url_for('main.page', path='o') }}">informacje</a> <strong>&middot;</strong> <a href="{{ url_for('main.page', path='kontakt') }}">kontakt</a></p>
       </div>
+      <p class="copyright align-center">Copyright: &copy; 2019 Jarek Zgoda, wersja {{ version }}</p>
     </footer>
-
-    <script type="text/javascript">
-      document.addEventListener('DOMContentLoaded', () => {
-        (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
-          const $notification = $delete.parentNode;
-          $delete.addEventListener('click', () => {
-            $notification.parentNode.removeChild($notification);
-          });
-        });
-        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-        if ($navbarBurgers.length > 0) {
-          $navbarBurgers.forEach(el => {
-            el.addEventListener('click', () => {
-              const target = el.dataset.target;
-              const $target = document.getElementById(target);
-              el.classList.toggle('is-active');
-              $target.classList.toggle('is-active');
-            });
-          });
-        }
-        const $dropdowns = Array.prototype.slice.call(document.querySelectorAll('.dropdown, .has-dropdown'), 0);
-        if ($dropdowns.length > 0) {
-          $dropdowns.forEach(el => {
-            el.addEventListener('click', function(event) {
-              event.stopPropagation();
-              el.classList.toggle('is-active');
-            });
-          });
-        };
-      });
-    </script>
 
     {% block extrajs %}
     {% endblock %}
