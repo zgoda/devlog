@@ -1,17 +1,9 @@
 Flask gotchas
 =============
 
-`Flask <http://flask.pocoo.org/>`_ is fine web framework, kind of enabler -
-it's easy and simple at the beginning, and very appealing with its *no
-unnecessary cruft* stance. It emphasizes *speed of development over speed of
-execution* paradigm that was popularized by
-`Django <https://www.djangoproject.com/>`_ framework long before Flask was
-born from one Austrian guy April Fools joke.
+`Flask <http://flask.pocoo.org/>`_ is fine web framework, kind of enabler - it's easy and simple at the beginning, and very appealing with its *no unnecessary cruft* stance. It emphasizes *speed of development over speed of execution* paradigm that was popularized by `Django <https://www.djangoproject.com/>`_ framework long before Flask was born from one Austrian guy April Fools joke.
 
-Unfortunately this simplicity comes at some price that may not be apparent at
-the beginning. It may not become apparent at all because Flask is easy and
-simple as long as you do *standard things*. What is non-standard according to
-Flask?
+Unfortunately this simplicity comes at some price that may not be apparent at the beginning. It may not become apparent at all because Flask is easy and simple as long as you do *standard things*. What is non-standard according to Flask?
 
 Template file name extensions
 -----------------------------
@@ -23,8 +15,8 @@ templates eg. with ``.j2`` extension, like Ansible templates. And since the
 extension is not on the list of file extensions that trigger autoescaping,
 your app will render templates with raw values. Gotcha!
 
-Remedy
-^^^^^^
+Mitigation
+^^^^^^^^^^
 
 Either monkeypatch ``Flask`` object with your own implementation of
 autoescaping selection logic or subclass it and override
@@ -35,6 +27,11 @@ later.
 Anyway, after experimenting with ``.jinja`` extension for template files I
 reverted to using ``.html`` because most code editors support.
 
+Application code structure
+--------------------------
+
+Not so much quirk but a thing that's not obvious from the beginning. If one decides to follow application factory pattern, then blueprints come as a bonus because otherwise there's no live application object in the whole code and views registration would not be possible. The application factory pattern forces the use of blueprints, and while blueprints aren't bad in itself, this adds some indirection to code structure.
+
 Jinja configuration
 -------------------
 
@@ -44,8 +41,8 @@ whitespace intact, even around template directives. Jinja provides couple
 configuration options that control whitespace rendering but they are hidden
 deep in Flask initialization and there's no way to set it in any way.
 
-Remedy
-^^^^^^
+Mitigation
+^^^^^^^^^^
 This time monkeypatching won't help because Jinja environment is created as
 soon as application is configured, and this may be too late for many so the
 most reliable way to overcome this limitation is to subclass ``Flask`` and
@@ -62,8 +59,5 @@ Using ``stat`` reloader may be specially painful to laptop users so it would
 be great if we could switch to ``inotify``-based. Fortunately Werkzeug is nice
 and uses the best available so it is enough to install
 `watchdog <https://pypi.org/project/watchdog/>`_ package.
-
-The same applies to colored terminal output, just install
-`termcolor <https://pypi.org/project/termcolor/>`_ package.
 
 Add these two to dev requirements.
