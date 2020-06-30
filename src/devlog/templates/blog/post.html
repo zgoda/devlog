@@ -13,4 +13,5 @@
 <p>{{ format_datetime(post.created, format='short') }}</p>
 {{ render_tags(tags) }}
 {{ post.text_html|safe }}
+<p><a href="javascript:history.back()">Powrót...</a></p>
 {% endblock %}

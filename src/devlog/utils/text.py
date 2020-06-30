@@ -1,8 +1,8 @@
+import datetime
 import io
 import os
 import re
 import xml.etree.ElementTree as etree  # noqa: DUO107,N813
-from datetime import date, datetime
 from typing import Optional, Union
 
 import markdown
@@ -32,7 +32,7 @@ def slugify(text: str, delim: str = '-') -> str:
 
 def stripping_markdown() -> Markdown:
 
-    def unmark_element(element, stream=None) -> str:
+    def unmark_element(element, stream=None) -> str:  # pragma: nocover
         if stream is None:
             stream = io.StringIO()
         if element.text:
@@ -69,26 +69,32 @@ def post_summary(text: str) -> str:
     )
 
 
-def normalize_post_date(dt: Optional[Union[str, date, datetime]]) -> Optional[datetime]:
+def _get_now():  # pragma: nocover
+    return datetime.datetime.now()
+
+
+def normalize_post_date(
+            dt: Optional[Union[str, datetime.date, datetime.datetime]]
+        ) -> Optional[datetime.datetime]:
     if dt:
         if isinstance(dt, str):
             dt = parser.parse(dt)
-        if isinstance(dt, date):
-            dt = datetime.now().replace(
+        if isinstance(dt, datetime.date) and not isinstance(dt, datetime.datetime):
+            dt = _get_now().replace(
                 year=dt.year, month=dt.month, day=dt.day
             )
         if dt.tzinfo is None:
             tz = pytz.timezone(
                 os.environ.get('BABEL_DEFAULT_TIMEZONE', 'Europe/Warsaw')
             )
-            dt = dt.replace(tzinfo=tz).astimezone(pytz.utc)
+            dt = tz.localize(dt).astimezone(pytz.utc)
         else:
             dt = dt.astimezone(pytz.utc)
         dt = dt.replace(tzinfo=None)
     return dt
 
 
-class CenterBlockProcessor(BlockProcessor):
+class CenterBlockProcessor(BlockProcessor):  # pragma: nocover
     RE_START = r'^->'
     RE_END = r'<-$'
 
