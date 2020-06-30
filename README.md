@@ -1,6 +1,6 @@
 # Devlog
 
-[![Build Status](https://travis-ci.com/zgoda/devlog.svg?branch=master)](https://travis-ci.com/zgoda/devlog) [![Maintainability](https://api.codeclimate.com/v1/badges/fd768bc0853067bb0281/maintainability)](https://codeclimate.com/github/zgoda/devlog/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/fd768bc0853067bb0281/test_coverage)](https://codeclimate.com/github/zgoda/devlog/test_coverage)
+[![CodeFactor](https://www.codefactor.io/repository/github/zgoda/devlog/badge)](https://www.codefactor.io/repository/github/zgoda/devlog) [![Coverage Status](https://coveralls.io/repos/github/zgoda/devlog/badge.svg?branch=master)](https://coveralls.io/github/zgoda/devlog?branch=master)
 
 My dev log and other logs.
 
