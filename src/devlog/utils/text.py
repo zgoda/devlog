@@ -7,6 +7,7 @@ from typing import Optional, Union
 
 import markdown
 import pytz
+from dateutil import parser
 from markdown import Markdown
 from markdown.blockprocessors import BlockProcessor
 from markdown.extensions import Extension
@@ -68,20 +69,22 @@ def post_summary(text: str) -> str:
     )
 
 
-def normalize_post_date(dt: Optional[Union[date, datetime]]) -> datetime:
+def normalize_post_date(dt: Optional[Union[str, date, datetime]]) -> Optional[datetime]:
     if dt:
+        if isinstance(dt, str):
+            dt = parser.parse(dt)
         if isinstance(dt, date):
-            dt = datetime.utcnow().replace(
+            dt = datetime.now().replace(
                 year=dt.year, month=dt.month, day=dt.day
             )
         if dt.tzinfo is None:
             tz = pytz.timezone(
                 os.environ.get('BABEL_DEFAULT_TIMEZONE', 'Europe/Warsaw')
             )
-            dt = dt.astimezone(tz).astimezone(pytz.utc)
+            dt = dt.replace(tzinfo=tz).astimezone(pytz.utc)
         else:
             dt = dt.astimezone(pytz.utc)
-        dt.replace(tzinfo=None)
+        dt = dt.replace(tzinfo=None)
     return dt
 
 

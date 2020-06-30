@@ -33,6 +33,7 @@ REQ_BASE = [
     # simplified markup processors
     'markdown',
     'markdown-full-yaml-metadata',
+    'python-dateutil',
     'pygments',
 ]
 
