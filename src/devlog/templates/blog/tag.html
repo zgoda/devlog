@@ -1,0 +1,35 @@
+{% extends "blog/base.html" %}
+
+{% from "macros/blog.html" import render_post_headline %}
+
+{% set has_next_page = num_pages > page %}
+{% set has_prev_page = page > 1 %}
+{% set next_page = page + 1 %}
+{% set prev_page = page - 1 %}
+
+{% block pagetitle %}Posty opatrzone etykietą "{{ tag.name }}"{% endblock %}
+
+{% block content %}
+<h2>Posty opatrzone etykietą "{{ tag.name }}"</h2>
+{% for post in posts %}
+{{ render_post_headline(post) }}
+{% else %}
+<p>Nie ma jeszcze żadnych postów.</p>
+{% endfor %}
+{% if has_prev_page or has_next_page %}
+<hr>
+<div class="row">
+  <div class="col-sm-6 align-left">
+    {% if has_prev_page %}
+    <p><a href="{{ url_for_other_page(prev_page) }}">Poprzednia ({{ prev_page }})</a></p>
+    {% endif %}
+  </div>
+  <div class="col-sm-6 align-right">
+    {% if has_next_page %}
+    <p><a href="{{ url_for_other_page(next_page) }}">Następna ({{ next_page }} / {{ num_pages }})</a></p>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

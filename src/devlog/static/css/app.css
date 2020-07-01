@@ -1,12 +1,7 @@
-.post p img{
-  display: block;
-  margin: 0 auto
-}
-.has-raw-code pre code{
-  background-color: #eee;
-  border: 1px solid #999;
-  display: block;
-  padding: 20px
+.tag-box {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
 }
 
 /* open-sans-300 - latin-ext_latin */

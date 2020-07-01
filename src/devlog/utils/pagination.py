@@ -1,3 +1,4 @@
+import math
 from typing import Union
 
 from flask import request, url_for
@@ -28,3 +29,16 @@ def get_page(arg_name: str = 'p') -> int:
         return int(request.args.get(arg_name, '1'))
     except ValueError:
         return 1
+
+
+def query_pagination(query, order, collection_name='posts'):
+    page_size = 10
+    page = get_page()
+    obj_count = query.count()
+    num_pages = math.ceil(obj_count / page_size)
+    objects = query.order_by(order).paginate(page, page_size)
+    return {
+        'num_pages': num_pages,
+        'page': page,
+        collection_name: objects,
+    }

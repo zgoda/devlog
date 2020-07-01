@@ -1,10 +1,8 @@
-import math
-
 from flask import Blueprint, abort, render_template
 
 from .ext import pages
-from .models import Post, Tag
-from .utils.pagination import get_page
+from .models import Post, Tag, TaggedPost
+from .utils.pagination import query_pagination
 
 bp = Blueprint('main', __name__)
 
@@ -29,25 +27,11 @@ def page(path):
 
 @bp.route('/blog')
 def blog():
-    page_size = 10
-    page = get_page()
-    post_count = (
+    query = (
         Post.select()
         .where(Post.published.is_null(False))
-        .count()
     )
-    num_pages = math.ceil(post_count / page_size)
-    posts = (
-        Post.select()
-        .where(Post.published.is_null(False))
-        .order_by(Post.created.desc())
-        .paginate(page, page_size)
-    )
-    ctx = {
-        'num_pages': num_pages,
-        'page': page,
-        'posts': posts,
-    }
+    ctx = query_pagination(query, Post.created.desc())
     return render_template('blog/home.html', **ctx)
 
 
@@ -64,3 +48,17 @@ def post(y, m, d, slug):
         abort(404)
     tags = post.tags(order=Tag.name)
     return render_template('blog/post.html', post=post, tags=tags)
+
+
+@bp.route('/tag/<slug>')
+def tag(slug):
+    tag = Tag.get_or_none(Tag.slug == slug)
+    if tag is None:
+        abort(404)
+    query = (
+        Post.select()
+        .join(TaggedPost)
+        .where((Post.published.is_null(False)) & (TaggedPost.tag == tag))
+    )
+    ctx = query_pagination(query, Post.created.desc())
+    return render_template('blog/tag.html', tag=tag, **ctx)

@@ -1,21 +1,22 @@
 {% macro render_post_headline(post) %}
+{% set url = url_for('main.post', y=post.created.year, m=post.created.month, d=post.created.day, slug=post.slug) %}
 <div>
   <h3>{{ post.title }}</h3>
-  <h4><a href="{{ url_for('main.post', y=post.created.year, m=post.created.month, d=post.created.day, slug=post.slug) }}">{{ format_datetime(post.created, 'short') }}</a></h4>
+  <h4><a href="{{ url }}">{{ format_datetime(post.created, 'short') }}</a></h4>
   <div>
     {{ render_tags(post.tags('name')) }}
     {{ post.summary|safe }}
-    <p class="align-right"><a href="{{ url_for('main.post', y=post.created.year, m=post.created.month, d=post.created.day, slug=post.slug) }}">więcej...</a></p>
+    <p class="align-right"><a href="{{ url }}">więcej...</a></p>
   </div>
 </div>
 {% endmacro %}
 
 {% macro render_tags(tags) %}
 {% if tags %}
-<div style="display: flex; justify-content: flex-end">
+<div class="tag-box">
   <ul class="tags">
     {% for taggedpost in tags %}
-    <li class="tag tag-orange">{{ taggedpost.tag.name }}</li>
+    <li class="tag tag-orange"><a href="{{ url_for('main.tag', slug=taggedpost.tag.slug) }}">{{ taggedpost.tag.name }}</a></li>
     {% endfor %}
   </ul>
 </div>

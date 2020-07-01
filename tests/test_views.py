@@ -89,3 +89,23 @@ class TestPostView:
         url = url_for('main.post', y=y, m=m, d=d, slug=slug)
         rv = self.client.get(url)
         assert rv.status_code == 404
+
+
+@pytest.mark.usefixtures('client_class')
+class TestTagView:
+
+    def test_ok(self, post_factory, tag_factory, tagged_post_factory):
+        name = 'etykieta 1'
+        tag = tag_factory(name=name)
+        dt = datetime(2020, 2, 2)
+        post = post_factory(created=dt, published=dt)
+        tagged_post_factory.create(tag=tag, post=post)
+        url = url_for('main.tag', slug=tag.slug)
+        rv = self.client.get(url)
+        assert rv.status_code == 200
+        assert f'<h3>{post.title}</h3>' in rv.text
+
+    def test_fail(self):
+        url = url_for('main.tag', slug=slugify('etykieta 1'))
+        rv = self.client.get(url)
+        assert rv.status_code == 404
