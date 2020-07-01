@@ -24,7 +24,6 @@ REQ_BASE = [
     'Flask',
     'Flask-Babel',
     'Flask-FlatPages',
-    'Flask-Assets',
     'Peewee',
     'text-unidecode',
     'pytz',
@@ -36,7 +35,6 @@ REQ_BASE = [
     'markdown-full-yaml-metadata',
     'python-dateutil',
     'pygments',
-    'cssmin',
 ]
 
 REQ_TEST = [

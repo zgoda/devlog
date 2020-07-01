@@ -56,7 +56,6 @@ db.sqlite*
 # Flask stuff:
 instance/
 .webassets-cache
-static/gen
 
 # Scrapy stuff:
 .scrapy

@@ -9,7 +9,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 from werkzeug.utils import ImportStringError
 
 from ._version import get_version
-from .ext import assets, babel, pages
+from .ext import babel, pages
 from .models import db
 from .templates import setup_template_extensions
 from .utils.app import Devlog
@@ -86,7 +86,6 @@ def configure_hooks(app: Devlog):
 
 
 def configure_extensions(app: Devlog):
-    assets.init_app(app)
     babel.init_app(app)
     pages.init_app(app)
 
