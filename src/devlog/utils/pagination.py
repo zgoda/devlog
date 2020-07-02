@@ -1,7 +1,8 @@
 import math
-from typing import Union
+from typing import Union, Mapping
 
 from flask import request, url_for
+from peewee import Expression, ModelSelect
 
 
 def url_for_other_page(page: Union[int, str]) -> str:
@@ -31,7 +32,24 @@ def get_page(arg_name: str = 'p') -> int:
         return 1
 
 
-def query_pagination(query, order, collection_name='posts'):
+def query_pagination(
+            query: ModelSelect, order: Expression, collection_name: str = 'posts'
+        ) -> Mapping[str, Union[int, ModelSelect]]:
+    """Paginate given query and return part of template context containing
+    pagination result and some metadata like current page number and total
+    number of pages.
+
+    :param query: query object to be paginated
+    :type query: ModelSelect
+    :param order: result order expression
+    :type order: Expression
+    :param collection_name: key under which object collection will be
+                            returned, defaults to 'posts'
+    :type collection_name: str, optional
+    :return: part of template context as dictionary, containing pagination
+             result and some metadata
+    :rtype: Mapping[str, Union[int, ModelSelect]]
+    """
     page_size = 10
     page = get_page()
     obj_count = query.count()
