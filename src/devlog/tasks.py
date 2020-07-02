@@ -52,7 +52,7 @@ def action_from_markdown(text: str) -> Post:
     plain_content = METADATA_RE.sub('', text, count=1).strip()
     summary = post_summary(plain_content)
     title = md.Meta['title'].strip().replace("'", '')
-    created_dt = updated = datetime.utcnow()
+    created_dt = published = updated = datetime.utcnow()
     post_date = md.Meta.get('date')
     if post_date:
         created_dt = normalize_post_date(post_date)
@@ -66,10 +66,8 @@ def action_from_markdown(text: str) -> Post:
     )
     post = Post.get_or_none(search_crit)
     author = md.Meta.get('author', '').strip()
-    is_draft = md.Meta.get('draft', False)
-    published = None
-    if not is_draft and post is None:
-        published = updated
+    if md.Meta.get('draft', False):
+        published = None
     post_tags = md.Meta.get('tags', [])
     kw = dict(
         author=author, created=created_dt, updated=updated,
@@ -81,6 +79,7 @@ def action_from_markdown(text: str) -> Post:
         if post is None:
             post = Post.create(**kw)
         else:
+            kw.pop('created')
             Post.update(**kw).where(search_crit).execute()
             TaggedPost.delete().where(TaggedPost.post == post).execute()
         for tag_s in post_tags:
