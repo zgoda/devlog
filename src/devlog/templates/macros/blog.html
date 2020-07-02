@@ -5,7 +5,9 @@
   <h4><a href="{{ url }}">{{ format_datetime(post.created, 'short') }}</a></h4>
   <div>
     {{ render_tags(post.tags('name')) }}
-    {{ post.summary|safe }}
+    <div class="post-text">
+      {{ post.summary|safe }}
+    </div>
     <p class="align-right"><a href="{{ url }}">więcej...</a></p>
   </div>
 </div>

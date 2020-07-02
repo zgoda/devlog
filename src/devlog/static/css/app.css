@@ -4,6 +4,11 @@
   margin-bottom: 1rem;
 }
 
+.post-text img {
+  max-width: 100%;
+  height: auto;
+}
+
 /* open-sans-300 - latin-ext_latin */
 @font-face {
   font-family: 'Open Sans';
