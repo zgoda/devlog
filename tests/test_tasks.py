@@ -1,9 +1,10 @@
+import os
 from datetime import datetime
 
 import pytest
 
 from devlog.models import Post
-from devlog.tasks import action_from_markdown
+from devlog.tasks import action_from_markdown, app, sitemap_generator
 
 
 @pytest.mark.usefixtures('app')
@@ -107,3 +108,17 @@ tags:
         action_from_markdown(md)
         rv = Post.get_by_id(post.pk)
         assert rv.text == text
+
+
+@pytest.mark.usefixtures('app')
+class TestSitemapGenerator:
+
+    @pytest.fixture(autouse=True)
+    def set_up(self):
+        self.sitemap_path = os.path.join(app.static_folder, 'sitemap.xml')
+
+    def test_generate_empty(self):
+        sitemap_generator()
+        with open(self.sitemap_path) as fp:
+            content = fp.read()
+        assert content.count('<url>') == 1

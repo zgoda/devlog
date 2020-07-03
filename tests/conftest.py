@@ -30,9 +30,10 @@ def faker_session_locale():
 
 
 @pytest.fixture
-def app():
+def app(tmp_path):
     os.environ['FLASK_ENV'] = 'test'
     app = make_app(env='test')
+    app.static_folder = str(tmp_path)
     app.response_class = TestResponse
     models = [Post, Tag, TaggedPost]
     with app.app_context():

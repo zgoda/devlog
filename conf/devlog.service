@@ -7,7 +7,7 @@ User=username
 Group=www-data
 WorkingDirectory=/home/username/devlog
 EnvironmentFile=/home/username/devlog/config/devlog.env
-ExecStart=/home/username/devlog/venv/bin/gunicorn --workers 2 --bind unix:/tmp/devlog.sock -m 007 devlog.wsgi:application
+ExecStart=/home/username/devlog/venv/bin/gunicorn --workers 2 --preload --bind unix:/tmp/devlog.sock -m 007 devlog.wsgi:application
 Restart=always
 
 [Install]
