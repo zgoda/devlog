@@ -61,7 +61,6 @@ REQ_DEV = REQ_TEST + [
     'rstcheck',
     'rope',
     'isort',
-    'Sphinx',
     'flask-shell-ipython',
     'watchdog',
 ]
