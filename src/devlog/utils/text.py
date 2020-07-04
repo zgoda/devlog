@@ -18,8 +18,7 @@ from text_unidecode import unidecode
 _punctuation_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
 
 DEFAULT_MD_EXTENSIONS = [
-    'abbr', 'def_list', 'full_yaml_metadata', 'fenced_code', 'codehilite',
-    'centerblock',
+    'abbr', 'def_list', 'fenced_code', 'codehilite', 'centerblock',
 ]
 
 METADATA_RE = re.compile(r'\A---(.*?)---', re.S | re.MULTILINE)
@@ -51,27 +50,9 @@ def stripping_markdown() -> Markdown:
     return md
 
 
-def rich_summary(post_text: str) -> str:
-    summary_end_pos = post_text.find('<!-- more -->')
-    raw_summary = post_text[:summary_end_pos].strip()
-    md = Markdown(
-        extensions=DEFAULT_MD_EXTENSIONS, output_format='html'
-    )
-    return md.convert(raw_summary)
-
-
-def post_summary(text: str) -> str:
-    plain_text = stripping_markdown().convert(text)
-    summary_end_pos = plain_text.find('<!-- more -->')
-    if summary_end_pos > -1:
-        return rich_summary(text)
-    return markdown.markdown(
-        ' '.join(plain_text.split()[:50]), extensions=DEFAULT_MD_EXTENSIONS,
-        output_format='html',
-    )
-
-
-def _get_now():  # pragma: nocover
+def _get_now(utc: False):  # pragma: nocover
+    if utc:
+        return datetime.datetime.utcnow()
     return datetime.datetime.now()
 
 
@@ -131,7 +112,7 @@ PostMeta = namedtuple(
     'PostMeta',
     [
         'title', 'slug', 'author', 'created', 'updated', 'draft',
-        'c_year', 'c_month', 'c_day',
+        'c_year', 'c_month', 'c_day', 'summary',
     ]
 )
 
@@ -150,17 +131,22 @@ class PostProcessor:
         if 'title' not in meta:
             raise ValueError('Title missing in post metadata')
         self.meta = meta
-        self.text = doc_parts[-1]
+        self.text = doc_parts[-1].strip()
 
-    def summary(self) -> str:
-        plain_text = stripping_markdown().convert(self.text)
+    @property
+    def tags(self):
+        return self.meta.get('tags', [])
+
+    @staticmethod
+    def summary_src(text: str) -> str:
+        plain_text = stripping_markdown().convert(text)
         summary_end_pos = plain_text.find('<!-- more -->')
         if summary_end_pos > -1:
-            raw_summary = self.text[:summary_end_pos].strip()
-            return markdown.markdown(raw_summary, **self.MD_KWARGS)
-        return markdown.markdown(
-            ' '.join(plain_text.split()[:50]), **self.MD_KWARGS
-        )
+            return text[:summary_end_pos].strip()
+        return ' '.join(plain_text.replace('<!-- more -->', '').split()[:50])
+
+    def summary(self) -> str:
+        return markdown.markdown(self.summary_src(self.text), **self.MD_KWARGS)
 
     def published(self, new_post: bool, meta: PostMeta) -> datetime.datetime:
         if meta.draft:
@@ -171,7 +157,7 @@ class PostProcessor:
 
     def process_meta(self) -> PostMeta:
         title = self.meta['title'].strip().replace("'", '')
-        created = updated = datetime.datetime.utcnow()
+        created = updated = _get_now(True)
         post_date = self.meta.get('date')
         if post_date:
             created = normalize_post_date(post_date)
@@ -179,6 +165,23 @@ class PostProcessor:
         c_year, c_month, c_day = created.year, created.month, created.day
         author = self.meta.get('author', '').strip()
         draft = self.meta.get('draft', False)
+        summary = self.summary()
         return PostMeta(
-            title, slug, author, created, updated, draft, c_year, c_month, c_day
+            title, slug, author, created, updated, draft, c_year, c_month, c_day,
+            summary,
         )
+
+    def as_dict(
+                self, meta: PostMeta, published: Optional[datetime.datetime],
+                update: bool = False,
+            ) -> dict:
+        data = {
+            'published': published,
+            'text': self.text,
+            'text_html': markdown.markdown(self.text, **self.MD_KWARGS)
+        }
+        data.update(meta._asdict())
+        del data['draft']
+        if update:
+            del data['created']
+        return data

@@ -1,9 +1,9 @@
-import markdown
 import factory
+import markdown
 from factory.base import Factory, FactoryOptions, OptionDefault
 
 from devlog.models import Post, Tag, TaggedPost, db
-from devlog.utils.text import DEFAULT_MD_EXTENSIONS, post_summary, slugify
+from devlog.utils.text import PostProcessor, slugify
 
 factory.Faker._DEFAULT_LOCALE = 'pl_PL'
 
@@ -62,11 +62,13 @@ class PostFactory(BaseFactory):
 
     @factory.lazy_attribute
     def summary(self):
-        return post_summary(self.text)
+        return markdown.markdown(
+            PostProcessor.summary_src(self.text), **PostProcessor.MD_KWARGS
+        )
 
     @factory.lazy_attribute
     def text_html(self):
-        return markdown.markdown(self.text, extensions=DEFAULT_MD_EXTENSIONS)
+        return markdown.markdown(self.text, **PostProcessor.MD_KWARGS)
 
 
 class TagFactory(BaseFactory):
