@@ -4,7 +4,7 @@ from datetime import datetime
 import pytest
 
 from devlog.models import Post
-from devlog.tasks import action_from_markdown, app, sitemap_generator
+from devlog.tasks import post_from_markdown, app, sitemap_generator
 
 
 @pytest.mark.usefixtures('app')
@@ -26,7 +26,7 @@ Pierwsza linijka tekstu, zawierająca *markup*.
 
 Druga linijka tekstu, zawierająca *markup*.
 '''
-        action_from_markdown(md)
+        post_from_markdown(md)
         rv = Post.get()
         assert rv.title == 'Wpis testowy'
         assert '<em>' in rv.summary
@@ -38,13 +38,12 @@ Druga linijka tekstu, zawierająca *markup*.
     ], ids=['missing-title', 'missing-meta'])
     def test_invalid_meta(self, text):
         with pytest.raises(ValueError):
-            action_from_markdown(text)
+            post_from_markdown(text)
 
     def test_import_no_date(self, mocker):
         dt = datetime(2020, 6, 12, 18, 34, 12)
         mocker.patch(
-            'devlog.tasks.datetime',
-            mocker.Mock(utcnow=mocker.Mock(return_value=dt)),
+            'devlog.utils.text._get_now', mocker.Mock(return_value=dt),
         )
         md = '''---
 title: Wpis testowy
@@ -60,15 +59,14 @@ Pierwsza linijka tekstu, zawierająca *markup*.
 
 Druga linijka tekstu, zawierająca *markup*.
 '''
-        action_from_markdown(md)
+        post_from_markdown(md)
         rv = Post.get()
         assert rv.created == dt
 
     def test_updated_draft(self, mocker):
         dt = datetime(2020, 6, 12, 18, 34, 12)
         mocker.patch(
-            'devlog.tasks.datetime',
-            mocker.Mock(utcnow=mocker.Mock(return_value=dt)),
+            'devlog.utils.text._get_now', mocker.Mock(return_value=dt),
         )
         md = '''---
 title: Wpis testowy
@@ -86,7 +84,7 @@ Pierwsza linijka tekstu, zawierająca *markup*.
 
 Druga linijka tekstu, zawierająca *markup*.
 '''
-        action_from_markdown(md)
+        post_from_markdown(md)
         rv = Post.get()
         assert rv.published is None
 
@@ -105,7 +103,7 @@ tags:
 
 {text}
 '''
-        action_from_markdown(md)
+        post_from_markdown(md)
         rv = Post.get_by_id(post.pk)
         assert rv.text == text
 
