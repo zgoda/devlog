@@ -113,6 +113,8 @@ tags:
 @pytest.mark.usefixtures('app')
 class TestSitemapGenerator:
 
+    STATIC_URL_COUNT = 3
+
     @pytest.fixture(autouse=True)
     def set_up(self):
         self.sitemap_path = os.path.join(app.static_folder, 'sitemap.xml')
@@ -121,4 +123,31 @@ class TestSitemapGenerator:
         sitemap_generator()
         with open(self.sitemap_path) as fp:
             content = fp.read()
-        assert content.count('<url>') == 1
+        assert content.count('<url>') == self.STATIC_URL_COUNT
+
+    def test_misconfigured(self, mocker):
+        mocker.patch.dict('os.environ', {'WHERE_AM_I': ''})
+        with pytest.raises(SystemExit):
+            sitemap_generator()
+
+    def test_with_post(self, post_factory):
+        dt = datetime(2020, 6, 22, 18, 43, 15)
+        post_factory(created=dt, published=dt, updated=dt)
+        sitemap_generator()
+        with open(self.sitemap_path) as fp:
+            content = fp.read()
+        assert content.count('<url>') == self.STATIC_URL_COUNT + 1
+        assert dt.isoformat() in content
+
+    def test_with_tagged_post(self, post_factory, tag_factory, tagged_post_factory):
+        dt = datetime(2020, 6, 22, 18, 43, 15)
+        post = post_factory(created=dt, published=dt, updated=dt)
+        tags = ['etykieta 1', 'etykieta 2']
+        for t_name in tags:
+            tag = tag_factory(name=t_name)
+            tagged_post_factory(tag=tag, post=post)
+        sitemap_generator()
+        with open(self.sitemap_path) as fp:
+            content = fp.read()
+        assert content.count('<url>') == self.STATIC_URL_COUNT + 1 + len(tags)
+        assert content.count(dt.isoformat()) == 1 + 1 + len(tags)

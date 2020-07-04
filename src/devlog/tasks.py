@@ -9,6 +9,7 @@ from dotenv import find_dotenv, load_dotenv
 from flask import url_for
 
 from .app import make_app
+from .ext import pages
 from .models import Post, Tag, TaggedPost, db
 from .utils.text import (
     DEFAULT_MD_EXTENSIONS, METADATA_RE, normalize_post_date, post_summary, slugify,
@@ -95,11 +96,11 @@ def action_from_markdown(text: str) -> Post:
 
 def sitemap_generator():
     server_name = os.environ.get('WHERE_AM_I')
-    if server_name is None:
+    if not server_name:
         app.logger.error('scheme://host part not known, can not generate sitemap')
         sys.exit(1)
+    app.config['SERVER_NAME'] = server_name
     with app.app_context():
-        app.config['SERVER_NAME'] = server_name
         posts = URLSet(config=URLSetConfig(changefreq='weekly'), pagedefs=[])
         for post in Post.select().where(Post.published.is_null(False)).iterator():
             page_def = PageDef(
@@ -134,12 +135,17 @@ def sitemap_generator():
             last_post_updated = datetime.utcnow().isoformat()
         collections.pagedefs.append(
             PageDef(
-                url_for('main.index', _external=True), last_post_updated
+                url_for('main.index', _external=True), last_post_updated,
             )
         )
         misc = URLSet(
             config=URLSetConfig(changefreq='monthly', priority='0.3'), pagedefs=[]
         )
+        for path in ['o', 'kontakt']:
+            page = pages.get(path)
+            last_mod = page.meta.get('updated') or page.meta.get('published')
+            page_def = PageDef(url_for('main.page', path=path), last_mod.isoformat())
+            misc.pagedefs.append(page_def)
         urlsets = [misc, posts, collections]
         sitemap = generate_sitemap(*urlsets)
         save_sitemap_file(os.path.join(app.static_folder, 'sitemap.xml'), sitemap)
