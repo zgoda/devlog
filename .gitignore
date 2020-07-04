@@ -105,7 +105,8 @@ _venv
 .vscode
 *.code-workspace
 
-secrets/*.py
-
 # pycharm and others
 .idea
+
+# web artifacts
+**/static/sitemap.xml

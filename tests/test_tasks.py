@@ -1,9 +1,10 @@
+import os
 from datetime import datetime
 
 import pytest
 
 from devlog.models import Post
-from devlog.tasks import action_from_markdown
+from devlog.tasks import action_from_markdown, app, sitemap_generator
 
 
 @pytest.mark.usefixtures('app')
@@ -107,3 +108,51 @@ tags:
         action_from_markdown(md)
         rv = Post.get_by_id(post.pk)
         assert rv.text == text
+
+
+@pytest.mark.usefixtures('app')
+class TestSitemapGenerator:
+
+    STATIC_URL_COUNT = 3
+
+    @pytest.fixture(autouse=True)
+    def set_up(self):
+        self.sitemap_path = os.path.join(app.static_folder, 'sitemap.xml')
+
+    def test_generate_empty(self, mocker):
+        mocker.patch.dict('os.environ', {'WHERE_AM_I': 'localhost'})
+        sitemap_generator()
+        with open(self.sitemap_path) as fp:
+            content = fp.read()
+        assert content.count('<url>') == self.STATIC_URL_COUNT
+
+    def test_misconfigured(self, mocker):
+        mocker.patch.dict('os.environ', {'WHERE_AM_I': ''})
+        with pytest.raises(SystemExit):
+            sitemap_generator()
+
+    def test_with_post(self, mocker, post_factory):
+        mocker.patch.dict('os.environ', {'WHERE_AM_I': 'localhost'})
+        dt = datetime(2020, 6, 22, 18, 43, 15)
+        post_factory(created=dt, published=dt, updated=dt)
+        sitemap_generator()
+        with open(self.sitemap_path) as fp:
+            content = fp.read()
+        assert content.count('<url>') == self.STATIC_URL_COUNT + 1
+        assert dt.isoformat() in content
+
+    def test_with_tagged_post(
+                self, mocker, post_factory, tag_factory, tagged_post_factory
+            ):
+        mocker.patch.dict('os.environ', {'WHERE_AM_I': 'localhost'})
+        dt = datetime(2020, 6, 22, 18, 43, 15)
+        post = post_factory(created=dt, published=dt, updated=dt)
+        tags = ['etykieta 1', 'etykieta 2']
+        for t_name in tags:
+            tag = tag_factory(name=t_name)
+            tagged_post_factory(tag=tag, post=post)
+        sitemap_generator()
+        with open(self.sitemap_path) as fp:
+            content = fp.read()
+        assert content.count('<url>') == self.STATIC_URL_COUNT + 1 + len(tags)
+        assert content.count(dt.isoformat()) == 1 + 1 + len(tags)

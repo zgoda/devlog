@@ -61,7 +61,6 @@ REQ_DEV = REQ_TEST + [
     'rstcheck',
     'rope',
     'isort',
-    'Sphinx',
     'flask-shell-ipython',
     'watchdog',
 ]
@@ -110,6 +109,7 @@ setup(
         'console_scripts': [
             'devlog=devlog.cli:main',
             'postimport=devlog.tasks:import_posts',
+            'sitemapgen=devlog.tasks:sitemap_generator',
         ],
         'markdown.extensions': [
             'centerblock=devlog.utils.text:CenterBlockExtension',
