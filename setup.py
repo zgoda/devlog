@@ -28,11 +28,11 @@ REQ_BASE = [
     'text-unidecode',
     'pytz',
     'python-dotenv',
+    'PyYAML',
     # Sentry
     'sentry-sdk[flask]',
     # simplified markup processors
     'markdown',
-    'markdown-full-yaml-metadata',
     'python-dateutil',
     'pygments',
 ]

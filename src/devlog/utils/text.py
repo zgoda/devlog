@@ -3,10 +3,12 @@ import io
 import os
 import re
 import xml.etree.ElementTree as etree  # noqa: DUO107,N813
+from collections import namedtuple
 from typing import Optional, Union
 
 import markdown
 import pytz
+import yaml
 from dateutil import parser
 from markdown import Markdown
 from markdown.blockprocessors import BlockProcessor
@@ -20,7 +22,7 @@ DEFAULT_MD_EXTENSIONS = [
     'centerblock',
 ]
 
-METADATA_RE = re.compile(r'\A---.*?---', re.S | re.MULTILINE)
+METADATA_RE = re.compile(r'\A---(.*?)---', re.S | re.MULTILINE)
 
 
 def slugify(text: str, delim: str = '-') -> str:
@@ -122,4 +124,61 @@ class CenterBlockExtension(Extension):
     def extendMarkdown(self, md):  # noqa: N802
         md.parser.blockprocessors.register(
             CenterBlockProcessor(md.parser), 'centerblock', 175
+        )
+
+
+PostMeta = namedtuple(
+    'PostMeta',
+    [
+        'title', 'slug', 'author', 'created', 'updated', 'draft',
+        'c_year', 'c_month', 'c_day',
+    ]
+)
+
+
+class PostProcessor:
+
+    MD_KWARGS = {
+        'extensions': DEFAULT_MD_EXTENSIONS, 'output_format': 'html'
+    }
+
+    def __init__(self, text: str):
+        doc_parts = METADATA_RE.split(text.strip())
+        if len(doc_parts) < 2:
+            raise ValueError('Metadata part missing')
+        meta = yaml.safe_load(doc_parts[-2])
+        if 'title' not in meta:
+            raise ValueError('Title missing in post metadata')
+        self.meta = meta
+        self.text = doc_parts[-1]
+
+    def summary(self) -> str:
+        plain_text = stripping_markdown().convert(self.text)
+        summary_end_pos = plain_text.find('<!-- more -->')
+        if summary_end_pos > -1:
+            raw_summary = self.text[:summary_end_pos].strip()
+            return markdown.markdown(raw_summary, **self.MD_KWARGS)
+        return markdown.markdown(
+            ' '.join(plain_text.split()[:50]), **self.MD_KWARGS
+        )
+
+    def published(self, new_post: bool, meta: PostMeta) -> datetime.datetime:
+        if meta.draft:
+            return None
+        if new_post:
+            return meta.created
+        return meta.updated
+
+    def process_meta(self) -> PostMeta:
+        title = self.meta['title'].strip().replace("'", '')
+        created = updated = datetime.datetime.utcnow()
+        post_date = self.meta.get('date')
+        if post_date:
+            created = normalize_post_date(post_date)
+        slug = slugify(title)
+        c_year, c_month, c_day = created.year, created.month, created.day
+        author = self.meta.get('author', '').strip()
+        draft = self.meta.get('draft', False)
+        return PostMeta(
+            title, slug, author, created, updated, draft, c_year, c_month, c_day
         )
