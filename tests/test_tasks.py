@@ -119,7 +119,8 @@ class TestSitemapGenerator:
     def set_up(self):
         self.sitemap_path = os.path.join(app.static_folder, 'sitemap.xml')
 
-    def test_generate_empty(self):
+    def test_generate_empty(self, mocker):
+        mocker.patch.dict('os.environ', {'WHERE_AM_I': 'localhost'})
         sitemap_generator()
         with open(self.sitemap_path) as fp:
             content = fp.read()
@@ -130,7 +131,8 @@ class TestSitemapGenerator:
         with pytest.raises(SystemExit):
             sitemap_generator()
 
-    def test_with_post(self, post_factory):
+    def test_with_post(self, mocker, post_factory):
+        mocker.patch.dict('os.environ', {'WHERE_AM_I': 'localhost'})
         dt = datetime(2020, 6, 22, 18, 43, 15)
         post_factory(created=dt, published=dt, updated=dt)
         sitemap_generator()
@@ -139,7 +141,10 @@ class TestSitemapGenerator:
         assert content.count('<url>') == self.STATIC_URL_COUNT + 1
         assert dt.isoformat() in content
 
-    def test_with_tagged_post(self, post_factory, tag_factory, tagged_post_factory):
+    def test_with_tagged_post(
+                self, mocker, post_factory, tag_factory, tagged_post_factory
+            ):
+        mocker.patch.dict('os.environ', {'WHERE_AM_I': 'localhost'})
         dt = datetime(2020, 6, 22, 18, 43, 15)
         post = post_factory(created=dt, published=dt, updated=dt)
         tags = ['etykieta 1', 'etykieta 2']
