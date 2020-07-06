@@ -4,6 +4,7 @@ import stat
 import sys
 from datetime import datetime
 
+import requests
 from dotenv import find_dotenv, load_dotenv
 from flask import url_for
 
@@ -75,6 +76,7 @@ def post_from_markdown(text: str) -> Post:
 
 
 def sitemap_generator():
+    sitemap_filename = 'sitemap.xml'
     server_name = os.environ.get('WHERE_AM_I')
     if not server_name:
         app.logger.error('scheme://host part not known, can not generate sitemap')
@@ -128,4 +130,6 @@ def sitemap_generator():
             misc.pagedefs.append(page_def)
         urlsets = [misc, posts, collections]
         sitemap = generate_sitemap(*urlsets)
-        save_sitemap_file(os.path.join(app.static_folder, 'sitemap.xml'), sitemap)
+        save_sitemap_file(os.path.join(app.static_folder, sitemap_filename), sitemap)
+        sitemap_url = os.path.join(server_name, sitemap_filename)
+        requests.get('http://www.google.com/ping', params={'sitemap': sitemap_url})

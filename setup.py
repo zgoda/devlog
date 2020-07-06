@@ -29,6 +29,7 @@ REQ_BASE = [
     'pytz',
     'python-dotenv',
     'PyYAML',
+    'requests',
     # Sentry
     'sentry-sdk[flask]',
     # simplified markup processors
