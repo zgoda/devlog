@@ -1,6 +1,6 @@
+import logging
 import os
 import tempfile
-from logging.config import dictConfig
 from typing import Optional
 
 import sentry_sdk
@@ -18,7 +18,6 @@ from .utils.app import Devlog
 def make_app(env: Optional[str] = None) -> Devlog:
     flask_environment = os.environ.get('FLASK_ENV', '')
     if flask_environment == 'production':
-        configure_logging()
         sentry_pubkey = os.environ.get('SENTRY_PUBKEY')
         sentry_project = os.environ.get('SENTRY_PROJECT')
         if all([sentry_pubkey, sentry_project]):
@@ -35,6 +34,7 @@ def make_app(env: Optional[str] = None) -> Devlog:
     app = Devlog(__name__.split('.')[0], **extra)
     configure_app(app, env)
     with app.app_context():
+        configure_logging_handler(app)
         configure_database(app)
         configure_hooks(app)
         configure_extensions(app)
@@ -95,26 +95,12 @@ def configure_blueprint(app: Devlog):
     app.register_blueprint(bp)
 
 
-def configure_logging():
-    dictConfig({
-        'version': 1,
-        'formatters': {
-            'default': {
-                'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s'
-            }
-        },
-        'handlers': {
-            'wsgi': {
-                'class': 'logging.StreamHandler',
-                'stream': 'ext://flask.logging.wsgi_errors_stream',
-                'formatter': 'default',
-            }
-        },
-        'root': {
-            'level': 'INFO',
-            'handlers': ['wsgi'],
-        },
-    })
+def configure_logging_handler(app: Devlog):
+    if app.debug or app.testing:
+        return
+    gunicorn_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
 
 
 def configure_error_handlers(app: Devlog):

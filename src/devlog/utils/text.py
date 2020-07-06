@@ -50,7 +50,9 @@ def stripping_markdown() -> Markdown:
     return md
 
 
-def _get_now(utc: False):  # pragma: nocover
+def _get_now(utc: bool = False) -> datetime.datetime:  # pragma: nocover
+    """Workaround over datetime C module to be able to mock & patch in tests.
+    """
     if utc:
         return datetime.datetime.utcnow()
     return datetime.datetime.now()
@@ -59,6 +61,17 @@ def _get_now(utc: False):  # pragma: nocover
 def normalize_post_date(
             dt: Optional[Union[str, datetime.date, datetime.datetime]]
         ) -> Optional[datetime.datetime]:
+    """This function normalizes input to UTC datetime tithout timezone
+    information (naive). If input object does not have timezone information,
+    it is assumed to be local time and this may produce wrong result if at
+    the time of processing DST is different than for input date.
+
+    :param dt: input date, datetime or string representation in "common"
+               format
+    :type dt: Optional[Union[str, datetime.date, datetime.datetime]]
+    :return: datetime in UTC without timezone information
+    :rtype: Optional[datetime.datetime]
+    """
     if dt:
         if isinstance(dt, str):
             dt = parser.parse(dt)
