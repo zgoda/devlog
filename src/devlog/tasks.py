@@ -34,6 +34,7 @@ def import_posts():  # pragma: nocover
     if not os.path.isabs(incoming_dir):
         incoming_dir = os.path.join(app.instance_path, incoming_dir)
         os.makedirs(incoming_dir, exist_ok=True)
+    files_imported = 0
     for file_name in os.listdir(incoming_dir):
         if not file_name.endswith('.md'):
             continue
@@ -42,6 +43,9 @@ def import_posts():  # pragma: nocover
             text = fp.read()
         post_from_markdown(text)
         os.remove(file_path)
+        files_imported = files_imported + 1
+    if files_imported:
+        sitemap_generator()
     os.close(lf_fd)
     os.remove(lf)
 
