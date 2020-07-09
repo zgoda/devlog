@@ -3,5 +3,7 @@
 {% block headpagetitle %}{{ page.title }}{% endblock %}
 
 {% block content %}
+<h2>{{ page.title }}</h2>
+<p><em>opublikowana: {{ page.published }}, ostatnia aktualizacja: {{ page.updated }}</em></p>
 {{ page.html|safe }}
 {% endblock %}
