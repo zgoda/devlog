@@ -148,7 +148,7 @@ class PostProcessor:
 
     @property
     def tags(self):
-        return self.meta.get('tags', [])
+        return [str(t) for t in self.meta.get('tags', [])]
 
     @staticmethod
     def summary_src(text: str) -> str:
