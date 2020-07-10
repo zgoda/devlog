@@ -153,7 +153,7 @@ class PostProcessor:
     @staticmethod
     def summary_src(text: str) -> str:
         plain_text = stripping_markdown().convert(text)
-        summary_end_pos = plain_text.find('<!-- more -->')
+        summary_end_pos = text.find('<!-- more -->')
         if summary_end_pos > -1:
             return text[:summary_end_pos].strip()
         return ' '.join(plain_text.replace('<!-- more -->', '').split()[:50])
