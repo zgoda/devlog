@@ -2,7 +2,7 @@ title: Informacje
 published: 2020-06-28
 updated: 2020-07-09
 
-## Ogólnie
+### Ogólnie
 
 Jarek Zgoda, rocznik 1971. W branży programistycznej robię od 1996 roku, co oznacza że wiele rzeczy już widziałem i z niejedną technologią się zmagałem. Powtarzając za [Royem Batty z filmu Blade Runner (Łowca androidów)](https://en.wikipedia.org/wiki/Tears_in_rain_monologue): *I've seen things you people wouldn't believe*. Dlatego dziś bardzo podejrzliwie podchodzę do każdej technologicznej nowinki i oglądam je bardzo uważnie z każdej strony. I zapewne dlatego łatwo jest mnie określić jako *zgorzkniałego grzyba*.
 
@@ -14,7 +14,7 @@ Mieszkam na wsi pod Warszawą, co widać na niektórych moich zdjęciach. Zapad�
 
 Niektórzy twierdzą, że mam przebłyski talentu do snucia opowieści, ale udaje mi się to jedynie w piśmie. Czasem coś mnie napada i wtedy piszę coś w stylu krótkiej opowieści, tak jakby ktoś ją opowiadał w gronie znajomych, ale do tego potrzebuję dużo, dużo wolnego czasu - i zupełnie nic innego do roboty. Charakterystyka mojej pracy sprawia, że co jakiś czas wyjeżdżam na trochę za granicę, gdzie ten czas i brak zajęć właśnie występuje. Ale to się rzadko zdarza, więc mój dorobek literacki jest bardzo skromny.
 
-## Ciutkę od strony technicznej
+### Ciutkę od strony technicznej
 
 Tak, wiem że imgur to zło i że śledzi użytkowników. Proszę sobie zainstalować w przeglądarce antyśledzika np. [Privacy Badger](https://privacybadger.org/), to zrobi dobrze nie tylko na mojej stronie. Może kiedyś Amazon znowu będzie miał darmową ofertę na S3, ale póki co musi wystarczyć imgur.
 
