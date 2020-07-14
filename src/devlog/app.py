@@ -13,6 +13,7 @@ from .ext import babel, pages
 from .models import db
 from .templates import setup_template_extensions
 from .utils.app import Devlog
+from .views import bp
 
 
 def make_app(env: Optional[str] = None) -> Devlog:
@@ -91,7 +92,6 @@ def configure_extensions(app: Devlog):
 
 
 def configure_blueprint(app: Devlog):
-    from .views import bp
     app.register_blueprint(bp)
 
 
