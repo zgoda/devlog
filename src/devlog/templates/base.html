@@ -10,14 +10,12 @@
     <link rel="stylesheet" href="/static/css/app.css">
     {% block extracss %}
     {% endblock %}
-    {% block headjs %}
-    {% endblock %}
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
     <link rel="icon" type="image/png" sizes="48x48" href="/static/favicon-48.png">
     <meta name="description" content="{% block pagedescription %}Osobista strona pana Jarka Zgody{% endblock %}">
   </head>
-  <body>
+  <body role="document">
 
     <nav role="navigation" aria-label="główny panel nawigacji">
       <div class="nav-container">
@@ -25,12 +23,10 @@
           <a href="/">Devlog</a>
         </div>
         <ul class="nav-links">
-          {% block topnav %}
           <li><a href="{{ url_for('main.blog') }}">Blog</a></li>
           <li><a href="https://github.com/zgoda">Kod</a></li>
           <li><a href="/uploads/cv.pdf">Resumé</a></li>
           <li><a href="{{ url_for('main.page', path='kontakt') }}">Kontakt</a></li>
-          {% endblock %}
         </div>
       </div>
     </nav>
@@ -49,7 +45,5 @@
       <p class="copyright align-center">Copyright: &copy; 2019 Jarek Zgoda, wersja {{ version }}</p>
     </footer>
 
-    {% block extrajs %}
-    {% endblock %}
   </body>
 </html>
