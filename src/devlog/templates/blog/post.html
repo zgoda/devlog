@@ -4,10 +4,6 @@
 
 {% block pagedescription %}{% if post.description %}{{ post.description }}{% else %}{{ super() }}{% endif %}{% endblock %}
 
-{% block extracss %}
-<link rel="stylesheet" href="/static/css/pgm_friendly.css">
-{% endblock %}
-
 {% block pagetitle %}{{ post.title }}{% endblock %}
 
 {% block content %}
