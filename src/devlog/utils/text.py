@@ -125,7 +125,7 @@ PostMeta = namedtuple(
     'PostMeta',
     [
         'title', 'slug', 'author', 'created', 'updated', 'draft',
-        'c_year', 'c_month', 'c_day', 'summary',
+        'c_year', 'c_month', 'c_day', 'summary', 'description',
     ]
 )
 
@@ -179,9 +179,10 @@ class PostProcessor:
         author = self.meta.get('author', '').strip()
         draft = self.meta.get('draft', False)
         summary = self.summary()
+        description = self.meta.get('description')
         return PostMeta(
             title, slug, author, created, updated, draft, c_year, c_month, c_day,
-            summary,
+            summary, description,
         )
 
     def as_dict(

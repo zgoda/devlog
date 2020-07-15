@@ -31,6 +31,7 @@ class Post(Model):
     text = TextField()
     text_html = TextField()
     summary = TextField(null=True)
+    description = TextField(null=True)
 
     class Meta:
         indexes = (
