@@ -24,6 +24,7 @@ REQ_BASE = [
     'Flask',
     'Flask-Babel',
     'Flask-FlatPages',
+    'Flask-Assets',
     'Peewee',
     'text-unidecode',
     'pytz',
