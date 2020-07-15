@@ -1,6 +1,7 @@
 title: Kontakt
+description: jak się można ze mną skontaktować
 published: 2020-06-28
-updated: 2020-07-09
+updated: 2020-07-15
 
 Skontaktować się ze mną wbrew pozorom nie jest trudno. Po imieniu i nazwisku można mnie znaleźć w niektórych serwisach społecznościowych, a po samym nazwisku na Githubie. Sprawy związane z kodem najlepiej będzie załatwiać przez właściwe repozytoria.
 

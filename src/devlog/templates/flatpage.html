@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block pagedescription %}{% if page.description %}{{ page.description }}{% else %}{{ super() }}{% endif %}{% endblock %}
+
 {% block pagetitle %}{{ page.title }}{% endblock %}
 
 {% block content %}
