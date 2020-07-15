@@ -1,3 +1,6 @@
 graft src
 
+prune src/devlog/static/.webassets-cache
+prune src/devlog/static/dist
+
 include LICENSE
