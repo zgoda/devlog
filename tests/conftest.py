@@ -6,6 +6,7 @@ from pytest_factoryboy import register
 from werkzeug.utils import cached_property
 
 from devlog import make_app
+from devlog.assets import all_css
 from devlog.models import db, Post, Tag, TaggedPost
 
 from .factories import PostFactory, TagFactory, TaggedPostFactory
@@ -30,10 +31,11 @@ def faker_session_locale():
 
 
 @pytest.fixture
-def app(tmp_path):
+def app():
     os.environ['FLASK_ENV'] = 'test'
     app = make_app(env='test')
-    app.static_folder = str(tmp_path)
+    with app.app_context():
+        all_css.build()
     app.response_class = TestResponse
     models = [Post, Tag, TaggedPost]
     with app.app_context():
