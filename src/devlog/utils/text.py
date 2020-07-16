@@ -10,6 +10,7 @@ import markdown
 import pytz
 import yaml
 from dateutil import parser
+from dateutil.tz import gettz
 from markdown import Markdown
 from markdown.blockprocessors import BlockProcessor
 from markdown.extensions import Extension
@@ -22,6 +23,11 @@ DEFAULT_MD_EXTENSIONS = [
 ]
 
 METADATA_RE = re.compile(r'\A---(.*?)---', re.S | re.MULTILINE)
+
+KNOWN_TZ = {
+    'CET': gettz('Europe/Warsaw'),
+    'CEST': gettz('Europe/Warsaw'),
+}
 
 
 def slugify(text: str, delim: str = '-') -> str:
@@ -74,7 +80,7 @@ def normalize_post_date(
     """
     if dt:
         if isinstance(dt, str):
-            dt = parser.parse(dt)
+            dt = parser.parse(dt, tzinfos=KNOWN_TZ)
         if isinstance(dt, datetime.date) and not isinstance(dt, datetime.datetime):
             dt = _get_now().replace(
                 year=dt.year, month=dt.month, day=dt.day
