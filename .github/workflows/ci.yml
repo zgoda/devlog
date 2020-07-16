@@ -18,6 +18,12 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Set up NodeJS
+      uses: actions/setup-node@v2.1.0
+      with:
+        node-version: '12'
+    - name: Install JS tools
+      run: npm i -g node-sass clean-css-cli
     - name: Get pip cache dir
       id: pip-cache-dir
       run: echo "::set-output name=dir::$(pip cache dir)"
