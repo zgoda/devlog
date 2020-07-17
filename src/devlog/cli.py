@@ -3,7 +3,7 @@ from dotenv import find_dotenv, load_dotenv
 from flask.cli import FlaskGroup
 
 from . import make_app
-from .migrations import run_migration
+from .migrations import MIGRATIONS, run_migration
 from .models import Post, Tag, TaggedPost, db
 
 
@@ -42,6 +42,11 @@ def db_recreate():
 @click.argument('name')
 def db_migrate(name):
     run_migration(name)
+
+
+@db_ops.command(name='migrations', help='list available migrations')
+def db_list_migrations():
+    click.echo('\n'.join(MIGRATIONS.keys()))
 
 
 def main():

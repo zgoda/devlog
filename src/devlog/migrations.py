@@ -14,11 +14,11 @@ def add_post_description():
     )
 
 
-_MIGRATIONS = {
+MIGRATIONS = {
     'add_post_description': add_post_description
 }
 
 
 def run_migration(name):
-    migration = _MIGRATIONS[name]
+    migration = MIGRATIONS[name]
     migration()
