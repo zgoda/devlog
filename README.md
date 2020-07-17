@@ -8,8 +8,13 @@ This is mostly idea and tools testing project for other applications that I deve
 
 ## Habla habla
 
-* [code of conduct](docs/coc.rst)
-* [contributing guidelines](docs/contributing.rst)
+### Code of Conduct
+
+Don't be a dick.
+
+### Contributing guidelines
+
+Bug reports are welcome, patches even more so.
 
 ## Governance
 
