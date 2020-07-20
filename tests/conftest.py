@@ -30,7 +30,7 @@ def faker_session_locale():
     return ['pl_PL']
 
 
-@pytest.fixture
+@pytest.fixture()
 def app():
     os.environ['FLASK_ENV'] = 'test'
     app = make_app(env='test')

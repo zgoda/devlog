@@ -43,7 +43,7 @@ def test_flatpages(client):
 class TestBlogHomeView:
 
     @pytest.fixture(autouse=True)
-    def set_up(self):
+    def _set_up(self):
         self.url = url_for('main.blog')
 
     def test_no_posts(self):

@@ -37,7 +37,7 @@ Druga linijka tekstu, zawierająca *markup*.
         'Some text',
     ], ids=['missing-title', 'missing-meta'])
     def test_invalid_meta(self, text):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match='missing'):
             post_from_markdown(text)
 
     def test_import_no_date(self, mocker):
@@ -114,7 +114,7 @@ class TestSitemapGenerator:
     STATIC_URL_COUNT = 3
 
     @pytest.fixture(autouse=True)
-    def set_up(self):
+    def _set_up(self):
         self.sitemap_path = os.path.join(app.static_folder, 'sitemap.xml')
 
     def test_generate_empty(self, mocker):
