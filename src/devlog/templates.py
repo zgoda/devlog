@@ -5,10 +5,6 @@ from .utils.app import Devlog
 from .utils.pagination import url_for_other_page
 
 
-def setup_filters(application: Devlog):
-    pass  # no filters yet
-
-
 def setup_globals(application: Devlog):
     application.jinja_env.globals.update({
         'format_datetime': format_datetime,
@@ -18,5 +14,4 @@ def setup_globals(application: Devlog):
 
 
 def setup_template_extensions(application: Devlog):
-    setup_filters(application)
     setup_globals(application)
