@@ -58,6 +58,7 @@ REQ_DEV = REQ_TEST + [
     'flake8-bugbear',
     'flake8-mutable',
     'flake8-comprehensions',
+    'flake8-pytest-style',
     'pep8-naming',
     'dlint',
     'rstcheck',
