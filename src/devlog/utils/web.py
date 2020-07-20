@@ -1,5 +1,5 @@
-from collections import namedtuple
 import xml.etree.ElementTree as ET  # noqa: DUO107,N817
+from collections import namedtuple
 
 PageDef = namedtuple('PageDef', ['loc', 'lastmod'])
 URLSet = namedtuple('URLSet', ['config', 'pagedefs'])

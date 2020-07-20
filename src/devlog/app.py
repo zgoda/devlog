@@ -20,13 +20,11 @@ from .views import bp
 def make_app(env: Optional[str] = None) -> Devlog:
     flask_environment = os.environ.get('FLASK_ENV', '')
     if flask_environment == 'production':
-        sentry_pubkey = os.environ.get('SENTRY_PUBKEY')
-        sentry_project = os.environ.get('SENTRY_PROJECT')
-        if all([sentry_pubkey, sentry_project]):
+        sentry_dsn = os.environ.get('SENTRY_DSN')
+        if sentry_dsn:
             version = get_version()
             sentry_sdk.init(
-                dsn=f'https://{sentry_pubkey}@sentry.io/{sentry_project}',
-                release=f'devlog@{version}',
+                dsn=sentry_dsn, release=f'devlog@{version}',
                 integrations=[FlaskIntegration()],
             )
     extra = {}
@@ -90,7 +88,7 @@ def configure_hooks(app: Devlog):
 def configure_extensions(app: Devlog):
     assetenv.init_app(app)
     assetenv.register('css_all', all_css)
-    assetenv.auto_build = assetenv.debug = app.debug
+    assetenv.auto_build = app.debug
     babel.init_app(app)
     pages.init_app(app)
 
