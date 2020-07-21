@@ -1,6 +1,6 @@
 # Devlog
 
-![CI](https://github.com/zgoda/devlog/workflows/CI/badge.svg?branch=master) [![CodeFactor](https://www.codefactor.io/repository/github/zgoda/devlog/badge)](https://www.codefactor.io/repository/github/zgoda/devlog) [![Coverage Status](https://coveralls.io/repos/github/zgoda/devlog/badge.svg?branch=master)](https://coveralls.io/github/zgoda/devlog?branch=master)
+![Tests](https://github.com/zgoda/devlog/workflows/Tests/badge.svg?branch=master) [![CodeFactor](https://www.codefactor.io/repository/github/zgoda/devlog/badge)](https://www.codefactor.io/repository/github/zgoda/devlog) [![Coverage Status](https://coveralls.io/repos/github/zgoda/devlog/badge.svg?branch=master)](https://coveralls.io/github/zgoda/devlog?branch=master)
 
 My dev log and other logs.
 
