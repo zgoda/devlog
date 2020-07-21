@@ -4,7 +4,7 @@ import tempfile
 from typing import Optional
 
 import sentry_sdk
-from flask import render_template
+from flask import render_template, send_from_directory
 from sentry_sdk.integrations.flask import FlaskIntegration
 from werkzeug.utils import ImportStringError
 
@@ -51,6 +51,10 @@ def configure_app(app: Devlog, env: Optional[str]):
             app.config.from_object(f'devlog.config_{env}')
         except ImportStringError:
             app.logger.info(f'no environment config for {env}')
+
+    @app.route('/uploads/<path:path>')
+    def serve_uploads(path):
+        return send_from_directory(os.path.join(app.instance_path, 'uploads'), path)
 
 
 def configure_database(app: Devlog):
