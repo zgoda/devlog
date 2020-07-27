@@ -21,7 +21,7 @@ def find_version(*where):
 
 
 REQ_BASE = [
-    'Flask<2',
+    'Flask>1.1,<2',
     'Jinja2<3',
     'MarkupSafe<2',
     'itsdangerous<2',
