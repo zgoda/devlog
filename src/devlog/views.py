@@ -46,8 +46,7 @@ def post(y, m, d, slug):
     )
     if post is None:
         abort(404)
-    tags = post.tags(order=Tag.name)
-    return render_template('blog/post.html', post=post, tags=tags)
+    return render_template('blog/post.html', post=post)
 
 
 @bp.route('/tag/<slug>')

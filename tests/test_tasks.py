@@ -30,7 +30,7 @@ Druga linijka tekstu, zawierająca *markup*.
         rv = Post.get()
         assert rv.title == 'Wpis testowy'
         assert '<em>' in rv.summary
-        assert len(rv.tags()) == 2
+        assert len(rv.tags) == 2
 
     @pytest.mark.parametrize('text', [
         '---\nauthor: somebody\n---\n\nSome text',
