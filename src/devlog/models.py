@@ -36,17 +36,15 @@ class Post(Model):
             (('c_year', 'c_month', 'c_day', 'slug'), True),
         )
 
-    def tags(self, order=None):
+    @property
+    def tags(self):
         q = (
             TaggedPost.select(TaggedPost, Tag)
             .join(Tag)
             .switch(TaggedPost)
             .where(TaggedPost.post == self)
         )
-        if isinstance(order, str):
-            order = getattr(self, order, None)
-        if order is not None:
-            q = q.order_by(order)
+        q = q.order_by(Tag.name)
         return q
 
 
