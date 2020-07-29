@@ -92,7 +92,6 @@ def configure_hooks(app: Devlog):
 def configure_extensions(app: Devlog):
     assetenv.init_app(app)
     assetenv.register('css_all', all_css)
-    assetenv.auto_build = app.debug
     babel.init_app(app)
     pages.init_app(app)
 
