@@ -21,10 +21,10 @@ def find_version(*where):
 
 
 REQ_BASE = [
-    'Flask>1.1,<2',
-    'Jinja2<3',
-    'MarkupSafe<2',
-    'itsdangerous<2',
+    'Flask',
+    'Jinja2',
+    'MarkupSafe',
+    'itsdangerous',
     'Flask-Babel',
     'Flask-FlatPages',
     'Flask-Assets',
@@ -105,7 +105,6 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary',
     ],
     install_requires=REQ_BASE,
-    tests_require=REQ_TEST,
     extras_require={
         'prod': REQ_PROD,
         'test': REQ_TEST,
