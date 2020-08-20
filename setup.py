@@ -40,6 +40,7 @@ REQ_BASE = [
     'markdown',
     'python-dateutil',
     'pygments',
+    'jsx-lexer',
 ]
 
 REQ_TEST = [
