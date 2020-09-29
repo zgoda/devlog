@@ -2,7 +2,7 @@ from flask import Blueprint, abort, render_template
 
 from .ext import pages
 from .models import Post, Tag, TaggedPost
-from .utils.pagination import query_pagination
+from .utils.pagination import Pagination
 
 bp = Blueprint('main', __name__)
 
@@ -30,9 +30,9 @@ def blog():
     query = (
         Post.select()
         .where(Post.published.is_null(False))
+        .order_by(Post.created.desc())
     )
-    ctx = query_pagination(query, Post.created.desc())
-    return render_template('blog/home.html', **ctx)
+    return render_template('blog/home.html', pagination=Pagination(query))
 
 
 @bp.route('/<int:y>/<int:m>/<int:d>/<slug>')
@@ -58,6 +58,6 @@ def tag(slug):
         Post.select()
         .join(TaggedPost)
         .where((Post.published.is_null(False)) & (TaggedPost.tag == tag))
+        .order_by(Post.created.desc())
     )
-    ctx = query_pagination(query, Post.created.desc())
-    return render_template('blog/tag.html', tag=tag, **ctx)
+    return render_template('blog/tag.html', tag=tag, pagination=Pagination(query))

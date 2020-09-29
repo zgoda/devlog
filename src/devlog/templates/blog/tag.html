@@ -2,11 +2,6 @@
 
 {% from "macros/blog.html" import render_post_headline %}
 
-{% set has_next_page = num_pages > page %}
-{% set has_prev_page = page > 1 %}
-{% set next_page = page + 1 %}
-{% set prev_page = page - 1 %}
-
 {% block pagedescription %}posty z etykietą {{ tag.name }}{% endblock %}
 
 {% block pagetitle %}Posty opatrzone etykietą "{{ tag.name }}"{% endblock %}
@@ -14,22 +9,22 @@
 {% block content %}
 <section>
   <h2>Posty opatrzone etykietą "{{ tag.name }}"</h2>
-  {% for post in posts %}
+  {% for post in pagination.items %}
   {{ render_post_headline(post) }}
   {% else %}
   <p>Nie ma jeszcze żadnych postów.</p>
   {% endfor %}
-  {% if has_prev_page or has_next_page %}
+  {% if pagination.has_prev or pagination.has_next %}
   <hr>
   <div class="row">
     <div class="col-sm-6 align-left">
-      {% if has_prev_page %}
-      <p><a href="{{ url_for_other_page(prev_page) }}">Poprzednia ({{ prev_page }})</a></p>
+      {% if pagination.has_prev %}
+      <p><a href="{{ url_for_other_page(pagination.prev_page) }}">Poprzednia ({{ pagination.prev_page }})</a></p>
       {% endif %}
     </div>
     <div class="col-sm-6 align-right">
-      {% if has_next_page %}
-      <p><a href="{{ url_for_other_page(next_page) }}">Następna ({{ next_page }} / {{ num_pages }})</a></p>
+      {% if pagination.has_next %}
+      <p><a href="{{ url_for_other_page(pagination.next_page) }}">Następna ({{ pagination.next_page }} / {{ pagination.pages }})</a></p>
       {% endif %}
     </div>
   </div>

@@ -1,8 +1,8 @@
 import math
-from typing import Union, Mapping
+from typing import Optional, Union
 
 from flask import request, url_for
-from peewee import Expression, ModelSelect
+from peewee import ModelSelect
 
 
 def url_for_other_page(page: Union[int, str]) -> str:
@@ -32,31 +32,21 @@ def get_page(arg_name: str = 'p') -> int:
         return 1
 
 
-def query_pagination(
-            query: ModelSelect, order: Expression, collection_name: str = 'posts'
-        ) -> Mapping[str, Union[int, ModelSelect]]:
-    """Paginate given query and return part of template context containing
-    pagination result and some metadata like current page number and total
-    number of pages.
+class Pagination:
 
-    :param query: query object to be paginated
-    :type query: ModelSelect
-    :param order: result order expression
-    :type order: Expression
-    :param collection_name: key under which object collection will be
-                            returned, defaults to 'posts'
-    :type collection_name: str, optional
-    :return: part of template context as dictionary, containing pagination
-             result and some metadata
-    :rtype: Mapping[str, Union[int, ModelSelect]]
-    """
-    page_size = 10
-    page = get_page()
-    obj_count = query.count()
-    num_pages = math.ceil(obj_count / page_size)
-    objects = query.order_by(order).paginate(page, page_size)
-    return {
-        'num_pages': num_pages,
-        'page': page,
-        collection_name: objects,
-    }
+    def __init__(
+                self, query: ModelSelect,
+                page: Optional[int] = None, page_size: Optional[int] = None,
+            ):
+        self.query = query
+        self.page = page or get_page()
+        self.page_size = page_size or 10
+        self.pages = math.ceil(query.count() / self.page_size)
+        self.has_next = self.pages > self.page
+        self.has_prev = self.page > 1
+        self.next_page = self.page + 1
+        self.prev_page = self.page - 1
+
+    @property
+    def items(self):
+        return self.query.paginate(self.page, self.page_size)
