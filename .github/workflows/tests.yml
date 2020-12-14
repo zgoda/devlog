@@ -21,14 +21,14 @@ jobs:
     - name: Set up NodeJS
       uses: actions/setup-node@v2.1.3
       with:
-        node-version: '12'
+        node-version: '14'
     - name: Install JS tools
       run: npm i -g node-sass clean-css-cli
     - name: Get pip cache dir
       id: pip-cache-dir
       run: echo "::set-output name=dir::$(pip cache dir)"
     - name: Cache pip
-      uses: actions/cache@v2
+      uses: actions/cache@v2.1.3
       with:
         path: ${{ steps.pip-cache-dir.outputs.dir }}
         key: pip|${{ matrix.python-version }}|${{ hashFiles('setup.py') }}
