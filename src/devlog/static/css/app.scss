@@ -36,8 +36,13 @@ code {
 
 pre {
   font-size: inherit;
-  width: calc(100vw - 60px);
   overflow-wrap: normal;
+}
+
+@media all and (max-width: $bp-large) {
+  pre {
+    width: calc(100vw - 94px);
+  }
 }
 
 /* open-sans-300 - latin-ext_latin */
