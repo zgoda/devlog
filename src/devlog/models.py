@@ -5,8 +5,20 @@ from peewee import (
     AutoField, CharField, DateTimeField, ForeignKeyField, IntegerField, SqliteDatabase,
     TextField,
 )
+from pyuca import Collator
+
+c = Collator()
 
 db = SqliteDatabase(None)
+
+
+@db.collation('UCA')
+def collate_natural(s1: str, s2: str) -> int:  # pragma: nocover
+    if s1.lower() == s2.lower():
+        return 0
+    if c.sort_key(s1) < c.sort_key(s2):
+        return -1
+    return 1
 
 
 class Model(peewee.Model):
@@ -24,7 +36,7 @@ class Post(Model):
     c_day = IntegerField()
     updated = DateTimeField(default=datetime.utcnow)
     published = DateTimeField(null=True)
-    title = CharField(max_length=240)
+    title = CharField(max_length=240, collation='UCA')
     slug = CharField(max_length=240)
     text = TextField()
     text_html = TextField()
@@ -50,7 +62,7 @@ class Post(Model):
 
 class Tag(Model):
     pk = AutoField()
-    name = CharField(max_length=200, unique=True)
+    name = CharField(max_length=200, unique=True, collation='UCA')
     slug = CharField(max_length=200, index=True)
 
 
