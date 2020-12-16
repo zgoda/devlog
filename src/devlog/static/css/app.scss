@@ -30,13 +30,13 @@
   height: auto;
 }
 
-code {
-  font-family: inherit;
-}
-
 pre {
   font-size: inherit;
   overflow-wrap: normal;
+}
+
+code, pre {
+  font-family: 'Ubuntu Mono', Consolas, Monaco, 'Andale Mono', monospace;
 }
 
 @media all and (max-width: $bp-large) {
