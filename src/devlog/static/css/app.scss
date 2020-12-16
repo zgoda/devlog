@@ -30,6 +30,16 @@
   height: auto;
 }
 
+code {
+  font-family: inherit;
+}
+
+pre {
+  font-size: inherit;
+  width: calc(100vw - 60px);
+  overflow-wrap: normal;
+}
+
 /* open-sans-300 - latin-ext_latin */
 @font-face {
   font-family: 'Open Sans';

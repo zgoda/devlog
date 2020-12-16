@@ -5,6 +5,6 @@ app_css = Bundle(
 )
 
 all_css = Bundle(
-    app_css, 'vendor/normalize.css', 'css/pgm_friendly.css', filters='cleancss',
+    'vendor/normalize.css', 'css/pgm_friendly.css', app_css, filters='cleancss',
     output='dist/all.%(version)s.min.css',
 )
