@@ -35,13 +35,14 @@ def get_page(arg_name: str = 'p') -> int:
 class Pagination:
 
     def __init__(
-                self, query: ModelSelect,
+                self, query: ModelSelect, count: Optional[int] = None,
                 page: Optional[int] = None, page_size: Optional[int] = None,
             ):
         self.query = query
         self.page = page or get_page()
         self.page_size = page_size or 10
-        self.pages = math.ceil(query.count() / self.page_size)
+        obj_count = count or query.count()
+        self.pages = math.ceil(obj_count / self.page_size)
         self.has_next = self.pages > self.page
         self.has_prev = self.page > 1
         self.next_page = self.page + 1
