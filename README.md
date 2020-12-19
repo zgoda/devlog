@@ -4,18 +4,4 @@
 
 My dev log and other logs.
 
-This is mostly idea and tools testing project for other applications that I develop at work or as hobby projects. I'm exploring platforms, tools and concepts. Expect the code to be broken from time to time.
-
-## Habla habla
-
-### Code of Conduct
-
-Don't be a dick.
-
-### Contributing guidelines
-
-Bug reports are welcome, patches even more so.
-
-## Governance
-
-This is **not** a community project.
+A very simple blogging engine that I often use to test some ideas wrt web programming (and general programming) in Python.

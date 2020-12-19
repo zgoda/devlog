@@ -26,6 +26,13 @@
           <li><a href="/uploads/cv.pdf">Resumé</a></li>
           <li><a href="{{ url_for('main.page', path='kontakt') }}">Kontakt</a></li>
         </ul>
+        <a class="mobile-menu-toggle"></a>
+        <ul class="mobile-menu menu">
+          <li><a href="{{ url_for('main.blog') }}">Blog</a></li>
+          <li><a href="https://github.com/zgoda">Kod</a></li>
+          <li><a href="/uploads/cv.pdf">Resumé</a></li>
+          <li><a href="{{ url_for('main.page', path='kontakt') }}">Kontakt</a></li>
+        </ul>
       </div>
     </nav>
 
@@ -43,5 +50,30 @@
       <p class="copyright align-center">Copyright: &copy; 2019 Jarek Zgoda, wersja {{ version }}</p>
     </footer>
 
+  <script>
+    // toggle mobile menu
+    const hide = ((elem) => {
+      elem.style.display = 'none';
+    });
+    const show = ((elem) => {
+      elem.style.display = 'block';
+    });
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    const menu = document.querySelector('.mobile-menu');
+    toggle.addEventListener('click', ((e) => {
+      if (menu.style.display !== 'block') {
+        e.preventDefault();
+        e.stopPropagation();  
+        show(menu);
+      }
+    }));
+    document.body.addEventListener('click', ((e) => {
+      if (menu.style.display === 'block') {
+        e.preventDefault();
+        e.stopPropagation();  
+        hide(menu);
+      }
+    }));
+  </script>
   </body>
 </html>

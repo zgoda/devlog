@@ -6,6 +6,7 @@
 @import "../vendor/mustard/scss/vars/colors.scss";
 @import "../vendor/mustard/scss/base/base.scss";
 @import "../vendor/mustard/scss/components/footer.scss";
+@import "../vendor/mustard/scss/components/menus.scss";
 @import "../vendor/mustard/scss/components/navigation.scss";
 @import "../vendor/mustard/scss/components/panels.scss";
 @import "../vendor/mustard/scss/components/tags.scss";
@@ -43,6 +44,14 @@ code, pre {
   pre {
     width: calc(100vw - 94px);
   }
+}
+
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 15px;
+  right: 30px;
+  z-index: 10;
 }
 
 /* open-sans-300 - latin-ext_latin */
