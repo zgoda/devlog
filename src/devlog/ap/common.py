@@ -2,6 +2,7 @@ import re
 
 from flask import request
 
+from ..models import User
 from . import activitypub_bp as bp
 
 WEBFINGER = re.compile(
@@ -21,3 +22,18 @@ def webfinger():
     if matchdict:
         username = matchdict['username']
         host = matchdict['host']
+        user_id = f'https://{host}/{username}'
+        user = User.get_or_none(User.actor_id == user_id)
+        if user is not None:
+            doc = {
+                'subject': res,
+                'links': [
+                    {
+                        'rel': 'self',
+                        'type': 'application/activity+json',
+                        'href': user.user_id,
+                    }
+                ]
+            }
+            return doc
+    return {'error', 'no such resource'}, 404
