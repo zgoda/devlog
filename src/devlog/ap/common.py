@@ -31,7 +31,7 @@ def webfinger():
                     {
                         'rel': 'self',
                         'type': 'application/activity+json',
-                        'href': user.user_id,
+                        'href': user.actor_id,
                     }
                 ]
             }
