@@ -22,7 +22,7 @@ def webfinger():
     if matchdict:
         username = matchdict['username']
         host = matchdict['host']
-        user_id = f'https://{host}/{username}'
+        user_id = f'https://{host}/user/{username}'
         user = User.get_or_none(User.actor_id == user_id)
         if user is not None:
             doc = {
@@ -36,4 +36,4 @@ def webfinger():
                 ]
             }
             return doc
-    return {'error', 'no such resource'}, 404
+    return {'error': 'no such resource'}, 404

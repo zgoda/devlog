@@ -75,7 +75,7 @@ def user_create(name, display_name, password):
     u.private_key = security.serialize_private_key(private_key)
     public_key = security.generate_public_key(private_key)
     u.public_key = security.serialize_public_key(public_key)
-    u.actor_id = f'https://devlog.zgodowie.org/{name}'
+    u.actor_id = f'https://devlog.zgodowie.org/user/{name}'
     u.save()
 
 
