@@ -45,4 +45,4 @@ class TestWebfinger:
         assert 'error' not in data
         assert data['subject'] == res
         assert 'links' in data
-        assert len(data['links']) == 1
+        assert len(data['links']) == 2

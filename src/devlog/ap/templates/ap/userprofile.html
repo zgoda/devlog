@@ -1,0 +1,16 @@
+{% extends "ap/base.html" %}
+
+{% set title = 'Profil ActivityPub użytkownika {}'.format(user.name) %}
+
+{% block pagetitle %}{{ title }}{% endblock %}
+
+{% block pagedescription %}{{ title }}{% endblock %}
+
+{% block content %}
+<section>
+  <h2>Profil użytkownika {{ user.display_name }}</h2>
+  {% if user.summary_html %}
+  {{ user.summary_html|safe }}
+  {% endif %}
+</section>
+{% endblock %}

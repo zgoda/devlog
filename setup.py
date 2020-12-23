@@ -72,6 +72,7 @@ REQ_DEV = REQ_TEST + [
     'isort',
     'flask-shell-ipython',
     'watchdog',
+    'httpie',
 ]
 
 REQ_PROD = [
