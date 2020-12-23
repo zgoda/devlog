@@ -15,6 +15,7 @@ from .models import db
 from .templates import setup_template_extensions
 from .utils.app import Devlog
 from .views import bp
+from .ap import activitypub_bp
 
 
 def make_app(env: Optional[str] = None) -> Devlog:
@@ -38,7 +39,7 @@ def make_app(env: Optional[str] = None) -> Devlog:
         configure_database(app)
         configure_hooks(app)
         configure_extensions(app)
-        configure_blueprint(app)
+        configure_blueprints(app)
         configure_error_handlers(app)
         setup_template_extensions(app)
     return app
@@ -96,8 +97,9 @@ def configure_extensions(app: Devlog):
     pages.init_app(app)
 
 
-def configure_blueprint(app: Devlog):
+def configure_blueprints(app: Devlog):
     app.register_blueprint(bp)
+    app.register_blueprint(activitypub_bp)
 
 
 def configure_logging_handler(app: Devlog):

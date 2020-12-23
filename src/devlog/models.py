@@ -37,6 +37,7 @@ class User(Model):
     public_key = TextField(null=True)
     private_key = TextField(null=True)
     is_active = BooleanField(default=True)
+    actor_id = CharField(index=True, null=True)
 
     class Meta:
         table_name = 'users'
