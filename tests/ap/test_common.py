@@ -40,9 +40,17 @@ class TestWebfinger:
         res = f'acct:{user_name}@{host}'
         url = url_for('ap.webfinger', resource=res)
         rv = self.client.get(url)
+        assert rv.headers['Content-Type'] == 'application/jrd+json'
         assert rv.status_code == 200
         data = json.loads(rv.text)
         assert 'error' not in data
         assert data['subject'] == res
         assert 'links' in data
         assert len(data['links']) == 2
+
+
+def test_nodeinfo(client):
+    url = url_for('ap.nodeinfo')
+    rv = client.get(url)
+    assert rv.status_code == 200
+    assert rv.headers['Content-Type'] == 'application/json; profile=http://nodeinfo.diaspora.software/ns/schema/2.0#'  # noqa: E501

@@ -1,7 +1,9 @@
+import json
 import re
 
-from flask import request, url_for
+from flask import make_response, request, url_for
 
+from .._version import get_version
 from ..models import User
 from . import activitypub_bp as bp
 
@@ -45,5 +47,39 @@ def webfinger():
                     }
                 ]
             }
-            return doc
+            resp = make_response(json.dumps(doc))
+            resp.headers['Content-Type'] = 'application/jrd+json'
+            return resp
     return {'error': 'no such resource'}, 404
+
+
+@bp.route('/.well-known/nodeinfo')
+def nodeinfo():
+    doc = {
+        'version': '2.0',
+        'software': {
+            'name': 'devlog',
+            'version': get_version(),
+        },
+        'protocols': [
+            'activitypub',
+        ],
+        'services': {
+            'inbound': [],
+            'outbound': []
+        },
+        'openRegistrations': False,
+        'usage': {
+            'users': {
+                'total': 1,
+                'activeHalfyear': 1,
+                'activeMonth': 1,
+            },
+            'localPosts': 0,
+            'localComments': 0,
+        },
+        'metadata': {}
+    }
+    resp = make_response(json.dumps(doc))
+    resp.headers['Content-Type'] = 'application/json; profile=http://nodeinfo.diaspora.software/ns/schema/2.0#'  # noqa: E501
+    return resp
