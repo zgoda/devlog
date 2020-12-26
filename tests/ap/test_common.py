@@ -23,6 +23,20 @@ class TestWebfinger:
         assert 'error' in data
         assert data['error'] == 'no such resource'
 
+    def test_user_inactive(self, user_factory):
+        user_name = 'alice'
+        host = 'wonderland.org'
+        user_factory(
+            name=user_name, actor_id=f'https://{host}/user/{user_name}', is_active=False
+        )
+        res = f'acct:{user_name}@{host}'
+        url = url_for('ap.webfinger', resource=res)
+        rv = self.client.get(url)
+        assert rv.status_code == 404
+        data = json.loads(rv.text)
+        assert 'error' in data
+        assert data['error'] == 'no such resource'
+
     def test_unknown_resource_type(self):
         url = url_for('ap.webfinger', resource='email:alice@wonderland.org')
         rv = self.client.get(url)

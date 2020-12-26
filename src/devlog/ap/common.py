@@ -25,7 +25,7 @@ def webfinger():
         username = matchdict['username']
         host = matchdict['host']
         user_id = f'https://{host}/user/{username}'
-        user = User.get_or_none(User.actor_id == user_id)
+        user = User.get_or_none((User.actor_id == user_id) & (User.is_active))
         if user is not None:
             profile_url = url_for('ap.userprofile', name=user.name, _external=True)
             doc = {
