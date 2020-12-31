@@ -1,5 +1,6 @@
 import json
 import re
+from html import escape
 
 from flask import make_response, request, url_for
 
@@ -22,8 +23,8 @@ def webfinger():
         return {'error': 'malformed request'}, 400
     matchdict = WEBFINGER.match(res)
     if matchdict:
-        username = matchdict['username']
-        host = matchdict['host']
+        username = escape(matchdict['username'])
+        host = escape(matchdict['host'])
         user_id = f'https://{host}/user/{username}'
         user = User.get_or_none((User.actor_id == user_id) & (User.is_active))
         if user is not None:
