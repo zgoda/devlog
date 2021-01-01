@@ -9,12 +9,10 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 from werkzeug.utils import ImportStringError
 
 from ._version import get_version
-from .ap import activitypub_bp
 from .assets import all_css
 from .ext import assetenv, babel, pages
 from .models import db
 from .templates import setup_template_extensions
-from .user import user_bp
 from .utils.app import Devlog
 from .views import bp
 
@@ -100,8 +98,6 @@ def configure_extensions(app: Devlog):
 
 def configure_blueprints(app: Devlog):
     app.register_blueprint(bp)
-    app.register_blueprint(activitypub_bp)
-    app.register_blueprint(user_bp, url_prefix='/user')
 
 
 def configure_logging_handler(app: Devlog):
