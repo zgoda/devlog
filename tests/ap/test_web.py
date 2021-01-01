@@ -3,6 +3,7 @@ import pytest
 
 
 @pytest.mark.usefixtures('client_class')
+@pytest.mark.skip('Not yet')
 class TestUserProfile:
 
     def test_not_found(self):

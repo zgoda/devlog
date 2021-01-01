@@ -5,6 +5,7 @@ from flask import url_for
 
 
 @pytest.mark.usefixtures('client_class')
+@pytest.mark.skip('Not yet')
 class TestWebfinger:
 
     def test_no_user_spec(self):
@@ -63,6 +64,7 @@ class TestWebfinger:
         assert len(data['links']) == 2
 
 
+@pytest.mark.skip('Not yet')
 def test_nodeinfo(client):
     url = url_for('ap.nodeinfo')
     rv = client.get(url)
