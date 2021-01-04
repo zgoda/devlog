@@ -7,18 +7,13 @@ from werkzeug.utils import cached_property
 
 from devlog import make_app
 from devlog.assets import all_css
-from devlog.models import Post, Tag, TaggedPost, User, db
+from devlog.models import Post, Tag, TaggedPost, db
 
-from .factories import PostFactory, TagFactory, TaggedPostFactory, UserFactory
+from .factories import PostFactory, TagFactory, TaggedPostFactory
 
-register(UserFactory)
 register(TagFactory)
 register(PostFactory)
 register(TaggedPostFactory)
-
-
-def fake_gen_password_hash(password: str) -> str:
-    return password
 
 
 class TestResponse(Response):
@@ -37,13 +32,12 @@ def faker_session_locale():
 
 @pytest.fixture()
 def app(mocker):
-    mocker.patch('devlog.utils.security.generate_password_hash', fake_gen_password_hash)
     os.environ['FLASK_ENV'] = 'test'
     app = make_app(env='test')
     with app.app_context():
         all_css.build()
     app.response_class = TestResponse
-    models = [Post, Tag, TaggedPost, User]
+    models = [Post, Tag, TaggedPost]
     with app.app_context():
         db.create_tables(models)
         yield app

@@ -2,7 +2,7 @@ import factory
 import markdown
 from factory.base import Factory, FactoryOptions, OptionDefault
 
-from devlog.models import Post, Tag, TaggedPost, User, db
+from devlog.models import Post, Tag, TaggedPost, db
 from devlog.utils.text import PostProcessor, slugify
 
 factory.Faker._DEFAULT_LOCALE = 'pl_PL'
@@ -34,25 +34,6 @@ class BaseFactory(PeeweeModelFactory):
 
     class Meta:
         database = db
-
-
-class UserFactory(BaseFactory):
-
-    class Meta:
-        model = User
-
-    name = factory.Faker('user_name')
-    display_name = factory.Faker('name')
-    password = DEFAULT_PASSWORD
-    summary = factory.Faker('text')
-
-    @factory.lazy_attribute
-    def summary_html(self):
-        return markdown.markdown(self.summary, **PostProcessor.MD_KWARGS)
-
-    @factory.lazy_attribute
-    def actor_id(self):
-        return f'https://some.instance.net/user/{self.username}'
 
 
 class PostFactory(BaseFactory):

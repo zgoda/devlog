@@ -35,8 +35,6 @@ REQ_BASE = [
     'python-dotenv',
     'PyYAML',
     'requests',
-    'cryptography',
-    'passlib[argon2]',
     # Sentry
     'sentry-sdk[flask]',
     # simplified markup processors
