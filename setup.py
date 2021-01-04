@@ -73,6 +73,8 @@ REQ_DEV = REQ_TEST + [
     'flask-shell-ipython',
     'watchdog',
     'httpie',
+    # broken deps
+    'jedi<0.18',
 ]
 
 REQ_PROD = [
