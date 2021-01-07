@@ -4,7 +4,7 @@ from flask.cli import FlaskGroup
 
 from . import make_app
 from .migrations import MIGRATIONS, run_migration
-from .models import MODELS, db
+from .models import MODELS, User, db
 
 
 def create_app(info):
@@ -47,6 +47,21 @@ def db_migrate(name):
 @db_ops.command(name='migrations', help='list available migrations')
 def db_list_migrations():
     click.echo('\n'.join(MIGRATIONS.keys()))
+
+
+@cli.group(name='user', help='user account management')
+def user_ops():
+    pass
+
+
+@user_ops.command(name='create', help='create new user account')
+@click.argument('name')
+@click.password_option('-p', '--password', help='set password', required=True)
+def user_create(name: str, password: str) -> None:
+    u = User(name=name)
+    u.set_password(password)
+    u.save()
+    click.echo(f'User {name} created')
 
 
 def main():

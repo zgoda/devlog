@@ -35,13 +35,12 @@ REQ_BASE = [
     'python-dotenv',
     'PyYAML',
     'requests',
-    # Sentry
     'sentry-sdk[flask]',
-    # simplified markup processors
     'markdown',
     'python-dateutil',
     'pygments',
     'jsx-lexer',
+    'passlib[argon2]',
 ]
 
 REQ_TEST = [

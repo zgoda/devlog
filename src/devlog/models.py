@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import peewee
+from passlib.context import CryptContext
 from peewee import (
     AutoField, CharField, DateTimeField, ForeignKeyField, IntegerField, SqliteDatabase,
     TextField,
@@ -8,6 +9,8 @@ from peewee import (
 from pyuca import Collator
 
 c = Collator()
+
+pwd_context = CryptContext(schemes=['argon2'])
 
 db = SqliteDatabase(None)
 
@@ -21,10 +24,30 @@ def collate_natural(s1: str, s2: str) -> int:  # pragma: nocover
     return 1
 
 
+def generate_password_hash(password: str) -> str:  # pragma: nocover
+    return pwd_context.hash(password)
+
+
+def check_password_hash(stored: str, password: str) -> bool:  # pragma: nocover
+    return pwd_context.verify(password, stored)
+
+
 class Model(peewee.Model):
 
     class Meta:
         database = db
+
+
+class User(Model):
+    pk = AutoField()
+    name = CharField(max_length=100, unique=True)
+    password = TextField(null=True)
+
+    class Meta:
+        table_name = 'users'
+
+    def set_password(self, password: str) -> None:  # pragma: nocover
+        self.password = generate_password_hash(password)
 
 
 class Post(Model):
