@@ -1,7 +1,11 @@
+import functools
 import hashlib
 
-from flask import Response, current_app, make_response
+from flask import Response, current_app, g, make_response, request
+from itsdangerous.exc import BadSignature, SignatureExpired
 from itsdangerous.url_safe import URLSafeTimedSerializer
+
+from ..models import User
 
 
 def json_error_response(code: int, message: str) -> Response:
@@ -34,3 +38,31 @@ def generate_token(payload: str) -> str:
         signer_kwargs=signer_kw,
     )
     return serializer.dumps(payload)
+
+
+def token_required(func):
+    @functools.wraps(func)
+    def decorated_view(*args, **kw):
+        auth = request.headers.get('Authorization')
+        if not auth:
+            return json_error_response(401, 'Authorization required')
+        auth_type, auth_token = auth.split()
+        if auth_type.lower() != 'basic':
+            return json_error_response(400, 'Invalid authentication type')
+        signer_kw = {'digest_method': hashlib.sha512}
+        serializer = URLSafeTimedSerializer(
+            current_app.secret_key, salt=current_app.config['TOKEN_SALT'],
+            signer_kwargs=signer_kw,
+        )
+        try:
+            name = serializer.loads(auth_token, max_age=60*15)
+            user = User.get_or_none(User.name == name)
+            if not user:
+                return json_error_response(400, 'Invalid token')
+            g.user = user
+            return func(*args, **kw)
+        except BadSignature:
+            return json_error_response(400, 'Invalid token')
+        except SignatureExpired:
+            return json_error_response(400, 'Token expired')
+    return decorated_view

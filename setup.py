@@ -41,6 +41,7 @@ REQ_BASE = [
     'pygments',
     'jsx-lexer',
     'passlib[argon2]',
+    'Marshmallow',
 ]
 
 REQ_TEST = [
