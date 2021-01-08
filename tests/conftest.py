@@ -9,12 +9,15 @@ from devlog import make_app
 from devlog.assets import all_css
 from devlog.models import MODELS, db
 
-from .factories import LinkFactory, PostFactory, TagFactory, TaggedPostFactory
+from .factories import (
+    LinkFactory, PostFactory, TagFactory, TaggedPostFactory, UserFactory,
+)
 
 register(TagFactory)
 register(PostFactory)
 register(TaggedPostFactory)
 register(LinkFactory)
+register(UserFactory)
 
 
 class TestResponse(Response):
@@ -31,8 +34,18 @@ def faker_session_locale():
     return ['pl_PL']
 
 
+def fake_gen_password_hash(password):
+    return password
+
+
+def fake_check_password_hash(stored, password):
+    return stored == password
+
+
 @pytest.fixture()
-def app():
+def app(mocker):
+    mocker.patch('devlog.models.generate_password_hash', fake_gen_password_hash)
+    mocker.patch('devlog.models.check_password_hash', fake_check_password_hash)
     os.environ['FLASK_ENV'] = 'test'
     app = make_app(env='test')
     with app.app_context():
