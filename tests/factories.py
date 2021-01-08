@@ -2,7 +2,7 @@ import factory
 import markdown
 from factory.base import Factory, FactoryOptions, OptionDefault
 
-from devlog.models import Link, Post, Tag, TaggedPost, User, db
+from devlog.models import Link, Post, Quip, Tag, TaggedPost, User, db
 from devlog.utils.text import PostProcessor, slugify
 
 factory.Faker._DEFAULT_LOCALE = 'pl_PL'
@@ -66,6 +66,19 @@ class PostFactory(BaseFactory):
         return markdown.markdown(
             PostProcessor.summary_src(self.text), **PostProcessor.MD_KWARGS
         )
+
+    @factory.lazy_attribute
+    def text_html(self):
+        return markdown.markdown(self.text, **PostProcessor.MD_KWARGS)
+
+
+class QuipFactory(BaseFactory):
+
+    class Meta:
+        model = Quip
+
+    author = factory.Faker('user_name')
+    text = factory.Faker('text')
 
     @factory.lazy_attribute
     def text_html(self):

@@ -10,7 +10,7 @@ from devlog.assets import all_css
 from devlog.models import MODELS, db
 
 from .factories import (
-    LinkFactory, PostFactory, TagFactory, TaggedPostFactory, UserFactory,
+    LinkFactory, PostFactory, QuipFactory, TagFactory, TaggedPostFactory, UserFactory,
 )
 
 register(TagFactory)
@@ -18,6 +18,7 @@ register(PostFactory)
 register(TaggedPostFactory)
 register(LinkFactory)
 register(UserFactory)
+register(QuipFactory)
 
 
 class TestResponse(Response):

@@ -105,4 +105,13 @@ class Link(Model):
     text_html = TextField()
 
 
-MODELS = [Post, Tag, TaggedPost, Link]
+class Quip(Model):
+    pk = AutoField()
+    author = TextField()
+    title = CharField(max_length=240, null=True)
+    text = TextField()
+    text_html = TextField()
+    created = DateTimeField(index=True, default=datetime.utcnow)
+
+
+MODELS = [Post, Quip, Tag, TaggedPost, Link]
