@@ -1,6 +1,8 @@
 import pytest
 from flask import url_for
 
+from devlog.models import Quip
+
 
 @pytest.mark.usefixtures('client_class')
 class TestQuipCollection:
@@ -28,4 +30,28 @@ class TestQuipCollection:
         assert rv.status_code == 200
         data = rv.get_json()
         assert 'quips' in data
-        assert bool(data['quips']) is False
+        assert data['quips'] == []
+
+    def test_get_nonempty(self, login, user_factory, quip_factory):
+        user = user_factory()
+        quip = quip_factory(author=user.name)
+        token = login(user.name, user.password)
+        rv = self.client.get(self.url, headers={'Authorization': f'Basic {token}'})
+        assert rv.status_code == 200
+        data = rv.get_json()
+        assert 'quips' in data
+        assert len(data['quips']) == 1
+        assert data['quips'][0]['text'] == quip.text
+        assert data['quips'][0]['author'] == user.name
+
+    def test_post(self, login, user_factory):
+        user = user_factory()
+        data = {'text': 'My *first* quip!'}
+        token = login(user.name, user.password)
+        rv = self.client.post(
+            self.url, json=data, headers={'Authorization': f'Basic {token}'}
+        )
+        assert rv.status_code == 201
+        quip = Quip.get(Quip.author == user.name)
+        assert quip.text == data['text']
+        assert '<em>first</em>' in quip.text_html

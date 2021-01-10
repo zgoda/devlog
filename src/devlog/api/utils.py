@@ -61,8 +61,8 @@ def token_required(func):
                 return json_error_response(400, 'Invalid token')
             g.user = user
             return func(*args, **kw)
-        except BadSignature:
-            return json_error_response(400, 'Invalid token')
         except SignatureExpired:
             return json_error_response(400, 'Token expired')
+        except BadSignature:
+            return json_error_response(400, 'Invalid token')
     return decorated_view
