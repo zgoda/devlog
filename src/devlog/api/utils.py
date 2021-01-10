@@ -55,7 +55,7 @@ def token_required(func):
             signer_kwargs=signer_kw,
         )
         try:
-            name = serializer.loads(auth_token, max_age=60*15)
+            name = serializer.loads(auth_token, current_app.config['TOKEN_MAX_AGE'])
             user = User.get_or_none(User.name == name)
             if not user:
                 return json_error_response(400, 'Invalid token')

@@ -35,6 +35,15 @@ def faker_session_locale():
     return ['pl_PL']
 
 
+@pytest.fixture()
+def login(client):
+    def _login(name: str, password: str):
+        rv = client.post('/api/v1/login', data={'name': name, 'password': password})
+        data = rv.get_json()
+        return data['token']
+    return _login
+
+
 def fake_gen_password_hash(password):
     return password
 
