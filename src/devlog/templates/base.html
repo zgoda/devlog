@@ -53,6 +53,12 @@
     </footer>
 
   <script>
+    // fix links
+    for (const link of document.links) {
+      if (link.hostname !== window.location.hostname) {
+        link.setAttribute('rel', 'noopener noreferrer');
+      }
+    }
     // toggle mobile menu
     const hide = ((elem) => {
       elem.style.display = 'none';
