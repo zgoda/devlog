@@ -16,6 +16,7 @@ def login():
     password = request.form.get('password')
     user = User.get_or_none(User.name == name)
     if user is not None and user.check_password(password):
+        g.user = user
         return {'token': generate_token(name)}
     return json_error_response(404, 'No such account')
 
