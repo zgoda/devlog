@@ -38,4 +38,15 @@ class QuipCollection(MethodView):
         return {'quip': quip_schema.dump(quip)}, 201
 
 
+class QuipItem(MethodView):
+    decorators = [token_required]
+
+    def get(self, quip_id):
+        quip = Quip.get_or_none(Quip.pk == quip_id)
+        if quip is None:
+            json_error_response(404, 'Item not found')
+        return {'quip': quip_schema.dump(quip)}
+
+
 bp.add_url_rule('/quips', 'quip-collection', QuipCollection.as_view('quip_collection'))
+bp.add_url_rule('/quip/<int:quip_id>', 'quip-item', QuipItem.as_view('quip_item'))
