@@ -5,12 +5,13 @@ from datetime import datetime
 import requests
 from dotenv import find_dotenv, load_dotenv
 from flask import url_for
+from markdown import markdown
 
 from .app import make_app
 from .ext import pages
-from .models import Post, Tag, TaggedPost, db
+from .models import Link, Post, Tag, TaggedPost, db
 from .utils.platform import single_instance_mutex
-from .utils.text import PostProcessor, slugify
+from .utils.text import LinkProcessor, PostProcessor, slugify
 from .utils.web import (
     PageDef, URLSet, URLSetConfig, generate_sitemap, save_sitemap_file,
 )
@@ -25,8 +26,10 @@ def import_posts():  # pragma: nocover
     with single_instance_mutex(app.instance_path, 'postimport'):
         incoming_dir = app.config['POST_INCOMING_DIR']
         if not os.path.isabs(incoming_dir):
-            incoming_dir = os.path.join(app.instance_path, incoming_dir)
-            os.makedirs(incoming_dir, exist_ok=True)
+            incoming_dir = os.path.abspath(
+                os.path.join(app.instance_path, incoming_dir)
+            )
+        os.makedirs(incoming_dir, exist_ok=True)
         files_imported = 0
         for file_name in os.listdir(incoming_dir):
             if not file_name.endswith('.md'):
@@ -63,6 +66,34 @@ def post_from_markdown(text: str) -> Post:
                 name=tag_s, defaults={'slug': slugify(tag_s)}
             )
             TaggedPost.create(post=post, tag=tag)
+
+
+def import_links():  # pragma: nocover
+    with single_instance_mutex(app.instance_path, 'linkimport'):
+        incoming_dir = app.config['LINK_INCOMING_DIR']
+        if not os.path.isabs(incoming_dir):
+            incoming_dir = os.path.abspath(
+                os.path.join(app.instance_path, incoming_dir)
+            )
+        os.makedirs(incoming_dir, exist_ok=True)
+        for file_name in os.listdir(incoming_dir):
+            if not file_name.endswith('.md'):
+                continue
+            file_path = os.path.join(incoming_dir, file_name)
+            with open(file_path) as fp:
+                text = fp.read()
+            link_from_markdown(text)
+            os.remove(file_path)
+
+
+def link_from_markdown(text: str) -> None:
+    lp = LinkProcessor(text)
+    kw = {
+        'section': lp.meta['category'],
+        'text': lp.text,
+        'text_html': markdown(lp.text, **lp.MD_KWARGS)[len('<p>'):-len('</p>')],
+    }
+    Link.create(**kw)
 
 
 def sitemap_generator():

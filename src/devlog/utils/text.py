@@ -136,21 +136,34 @@ PostMeta = namedtuple(
 )
 
 
-class PostProcessor:
+class MarkdownDocumentProcessor:
 
     MD_KWARGS = {
         'extensions': DEFAULT_MD_EXTENSIONS, 'output_format': 'html'
     }
 
-    def __init__(self, text: str):
+    def __init__(self, text: str) -> None:
         doc_parts = METADATA_RE.split(text.strip())
         if len(doc_parts) < 2:
             raise ValueError('Metadata part missing')
-        meta = yaml.safe_load(doc_parts[-2])
-        if 'title' not in meta:
-            raise ValueError('Title missing in post metadata')
-        self.meta = meta
+        self.meta = yaml.safe_load(doc_parts[-2])
         self.text = doc_parts[-1].strip()
+
+
+class LinkProcessor(MarkdownDocumentProcessor):
+
+    def __init__(self, text: str) -> None:
+        super().__init__(text)
+        if 'category' not in self.meta:
+            raise ValueError('Category missing in link metadata')
+
+
+class PostProcessor(MarkdownDocumentProcessor):
+
+    def __init__(self, text: str) -> None:
+        super().__init__(text)
+        if 'title' not in self.meta:
+            raise ValueError('Title missing in post metadata')
 
     @property
     def tags(self):

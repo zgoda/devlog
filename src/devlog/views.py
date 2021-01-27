@@ -1,7 +1,7 @@
 from flask import Blueprint, abort, render_template
 
 from .ext import pages
-from .models import Post, Tag, TaggedPost
+from .models import Link, Post, Tag, TaggedPost
 from .utils.pagination import Pagination
 
 bp = Blueprint('main', __name__)
@@ -61,3 +61,16 @@ def tag(slug):
         .order_by(Post.created.desc())
     )
     return render_template('blog/tag.html', tag=tag, pagination=Pagination(query))
+
+
+@bp.route('/linki')
+def links():
+    links = {}
+    q = (
+        Link.select(Link.section, Link.text_html)
+        .order_by(Link.section, Link.pk)
+    )
+    for link in q:
+        sect = links.setdefault(link.section, [])
+        sect.append(link.text_html)
+    return render_template('misc/links.html', links=links)

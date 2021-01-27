@@ -7,6 +7,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 SESSION_COOKIE_HTTPONLY = True
 
 POST_INCOMING_DIR = os.environ.get('POST_INCOMING_DIR', 'incoming')
+LINK_INCOMING_DIR = os.environ.get('LINK_INCOMING_DIR', 'newlinks')
 
 # babel
 BABEL_DEFAULT_LOCALE = 'pl_PL'

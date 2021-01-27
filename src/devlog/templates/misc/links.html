@@ -1,0 +1,20 @@
+{% extends "misc/base.html" %}
+
+{% block pagedescription %}Linki do stron i narzędzi które mi się kiedyś przydały oraz ogólnie interesujących miejsc w internecie{% endblock %}
+
+{% block pagetitle %}Linkowisko{% endblock %}
+
+{% block content %}
+<h2>Linkowisko</h2>
+<p>Czasem trafiam na perełkę, która okazuje się bardzo przydatnym narzędziem. Tu będzie lista.</p>
+{% for sectname, items in links.items() %}
+{% if items %}
+<h3>{{ sectname }}</h3>
+<ul>
+{% for item in items %}
+<li>{{ item|safe }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endfor %}
+{% endblock %}

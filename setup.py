@@ -117,6 +117,7 @@ setup(
             'devlog=devlog.cli:main',
             'postimport=devlog.tasks:import_posts',
             'sitemapgen=devlog.tasks:sitemap_generator',
+            'linkimport=devlog.tasks:import_links',
         ],
         'markdown.extensions': [
             'centerblock=devlog.utils.text:CenterBlockExtension',
