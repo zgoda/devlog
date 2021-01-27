@@ -4,7 +4,7 @@ from flask.cli import FlaskGroup
 
 from . import make_app
 from .migrations import MIGRATIONS, run_migration
-from .models import Post, Tag, TaggedPost, db
+from .models import MODELS, db
 
 
 def create_app(info):
@@ -22,12 +22,12 @@ def db_ops():
 
 @db_ops.command(name='init', help='initialize missing database objects')
 def db_init():
-    db.create_tables([Post, Tag, TaggedPost])
+    db.create_tables(MODELS)
 
 
 @db_ops.command(name='clear', help='remove all database objects')
 def db_clear():
-    db.drop_tables([TaggedPost, Tag, Post])
+    db.drop_tables(MODELS)
 
 
 @db_ops.command(

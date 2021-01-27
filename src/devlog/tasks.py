@@ -1,6 +1,4 @@
-import fcntl
 import os
-import stat
 import sys
 from datetime import datetime
 
@@ -11,6 +9,7 @@ from flask import url_for
 from .app import make_app
 from .ext import pages
 from .models import Post, Tag, TaggedPost, db
+from .utils.platform import single_instance_mutex
 from .utils.text import PostProcessor, slugify
 from .utils.web import (
     PageDef, URLSet, URLSetConfig, generate_sitemap, save_sitemap_file,
@@ -23,32 +22,23 @@ os.makedirs(app.instance_path, exist_ok=True)
 
 
 def import_posts():  # pragma: nocover
-    lf = os.path.join(app.instance_path, 'postimport.lock')
-    lf_flags = os.O_WRONLY | os.O_CREAT
-    lf_mode = stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH
-    lf_fd = os.open(lf, lf_flags, lf_mode)
-    try:
-        fcntl.lockf(lf_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-    except IOError:
-        sys.exit('Only one instance of post import can be running')
-    incoming_dir = app.config['POST_INCOMING_DIR']
-    if not os.path.isabs(incoming_dir):
-        incoming_dir = os.path.join(app.instance_path, incoming_dir)
-        os.makedirs(incoming_dir, exist_ok=True)
-    files_imported = 0
-    for file_name in os.listdir(incoming_dir):
-        if not file_name.endswith('.md'):
-            continue
-        file_path = os.path.join(incoming_dir, file_name)
-        with open(file_path) as fp:
-            text = fp.read()
-        post_from_markdown(text)
-        os.remove(file_path)
-        files_imported = files_imported + 1
-    if files_imported:
-        sitemap_generator()
-    os.close(lf_fd)
-    os.remove(lf)
+    with single_instance_mutex(app.instance_path, 'postimport'):
+        incoming_dir = app.config['POST_INCOMING_DIR']
+        if not os.path.isabs(incoming_dir):
+            incoming_dir = os.path.join(app.instance_path, incoming_dir)
+            os.makedirs(incoming_dir, exist_ok=True)
+        files_imported = 0
+        for file_name in os.listdir(incoming_dir):
+            if not file_name.endswith('.md'):
+                continue
+            file_path = os.path.join(incoming_dir, file_name)
+            with open(file_path) as fp:
+                text = fp.read()
+            post_from_markdown(text)
+            os.remove(file_path)
+            files_imported = files_imported + 1
+        if files_imported:
+            sitemap_generator()
 
 
 def post_from_markdown(text: str) -> Post:

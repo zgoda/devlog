@@ -7,13 +7,14 @@ from werkzeug.utils import cached_property
 
 from devlog import make_app
 from devlog.assets import all_css
-from devlog.models import Post, Tag, TaggedPost, db
+from devlog.models import MODELS, db
 
-from .factories import PostFactory, TagFactory, TaggedPostFactory
+from .factories import LinkFactory, PostFactory, TagFactory, TaggedPostFactory
 
 register(TagFactory)
 register(PostFactory)
 register(TaggedPostFactory)
+register(LinkFactory)
 
 
 class TestResponse(Response):
@@ -31,14 +32,13 @@ def faker_session_locale():
 
 
 @pytest.fixture()
-def app(mocker):
+def app():
     os.environ['FLASK_ENV'] = 'test'
     app = make_app(env='test')
     with app.app_context():
         all_css.build()
     app.response_class = TestResponse
-    models = [Post, Tag, TaggedPost]
     with app.app_context():
-        db.create_tables(models)
+        db.create_tables(MODELS)
         yield app
-        db.drop_tables(models)
+        db.drop_tables(MODELS)

@@ -70,3 +70,13 @@ class TaggedPost(Model):
     pk = AutoField()
     post = ForeignKeyField(Post)
     tag = ForeignKeyField(Tag)
+
+
+class Link(Model):
+    pk = AutoField()
+    section = CharField(max_length=100, index=True, collation='UCA')
+    text = TextField()
+    text_html = TextField()
+
+
+MODELS = [Post, Tag, TaggedPost, Link]
