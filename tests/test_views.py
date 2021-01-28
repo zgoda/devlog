@@ -109,3 +109,33 @@ class TestTagView:
         url = url_for('main.tag', slug=slugify('etykieta 1'))
         rv = self.client.get(url)
         assert rv.status_code == 404
+
+
+@pytest.mark.usefixtures('client_class')
+class TestLinksView:
+
+    @pytest.fixture(autouse=True)
+    def _set_up(self):
+        self.url = url_for('main.links')
+
+    def test_empty(self):
+        rv = self.client.get(self.url)
+        assert '<h3>' not in rv.text
+
+    def test_one_section(self, link_factory):
+        category = 'Kategoria 1'
+        l1 = link_factory(section=category)
+        l2 = link_factory(section=category)
+        rv = self.client.get(self.url)
+        assert f'<h3>{category}</h3>' in rv.text
+        assert l1.text in rv.text
+        assert l2.text in rv.text
+
+    def test_many_sections(self, link_factory):
+        c1 = 'Kategoria 1'
+        c2 = 'Kategoria 2'
+        link_factory.create_batch(2, section=c1)
+        link_factory.create_batch(4, section=c2)
+        rv = self.client.get(self.url)
+        assert f'<h3>{c1}</h3>' in rv.text
+        assert f'<h3>{c2}</h3>' in rv.text
