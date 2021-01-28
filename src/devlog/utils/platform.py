@@ -9,11 +9,13 @@ from typing import Generator
 @contextmanager
 def single_instance_mutex(
             directory: str, name: str, abort: bool = True
-        ) -> Generator[int, None, None]:
+        ) -> Generator[int, None, None]:  # pragma: nocover
     lf = os.path.join(directory, f'{name}.lock')
-    lf_flags = os.O_WRONLY | os.O_CREAT
-    lf_mode = stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH
-    lf_fd = os.open(lf, lf_flags, lf_mode)
+    lf_fd = os.open(
+        lf,
+        os.O_WRONLY | os.O_CREAT,
+        stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH,
+    )
     try:
         fcntl.lockf(lf_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except IOError:
