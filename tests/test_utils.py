@@ -7,7 +7,7 @@ from devlog.utils.pagination import get_page
 from devlog.utils.text import normalize_post_date
 
 
-def test_pagination_invalid_param(client, app):
+def test_pagination_invalid_param(app):
     val = 'dummy'
     with app.test_request_context(f'/?p={val}'):
         page = get_page()
