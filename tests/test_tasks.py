@@ -3,8 +3,8 @@ from datetime import datetime
 
 import pytest
 
-from devlog.models import Post
-from devlog.tasks import post_from_markdown, app, sitemap_generator
+from devlog.models import Link, Post
+from devlog.tasks import app, link_from_markdown, post_from_markdown, sitemap_generator
 
 
 @pytest.mark.usefixtures('app')
@@ -154,3 +154,32 @@ class TestSitemapGenerator:
             content = fp.read()
         assert content.count('<url>') == self.STATIC_URL_COUNT + 1 + len(tags)
         assert content.count(dt.isoformat()) == 1 + 1 + len(tags)
+
+
+@pytest.mark.usefixtures('app')
+class TestLinksImport:
+
+    def test_import_ok(self):
+        section = 'Kategoria 1'
+        md = f'''---
+category: {section}
+---
+
+jakiś **tekst**;
+'''
+        link_from_markdown(md)
+        link = Link.get()
+        assert link.section == section
+        assert '<strong>' in link.text_html
+        assert '<p>' not in link.text_html
+        assert '</p>' not in link.text_html
+
+    def test_import_fail(self):
+        md = '''---
+something: dummy
+---
+
+jakiś **tekst**;
+'''
+        with pytest.raises(ValueError, match='Category missing in link metadata'):
+            link_from_markdown(md)
