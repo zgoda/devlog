@@ -48,7 +48,7 @@ def token_required(func):
             return json_error_response(401, 'Authorization required')
         auth_type, auth_token = auth.split()
         if auth_type.lower() != 'basic':
-            return json_error_response(400, 'Invalid authentication type')
+            return json_error_response(401, 'Invalid authentication type')
         signer_kw = {'digest_method': hashlib.sha512}
         serializer = URLSafeTimedSerializer(
             current_app.secret_key, salt=current_app.config['TOKEN_SALT'],
@@ -58,11 +58,11 @@ def token_required(func):
             name = serializer.loads(auth_token, current_app.config['TOKEN_MAX_AGE'])
             user = User.get_or_none(User.name == name)
             if not user:
-                return json_error_response(400, 'Invalid token')
+                return json_error_response(401, 'Invalid token')
             g.user = user
             return func(*args, **kw)
         except SignatureExpired:
             return json_error_response(400, 'Token expired')
         except BadSignature:
-            return json_error_response(400, 'Invalid token')
+            return json_error_response(401, 'Invalid token')
     return decorated_view
