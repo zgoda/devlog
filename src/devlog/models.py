@@ -114,4 +114,4 @@ class Quip(Model):
     created = DateTimeField(index=True, default=datetime.utcnow)
 
 
-MODELS = [Post, Quip, Tag, TaggedPost, Link]
+MODELS = [Post, Quip, Tag, TaggedPost, Link, User]

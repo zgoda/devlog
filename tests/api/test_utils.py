@@ -19,7 +19,7 @@ class TestAuthDecorator:
 
     def test_invalid_auth_type(self):
         rv = self.client.get(self.url, headers={'Authorization': 'Invalid token'})
-        assert rv.status_code == 400
+        assert rv.status_code == 401
         data = rv.get_json()
         assert 'message' in data
         assert 'invalid authentication type' in data['message'].lower()
@@ -29,7 +29,7 @@ class TestAuthDecorator:
         token = login(user.name, user.password)
         user.delete_instance()
         rv = self.client.get(self.url, headers={'Authorization': f'Basic {token}'})
-        assert rv.status_code == 400
+        assert rv.status_code == 401
         data = rv.get_json()
         assert 'message' in data
         assert 'invalid token' in data['message'].lower()
@@ -38,7 +38,7 @@ class TestAuthDecorator:
         user = user_factory(name='user_1')
         token = login(user.name, user.password)[:-1]
         rv = self.client.get(self.url, headers={'Authorization': f'Basic {token}'})
-        assert rv.status_code == 400
+        assert rv.status_code == 401
         data = rv.get_json()
         assert 'message' in data
         assert 'invalid token' in data['message'].lower()
