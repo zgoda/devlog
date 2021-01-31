@@ -46,7 +46,10 @@ def token_required(func):
         auth = request.headers.get('Authorization')
         if not auth:
             return json_error_response(401, 'Authorization required')
-        auth_type, auth_token = auth.split()
+        try:
+            auth_type, auth_token = auth.split()
+        except ValueError:
+            return json_error_response(401, 'Invalid authentication header')
         if auth_type.lower() != 'basic':
             return json_error_response(401, 'Invalid authentication type')
         signer_kw = {'digest_method': hashlib.sha512}

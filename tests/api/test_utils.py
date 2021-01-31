@@ -17,6 +17,16 @@ class TestAuthDecorator:
         assert 'message' in data
         assert 'authorization required' in data['message'].lower()
 
+    @pytest.mark.parametrize('value', [
+        'wrong', 'this is also wrong'
+    ], ids=['not-enough', 'too-many'])
+    def test_invalid_header(self, value):
+        rv = self.client.get(self.url, headers={'Authorization': value})
+        assert rv.status_code == 401
+        data = rv.get_json()
+        assert 'message' in data
+        assert 'invalid authentication header' in data['message'].lower()
+
     def test_invalid_auth_type(self):
         rv = self.client.get(self.url, headers={'Authorization': 'Invalid token'})
         assert rv.status_code == 401
