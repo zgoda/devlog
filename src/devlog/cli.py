@@ -3,6 +3,8 @@ from dotenv import find_dotenv, load_dotenv
 from flask.cli import FlaskGroup
 
 from . import make_app
+from .api.utils import get_user
+from .ext import cache
 from .migrations import MIGRATIONS, run_migration
 from .models import MODELS, User, db
 
@@ -61,6 +63,7 @@ def user_create(name: str, password: str) -> None:
     u = User(name=name)
     u.set_password(password)
     u.save()
+    cache.delete_memoized(get_user)
     click.echo(f'User {name} created')
 
 

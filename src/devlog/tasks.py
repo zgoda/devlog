@@ -7,8 +7,9 @@ from dotenv import find_dotenv, load_dotenv
 from flask import url_for
 from markdown import markdown
 
+from . import views
 from .app import make_app
-from .ext import pages
+from .ext import cache, pages
 from .models import Link, Post, Tag, TaggedPost, db
 from .utils.platform import single_instance_mutex
 from .utils.text import LinkProcessor, PostProcessor, slugify
@@ -60,12 +61,21 @@ def post_from_markdown(text: str) -> Post:
             post = Post.create(**kw)
         else:
             Post.update(**kw).where(search_crit).execute()
+            for tag in Post.tags:
+                cache.delete_memoized(views.tag, tag.slug)
             TaggedPost.delete().where(TaggedPost.post == post).execute()
+            cache.delete_memoized(
+                views.post, meta.c_year, meta.c_month, meta.c_day, meta.slug
+            )
+        cache.delete_memoized(views.index)
+        cache.delete_memoized(views.blog)
         for tag_s in pp.tags:
+            tag_slug = slugify(tag_s)
             tag, _ = Tag.get_or_create(
-                name=tag_s, defaults={'slug': slugify(tag_s)}
+                name=tag_s, defaults={'slug': tag_slug}
             )
             TaggedPost.create(post=post, tag=tag)
+            cache.delete_memoized(views.tag, tag_slug)
 
 
 def import_links():  # pragma: nocover
@@ -76,6 +86,7 @@ def import_links():  # pragma: nocover
                 os.path.join(app.instance_path, incoming_dir)
             )
         os.makedirs(incoming_dir, exist_ok=True)
+        processed = 0
         for file_name in os.listdir(incoming_dir):
             if not file_name.endswith('.md'):
                 continue
@@ -84,6 +95,9 @@ def import_links():  # pragma: nocover
                 text = fp.read()
             link_from_markdown(text)
             os.remove(file_path)
+            processed = processed + 1
+        if processed:
+            cache.delete_memoized(views.page)
 
 
 def link_from_markdown(text: str) -> None:

@@ -8,7 +8,7 @@ bp = Blueprint('main', __name__)
 
 
 @bp.route('/')
-@cache.cached(timeout=1*60*60)
+@cache.memoize(timeout=1*60*60)
 def index():
     posts = (
         Post.select()
