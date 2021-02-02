@@ -28,7 +28,7 @@ def page(path):
 
 
 @bp.route('/blog')
-@cache.cached(timeout=1*60*60)
+@cache.memoize(timeout=1*60*60)
 def blog():
     query = (
         Post.select()
@@ -69,7 +69,7 @@ def tag(slug):
 
 
 @bp.route('/linki')
-@cache.cached(timeout=48*60*60)
+@cache.memoize(timeout=48*60*60)
 def links():
     links = {}
     q = (
