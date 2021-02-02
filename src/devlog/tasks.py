@@ -61,7 +61,7 @@ def post_from_markdown(text: str) -> Post:
             post = Post.create(**kw)
         else:
             Post.update(**kw).where(search_crit).execute()
-            for tag in Post.tags:
+            for tag in post.tags:
                 cache.delete_memoized(views.tag, tag.slug)
             TaggedPost.delete().where(TaggedPost.post == post).execute()
             cache.delete_memoized(

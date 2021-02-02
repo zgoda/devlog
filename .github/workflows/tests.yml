@@ -37,6 +37,8 @@ jobs:
         python -m pip install -U pip wheel --upgrade-strategy eager
         python -m pip install -U -e .[test] --upgrade-strategy eager
     - name: Test with pytest
+      env:
+        ENV: test
       run: |
         python -m pytest -p no:sugar --cov-branch --cov-report xml --cov devlog tests
     - name: Test package build
