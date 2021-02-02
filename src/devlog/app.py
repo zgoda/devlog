@@ -11,7 +11,7 @@ from werkzeug.utils import ImportStringError
 from ._version import get_version
 from .api import api_bp
 from .assets import all_css
-from .ext import assetenv, babel, pages
+from .ext import assetenv, babel, cache, pages
 from .models import db
 from .templates import setup_template_extensions
 from .utils.app import Devlog
@@ -93,6 +93,7 @@ def configure_hooks(app: Devlog):
 def configure_extensions(app: Devlog):
     assetenv.init_app(app)
     assetenv.register('css_all', all_css)
+    cache.init_app(app)
     babel.init_app(app)
     pages.init_app(app)
 

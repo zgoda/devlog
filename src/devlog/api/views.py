@@ -2,19 +2,19 @@ import markdown
 from flask import g, request
 from flask.views import MethodView
 
-from ..models import Quip, User
+from ..models import Quip
 from ..utils.pagination import get_page
 from ..utils.text import PostProcessor
 from . import api_bp as bp
 from .schema import quip_schema
-from .utils import generate_token, json_error_response, token_required
+from .utils import generate_token, get_user, json_error_response, token_required
 
 
 @bp.route('/login', methods=['POST'])
 def login():
     name = request.form.get('name')
     password = request.form.get('password')
-    user = User.get_or_none(User.name == name)
+    user = get_user(name)
     if user is not None and user.check_password(password):
         g.user = user
         return {'token': generate_token(name)}

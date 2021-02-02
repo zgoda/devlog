@@ -18,3 +18,8 @@ BABEL_DEFAULT_TIMEZONE = 'Europe/Warsaw'
 # flatpages
 FLATPAGES_EXTENSION = ['.html.md']
 FLATPAGES_MARKDOWN_EXTENSIONS = []
+
+# caching
+CACHE_TYPE = os.getenv('CACHE_TYPE', 'memcached')
+CACHE_DEFAULT_TIMEOUT = 6 * 60 * 60  # 6 hours
+CACHE_KEY_PREFIX = 'dvlg:'

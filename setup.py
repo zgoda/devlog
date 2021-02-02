@@ -28,6 +28,7 @@ REQ_BASE = [
     'Flask-Babel',
     'Flask-FlatPages',
     'Flask-Assets',
+    'Flask-Caching',
     'Peewee',
     'text-unidecode',
     'pyuca',
@@ -76,6 +77,7 @@ REQ_DEV = REQ_TEST + [
 
 REQ_PROD = [
     'gunicorn',
+    'pylibmc',
 ]
 
 

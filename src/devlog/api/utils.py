@@ -1,10 +1,12 @@
 import functools
 import hashlib
+from typing import Optional
 
 from flask import Response, current_app, g, make_response, request
 from itsdangerous.exc import BadSignature, SignatureExpired
 from itsdangerous.url_safe import URLSafeTimedSerializer
 
+from ..ext import cache
 from ..models import User
 
 
@@ -20,6 +22,18 @@ def json_error_response(code: int, message: str) -> Response:
     """
     body = {'message': message}
     return make_response(body, code)
+
+
+@cache.memoize(timeout=48*60*60)
+def get_user(name: str) -> Optional[User]:
+    """Retrieve user model.
+
+    :param name: user name
+    :type name: str
+    :return: User object or None
+    :rtype: Optional[User]
+    """
+    return User.get_or_none(User.name == name)
 
 
 def generate_token(payload: str) -> str:
@@ -59,7 +73,7 @@ def token_required(func):
         )
         try:
             name = serializer.loads(auth_token, current_app.config['TOKEN_MAX_AGE'])
-            user = User.get_or_none(User.name == name)
+            user = get_user(name)
             if not user:
                 return json_error_response(401, 'Invalid token')
             g.user = user
