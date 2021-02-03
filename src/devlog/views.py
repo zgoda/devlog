@@ -8,7 +8,7 @@ bp = Blueprint('main', __name__)
 
 
 @bp.route('/')
-@cache.memoize(timeout=1*60*60)
+@cache.cached(timeout=1*60*60)
 def index():
     posts = (
         Post.select()
@@ -20,7 +20,7 @@ def index():
 
 
 @bp.route('/strona/<path:path>')
-@cache.memoize(timeout=48*60*60)
+@cache.cached(timeout=48*60*60)
 def page(path):
     page = pages.get_or_404(path)
     template = page.meta.get('template', 'flatpage.html')
@@ -28,7 +28,7 @@ def page(path):
 
 
 @bp.route('/blog')
-@cache.memoize(timeout=1*60*60)
+@cache.cached(timeout=1*60*60, query_string=True)
 def blog():
     query = (
         Post.select()
@@ -39,7 +39,7 @@ def blog():
 
 
 @bp.route('/<int:y>/<int:m>/<int:d>/<slug>')
-@cache.memoize(timeout=2*60*60)
+@cache.cached(timeout=2*60*60)
 def post(y, m, d, slug):
     post = Post.get_or_none(
         Post.c_year == y,
@@ -54,7 +54,7 @@ def post(y, m, d, slug):
 
 
 @bp.route('/tag/<slug>')
-@cache.memoize(timeout=2*60*60)
+@cache.cached(timeout=2*60*60)
 def tag(slug):
     tag = Tag.get_or_none(Tag.slug == slug)
     if tag is None:
@@ -69,7 +69,7 @@ def tag(slug):
 
 
 @bp.route('/linki')
-@cache.memoize(timeout=48*60*60)
+@cache.cached(timeout=48*60*60)
 def links():
     links = {}
     q = (
