@@ -67,7 +67,6 @@ def post_from_markdown(text: str) -> Post:
                 name=tag_s, defaults={'slug': tag_slug}
             )
             TaggedPost.create(post=post, tag=tag)
-    cache.clear()
 
 
 def import_links():  # pragma: nocover
