@@ -46,6 +46,7 @@ REQ_BASE = [
 ]
 
 REQ_TEST = [
+    'fakeredis',
     'pytest',
     'pytest-mock',
     'pytest-cov',

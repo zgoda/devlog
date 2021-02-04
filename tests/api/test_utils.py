@@ -1,6 +1,9 @@
-from flask import url_for
-import pytest
 import time
+
+import pytest
+from flask import url_for
+
+from devlog.ext import cache
 
 
 @pytest.mark.usefixtures('client_class')
@@ -38,6 +41,7 @@ class TestAuthDecorator:
         user = user_factory(name='user_1')
         token = login(user.name, user.password)
         user.delete_instance()
+        cache.clear()
         rv = self.client.get(self.url, headers={'Authorization': f'Basic {token}'})
         assert rv.status_code == 401
         data = rv.get_json()

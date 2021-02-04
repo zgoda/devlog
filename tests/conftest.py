@@ -1,11 +1,12 @@
 import os
 
+import fakeredis
 import pytest
 from flask.wrappers import Response
 from pytest_factoryboy import register
 from werkzeug.utils import cached_property
 
-from devlog import make_app
+from devlog import config_test, make_app
 from devlog.assets import all_css
 from devlog.models import MODELS, db
 
@@ -52,11 +53,27 @@ def fake_check_password_hash(stored, password):
     return stored == password
 
 
-@pytest.fixture()
-def app(mocker):
+def _app_fixture(env, mocker):
     mocker.patch('devlog.models.generate_password_hash', fake_gen_password_hash)
     mocker.patch('devlog.models.check_password_hash', fake_check_password_hash)
     os.environ['FLASK_ENV'] = 'test'
+    app = make_app(env=env)
+    with app.app_context():
+        all_css.build()
+    app.response_class = TestResponse
+    return app
+
+
+@pytest.fixture(params=['null', 'redis'])
+def app(request, mocker):
+    mocker.patch('devlog.models.generate_password_hash', fake_gen_password_hash)
+    mocker.patch('devlog.models.check_password_hash', fake_check_password_hash)
+    os.environ['FLASK_ENV'] = 'test'
+    cache_type = request.param
+    if request.cls:
+        request.cls.cache_type = cache_type
+    config_test.CACHE_TYPE = cache_type
+    config_test.CACHE_REDIS_HOST = fakeredis.FakeStrictRedis()
     app = make_app(env='test')
     with app.app_context():
         all_css.build()

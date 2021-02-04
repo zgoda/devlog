@@ -3,6 +3,7 @@ from datetime import date, datetime
 import pytest
 import pytz
 
+from devlog.ext import cache
 from devlog.utils.pagination import get_page
 from devlog.utils.text import normalize_post_date
 
@@ -48,3 +49,23 @@ class TestPostDateNormalization:
         value = self.TZ.localize(now, is_dst=False)
         rv = normalize_post_date(value)
         assert rv.utcoffset() is None
+
+
+class TestCacheExtension:
+
+    def test_backend_is_redis(self, app):
+        if self.cache_type != 'redis':
+            pytest.skip('To be run only with Redis cache')
+        assert len(cache.cache._write_client.keys('*')) == 0
+        cache.set('prefix1:key1', 'a')
+        cache.set('prefix2:key1', 'b')
+        assert len(cache.cache._write_client.keys('*')) == 2
+        assert cache.delete_prefixed('prefix1') == 1
+        assert len(cache.cache._write_client.keys('prefix1')) == 0
+
+    def test_backend_is_not_redis(self, app):
+        if self.cache_type == 'redis':
+            pytest.skip("Can't be run with Redis cache")
+        cache.set('prefix1:key1', 'a')
+        cache.set('prefix2:key1', 'b')
+        assert cache.delete_prefixed('prefix1') is None
