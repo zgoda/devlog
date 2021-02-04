@@ -19,7 +19,7 @@ def index():
 
 
 @bp.route('/strona/<path:path>')
-@cache.cached(timeout=48*60*60, key_prefix='view:%s')
+@cache.cached(timeout=48*60*60, key_prefix='page:%s')
 def page(path):
     page = pages.get_or_404(path)
     template = page.meta.get('template', 'flatpage.html')
@@ -65,7 +65,7 @@ def tag(slug):
 
 
 @bp.route('/linki')
-@cache.cached(timeout=48*60*60, key_prefix='view:%s')
+@cache.cached(timeout=48*60*60, key_prefix='links:%s')
 def links():
     links = {}
     q = (

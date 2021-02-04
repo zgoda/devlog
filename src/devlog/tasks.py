@@ -88,7 +88,7 @@ def import_links():  # pragma: nocover
             os.remove(file_path)
             processed = processed + 1
         if processed:
-            cache.clear()
+            cache.delete_prefixed('links')
 
 
 def link_from_markdown(text: str) -> None:
