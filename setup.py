@@ -78,7 +78,7 @@ REQ_DEV = REQ_TEST + [
 
 REQ_PROD = [
     'gunicorn',
-    'pylibmc',
+    'redis[hiredis]',
 ]
 
 
