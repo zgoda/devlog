@@ -9,6 +9,10 @@ class TestLogin:
     def _set_up(self):
         self.url = url_for('api.login')
 
+    def test_accepts_head(self):
+        rv = self.client.head(self.url)
+        assert rv.status_code == 200
+
     def test_no_account(self):
         data = {'name': 'user1', 'password': 'pass'}
         rv = self.client.post(self.url, data=data)

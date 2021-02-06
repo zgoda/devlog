@@ -10,8 +10,10 @@ from .schema import quip_schema
 from .utils import generate_token, get_user, json_error_response, token_required
 
 
-@bp.route('/login', methods=['POST'])
+@bp.route('/login', methods=['POST', 'HEAD'])
 def login():
+    if request.method == 'HEAD':
+        return {}
     name = request.form.get('name')
     password = request.form.get('password')
     user = get_user(name)
