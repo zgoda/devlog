@@ -6,7 +6,7 @@ class QuipSchema(Schema):
     author = fields.String(dump_only=True)
     title = fields.String()
     text = fields.String(required=True)
-    text_html = fields.String(dump_only=True)
+    text_html = fields.String(dump_only=True, data_key='textHtml')
     created = fields.DateTime(dump_only=True)
 
 
