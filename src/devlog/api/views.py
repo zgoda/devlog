@@ -34,9 +34,11 @@ class QuipCollection(MethodView):
     def post(self):
         data = quip_schema.load(request.get_json())
         quip = Quip(**data)
-        quip.author = g.user.name
+        if not quip.author:
+            quip.author = g.user.name
         quip.text_html = markdown.markdown(quip.text, **PostProcessor.MD_KWARGS)
         quip.save()
+        # TODO: add location header once quip url is decided
         return {'quip': quip_schema.dump(quip)}, 201
 
 

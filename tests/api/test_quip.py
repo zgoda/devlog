@@ -44,7 +44,7 @@ class TestQuipCollection:
         assert data['quips'][0]['text'] == quip.text
         assert data['quips'][0]['author'] == user.name
 
-    def test_post(self, login, user_factory):
+    def test_post_without_author(self, login, user_factory):
         user = user_factory()
         data = {'text': 'My *first* quip!'}
         token = login(user.name, user.password)
@@ -53,5 +53,19 @@ class TestQuipCollection:
         )
         assert rv.status_code == 201
         quip = Quip.get(Quip.author == user.name)
+        assert quip.text == data['text']
+        assert '<em>first</em>' in quip.text_html
+
+    def test_post_with_author(self, login, user_factory):
+        author = 'johnny'
+        user = user_factory()
+        data = {'text': 'My *first* quip!', 'author': author}
+        token = login(user.name, user.password)
+        rv = self.client.post(
+            self.url, json=data, headers={'Authorization': f'Basic {token}'}
+        )
+        assert rv.status_code == 201
+        assert Quip.get_or_none(Quip.author == user.name) is None
+        quip = Quip.get(Quip.author == author)
         assert quip.text == data['text']
         assert '<em>first</em>' in quip.text_html
