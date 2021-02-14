@@ -1,4 +1,5 @@
-from marshmallow import Schema, fields
+import pytz
+from marshmallow import Schema, fields, pre_dump
 
 
 class QuipSchema(Schema):
@@ -8,6 +9,11 @@ class QuipSchema(Schema):
     text = fields.String(required=True)
     text_html = fields.String(dump_only=True, data_key='textHtml')
     created = fields.DateTime(dump_only=True)
+
+    @pre_dump
+    def created_to_utc(self, obj, **kw):
+        obj.created = pytz.utc.localize(obj.created)
+        return obj
 
 
 quip_schema = QuipSchema()
