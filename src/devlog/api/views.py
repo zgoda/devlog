@@ -1,5 +1,5 @@
 import markdown
-from flask import g, request
+from flask import g, request, url_for
 from flask.views import MethodView
 
 from ..models import Quip
@@ -38,8 +38,33 @@ class QuipCollection(MethodView):
             quip.author = g.user.name
         quip.text_html = markdown.markdown(quip.text, **PostProcessor.MD_KWARGS)
         quip.save()
-        # TODO: add location header once quip url is decided
-        return {'quip': quip_schema.dump(quip)}, 201
+        headers = {
+            'Location': url_for('api.quip-item', quip_id=quip.pk, _external=True)
+        }
+        return {'quip': quip_schema.dump(quip)}, 201, headers
 
 
 bp.add_url_rule('/quips', 'quip-collection', QuipCollection.as_view('quip_collection'))
+
+
+class QuipItem(MethodView):
+    decorators = [token_required]
+
+    def get(self, quip_id):
+        quip = Quip.get_or_none(Quip.pk == quip_id)
+        if quip is None:
+            return json_error_response(404, 'No such object')
+        return {'quip': quip_schema.dump(quip)}
+
+    def put(self, quip_id):
+        quip = Quip.get_or_none(Quip.pk == quip_id)
+        if quip is None:
+            return json_error_response(404, 'No such object')
+        data = quip_schema.load(request.get_json())
+        for k, v in data.items():
+            setattr(quip, k, v)
+        quip.save()
+        return {'quip': quip_schema.dump(quip)}
+
+
+bp.add_url_rule('/quip/<int:quip_id>', 'quip-item', QuipItem.as_view('quip_item'))
