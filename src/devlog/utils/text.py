@@ -67,7 +67,7 @@ def _get_now(utc: bool = False) -> datetime.datetime:  # pragma: nocover
 def normalize_post_date(
             dt: Optional[Union[str, datetime.date, datetime.datetime]]
         ) -> Optional[datetime.datetime]:
-    """This function normalizes input to UTC datetime tithout timezone
+    """This function normalizes input to UTC datetime without timezone
     information (naive). If input object does not have timezone information,
     it is assumed to be local time and this may produce wrong result if at
     the time of processing DST is different than for input date.
