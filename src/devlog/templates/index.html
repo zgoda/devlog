@@ -13,6 +13,25 @@
     </div>
   </div>
 </div>
+{% if quips %}
+<section>
+  <h2>Ploteczki</h2>
+  <div class="row">
+    {% for quip in quips %}
+    <div class="col col-lg-4 col-md-6 col-sm-12">
+      <div class="card">
+        {% if quip.title %}
+        <h4 class="card-title">{{ quip.title }}</h4>
+        {% endif %}
+        {{ quip.text_html|safe }}
+        <p class="align-right"><em>{{ format_datetime(quip.created, format='short') }}</em></p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <p><a href="{{ url_for('main.quips') }}">więcej...</a></p>
+</section>
+{% endif %}
 <section>
   <h2>Ostatnie posty w blogu</h2>
   {% if posts %}

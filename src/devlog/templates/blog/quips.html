@@ -1,0 +1,48 @@
+{% extends "blog/base.html" %}
+
+{% block pagedescription %}ploteczki, czyli mikroblog{% endblock %}
+
+{% block pagetitle %}Ploteczki, czyli mikroblog{% endblock %}
+
+{% block content %}
+<section>
+  <h2>Ploteczki, czyli mikroblog</h2>
+  {% for row in pagination.items|batch(3) %}
+  <div class="row">
+    {% for quip in row %}
+    <div class="col col-lg-4 col-md-6 col-sm-12">
+      <div class="panel">
+        {% if quip.title %}
+        <div class="panel-head">
+          <h6 class="panel-title">{{ quip.title }}</h6>
+        </div>
+        {% endif %}
+        <div class="panel-body">
+          {{ quip.text_html|safe }}
+        </div>
+        <div class="panel-footer">
+          <p class="align-right"><em>{{ format_datetime(quip.created, format='short') }}</em></p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>Nie ma jeszcze żadnych plotek.</p>
+  {% endfor %}
+  {% if pagination.has_prev or pagination.has_next %}
+  <hr>
+  <div class="row">
+    <div class="col-sm-6 align-left">
+      {% if pagination.has_prev %}
+      <p><a href="{{ url_for_other_page(pagination.prev_page) }}">Poprzednia ({{ pagination.prev_page }})</a></p>
+      {% endif %}
+    </div>
+    <div class="col-sm-6 align-right">
+      {% if pagination.has_next %}
+      <p><a href="{{ url_for_other_page(pagination.next_page) }}">Następna ({{ pagination.next_page }} / {{ pagination.pages }})</a></p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}
