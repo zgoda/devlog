@@ -1,6 +1,6 @@
 {% extends "blog/base.html" %}
 
-{% from "macros/blog.html" import render_post_headline %}
+{% from "macros/blog.html" import render_post_headline, render_pagination %}
 
 {% block pagedescription %}posty z etykietą {{ tag.name }}{% endblock %}
 
@@ -14,20 +14,6 @@
   {% else %}
   <p>Nie ma jeszcze żadnych postów.</p>
   {% endfor %}
-  {% if pagination.has_prev or pagination.has_next %}
-  <hr>
-  <div class="row">
-    <div class="col-sm-6 align-left">
-      {% if pagination.has_prev %}
-      <p><a href="{{ url_for_other_page(pagination.prev_page) }}">Poprzednia ({{ pagination.prev_page }})</a></p>
-      {% endif %}
-    </div>
-    <div class="col-sm-6 align-right">
-      {% if pagination.has_next %}
-      <p><a href="{{ url_for_other_page(pagination.next_page) }}">Następna ({{ pagination.next_page }} / {{ pagination.pages }})</a></p>
-      {% endif %}
-    </div>
-  </div>
+  {{ render_pagination(pagination) }}
 </section>
-{% endif %}
 {% endblock %}
