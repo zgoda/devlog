@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% from "macros/blog.html" import render_post_headline %}
+{% from "macros/blog.html" import render_post_headline, render_quip %}
 
 {% block pagetitle %}Devlog &middot; Jarek Zgoda{% endblock %}
 
@@ -18,15 +18,7 @@
   <h2>Ploteczki</h2>
   <div class="row">
     {% for quip in quips %}
-    <div class="col col-lg-4 col-md-6 col-sm-12">
-      <div class="card">
-        {% if quip.title %}
-        <h4 class="card-title">{{ quip.title }}</h4>
-        {% endif %}
-        {{ quip.text_html|safe }}
-        <p class="align-right"><em>{{ format_datetime(quip.created, format='short') }}</em></p>
-      </div>
-    </div>
+    {{ render_quip(quip) }}
     {% endfor %}
   </div>
   <p><a href="{{ url_for('main.quips') }}">więcej...</a></p>
