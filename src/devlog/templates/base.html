@@ -71,15 +71,17 @@
     toggle.addEventListener('click', ((e) => {
       if (menu.style.display !== 'block') {
         e.preventDefault();
-        e.stopPropagation();  
+        e.stopPropagation();
         show(menu);
       }
     }));
     document.body.addEventListener('click', ((e) => {
-      if (menu.style.display === 'block') {
-        e.preventDefault();
-        e.stopPropagation();  
-        hide(menu);
+      if (!e.path.includes(menu)) {
+        if (menu.style.display === 'block') {
+          e.preventDefault();
+          e.stopPropagation();
+          hide(menu);
+        }
       }
     }));
   </script>
