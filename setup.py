@@ -43,6 +43,7 @@ REQ_BASE = [
     'jsx-lexer',
     'passlib[argon2]',
     'Marshmallow',
+    'nanoid',
 ]
 
 REQ_TEST = [

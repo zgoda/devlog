@@ -1,21 +1,40 @@
 from __future__ import annotations
 
-from peewee import TextField
+from peewee import CharField, TextField
 from playhouse.migrate import SqliteMigrator, migrate
 
-from .models import db
+from .models import db, gen_permalink
+
+migrator = SqliteMigrator(db)
 
 
 def add_post_description():
     field = TextField(null=True)
-    migrator = SqliteMigrator(db)
     migrate(
         migrator.add_column('post', 'description', field)
     )
 
 
+def add_quip_permalink():
+    field = CharField(max_length=20, default='permalink')
+    migrate(
+        migrator.add_column('quip', 'permalink', field)
+    )
+    cursor = db.execute_sql('select pk from quip')
+    for row in cursor:
+        pk = row[0]
+        permalink = gen_permalink()
+        db.execute_sql(
+            'update quip set permalink = ? where pk = ?', params=(permalink, pk)
+        )
+    migrate(
+        migrator.add_index('quip', ['permalink'], unique=True)
+    )
+
+
 MIGRATIONS = {
-    'add_post_description': add_post_description
+    'add_post_description': add_post_description,
+    'add_quip_permalink': add_quip_permalink,
 }
 
 

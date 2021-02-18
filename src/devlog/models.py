@@ -1,6 +1,8 @@
 from datetime import datetime
 
 import peewee
+from nanoid import generate
+from nanoid.resources import alphabet as nanoid_alphabet
 from passlib.context import CryptContext
 from peewee import (
     AutoField, CharField, DateTimeField, ForeignKeyField, IntegerField, SqliteDatabase,
@@ -11,6 +13,9 @@ from pyuca import Collator
 c = Collator()
 
 pwd_context = CryptContext(schemes=['argon2'])
+
+ALPHABET = nanoid_alphabet.replace('_', '').replace('-', '')
+NANOID_LEN = 16
 
 db = SqliteDatabase(None)
 
@@ -30,6 +35,10 @@ def generate_password_hash(password: str) -> str:  # pragma: nocover
 
 def check_password_hash(stored: str, password: str) -> bool:  # pragma: nocover
     return pwd_context.verify(password, stored)
+
+
+def gen_permalink() -> str:
+    return generate(ALPHABET, size=NANOID_LEN)
 
 
 class Model(peewee.Model):
@@ -112,6 +121,12 @@ class Quip(Model):
     text = TextField()
     text_html = TextField()
     created = DateTimeField(index=True, default=datetime.utcnow)
+    permalink = CharField(max_length=20, default=gen_permalink)
+
+    class Meta:
+        indexes = (
+            (['permalink'], True),
+        )
 
 
 MODELS = [Post, Quip, Tag, TaggedPost, Link, User]
