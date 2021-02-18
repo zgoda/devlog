@@ -63,6 +63,7 @@ class QuipItem(MethodView):
         data = quip_schema.load(request.get_json())
         for k, v in data.items():
             setattr(quip, k, v)
+        quip.text_html = markdown.markdown(quip.text, **PostProcessor.MD_KWARGS)
         quip.save()
         return {'quip': quip_schema.dump(quip)}
 
