@@ -48,7 +48,7 @@ def db_migrate(name):
 
 @db_ops.command(name='migrations', help='list available migrations')
 def db_list_migrations():
-    click.echo('\n'.join(MIGRATIONS.keys()))
+    click.echo('\n'.join(sorted(MIGRATIONS.keys())))
 
 
 @cli.group(name='user', help='user account management')

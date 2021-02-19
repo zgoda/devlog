@@ -33,8 +33,8 @@ def add_quip_permalink():
 
 
 MIGRATIONS = {
-    'add_post_description': add_post_description,
-    'add_quip_permalink': add_quip_permalink,
+    '001.add_post_description': add_post_description,
+    '002.add_quip_permalink': add_quip_permalink,
 }
 
 
