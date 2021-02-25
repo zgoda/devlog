@@ -44,7 +44,7 @@ def blog():
 
 
 @bp.route('/<int:y>/<int:m>/<int:d>/<slug>')
-def post(y, m, d, slug):
+def post(y: int, m: int, d: int, slug: str):
     post = Post.get_or_none(
         Post.c_year == y,
         Post.c_month == m,
@@ -66,7 +66,7 @@ def quips():
 
 
 @bp.route('/tag/<slug>')
-def tag(slug):
+def tag(slug: str):
     tag = Tag.get_or_none(Tag.slug == slug)
     if tag is None:
         abort(404)

@@ -1,3 +1,5 @@
+from typing import Any
+
 import pytz
 from marshmallow import Schema, fields, pre_dump
 
@@ -11,7 +13,7 @@ class QuipSchema(Schema):
     created = fields.DateTime(dump_only=True)
 
     @pre_dump
-    def created_to_utc(self, obj, **kw):
+    def created_to_utc(self, obj: Any, **kw) -> Any:
         obj.created = pytz.utc.localize(obj.created)
         return obj
 
