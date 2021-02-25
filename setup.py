@@ -29,6 +29,8 @@ REQ_BASE = [
     'Flask-FlatPages',
     'Flask-Assets',
     'Flask-Caching',
+    'Flask-Login',
+    'Flask-WTF',
     'Peewee',
     'text-unidecode',
     'pyuca',
@@ -42,6 +44,8 @@ REQ_BASE = [
     'pygments',
     'jsx-lexer',
     'passlib[argon2]',
+    'pyotp',
+    'qrcode',
     'Marshmallow',
     'nanoid',
 ]

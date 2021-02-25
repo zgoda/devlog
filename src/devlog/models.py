@@ -1,6 +1,8 @@
 from datetime import datetime
 
 import peewee
+import pyotp
+from flask_login import UserMixin
 from nanoid import generate
 from nanoid.resources import alphabet as nanoid_alphabet
 from passlib.context import CryptContext
@@ -9,6 +11,7 @@ from peewee import (
     TextField,
 )
 from pyuca import Collator
+from werkzeug.utils import cached_property
 
 c = Collator()
 
@@ -47,10 +50,11 @@ class Model(peewee.Model):
         database = db
 
 
-class User(Model):
+class User(UserMixin, Model):
     pk = AutoField()
     name = CharField(max_length=100, unique=True)
     password = TextField(null=True)
+    otp_secret = TextField(default=pyotp.random_base32)
 
     class Meta:
         table_name = 'users'
@@ -60,6 +64,16 @@ class User(Model):
 
     def check_password(self, password: str) -> bool:
         return check_password_hash(self.password, password)
+
+    @cached_property
+    def totp(self):
+        return pyotp.totp.TOTP(self.otp_secret)
+
+    def provisioning_uri(self) -> str:
+        return self.totp.provisioning_uri(name=self.name, issuer_name='Devlog')
+
+    def verify_otp(self, code: str) -> bool:
+        return self.totp.verify(code)
 
 
 class Post(Model):

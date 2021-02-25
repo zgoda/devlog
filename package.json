@@ -16,7 +16,6 @@
   "author": "Jarek Zgoda",
   "license": "MIT",
   "devDependencies": {
-    "clean-css-cli": "^5.1.0",
-    "node-sass": "^5.0.0"
+    "clean-css-cli": "^5.2.0"
   }
 }

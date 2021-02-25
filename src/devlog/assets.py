@@ -1,7 +1,7 @@
 from flask_assets import Bundle
 
 app_css = Bundle(
-    'css/app.scss', filters='node-scss', output='dist/app.css',
+    'css/app.scss', filters='scss', output='dist/app.css',
 )
 
 all_css = Bundle(
