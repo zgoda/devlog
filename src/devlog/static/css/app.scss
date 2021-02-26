@@ -1,24 +1,6 @@
 @charset "utf-8";
 
-@import "../vendor/mustard/scss/mixins/breakpoint.scss";
-@import "../vendor/mustard/scss/mixins/clearfix.scss";
-@import "../vendor/mustard/scss/vars/breakpoints.scss";
-@import "../vendor/mustard/scss/vars/colors.scss";
-@import "../vendor/mustard/scss/base/base.scss";
-@import "../vendor/mustard/scss/components/footer.scss";
-@import "../vendor/mustard/scss/components/menus.scss";
-@import "../vendor/mustard/scss/components/navigation.scss";
-@import "../vendor/mustard/scss/components/panels.scss";
-@import "../vendor/mustard/scss/components/tags.scss";
-@import "../vendor/mustard/scss/elements/blockquotes.scss";
-@import "../vendor/mustard/scss/elements/code.scss";
-@import "../vendor/mustard/scss/elements/links.scss";
-@import "../vendor/mustard/scss/elements/lists.scss";
-@import "../vendor/mustard/scss/elements/typography.scss";
-@import "../vendor/mustard/scss/utility/alignment.scss";
-@import "../vendor/mustard/scss/utility/containers.scss";
-@import "../vendor/mustard/scss/utility/grid.scss";
-@import "../vendor/mustard/scss/utility/sections.scss";
+@import "../vendor/mustard/scss/mustard-ui.scss";
 
 .tag-box {
   display: flex;

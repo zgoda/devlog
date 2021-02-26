@@ -8,16 +8,9 @@ from ..models import User
 
 
 class LoginForm(FlaskForm):
-    name = StringField('Nazwa', validators=[InputRequired()])
+    name = StringField('Nazwa użytkownika', validators=[InputRequired()])
     password = PasswordField('Hasło', validators=[InputRequired()])
-
-
-class CodeForm(FlaskForm):
-    code = StringField('Kod', validators=[InputRequired(), Length(6, 6)])
-
-
-class CodeLoginForm(LoginForm):
-    code = StringField('Kod', validators=[InputRequired(), Length(6, 6)])
+    code = StringField('Kod OTP', validators=[InputRequired(), Length(6, 6)])
 
     def login(self) -> bool:
         user = User.get_or_none(User.name == self.name.data)
