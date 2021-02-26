@@ -1,0 +1,16 @@
+{% extends "auth/base.html" %}
+
+{% from "macros/forms.html" import render_form %}
+
+{% block pagetitle %}Wiązanie z aplikacją OTP{% endblock %}
+
+{% block content %}
+<h2>Wiązanie z aplikacją kodów OTP</h2>
+<p>Zeskanuj poniższy kod QR przy użyciu aplikacji do haseł jednorazowych (Google Authenticator, Duo Mobile, Authy, itp), a następnie w pole poniżej wpisz 2 kolejne wyświetlone przez aplikację jednorazowe hasła, każde składające się z 6 cyfr.</p>
+<div class="container-small block-center">
+  <div class="align-center">
+    <img src="{{ url_for('auth.mfa-qrcode-gen') }}">
+  </div>
+  {{ render_form(form, action=request.path) }}
+</div>
+{% endblock %}

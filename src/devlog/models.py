@@ -74,10 +74,22 @@ class User(UserMixin, Model):
     def is_active(self):
         return True
 
+    def get_id(self):
+        return str(self.pk)
+
+    def register_otp(self, value: bool, save: bool = True):
+        if value:
+            self.otp_reg_dt = datetime.utcnow()
+        else:
+            self.otp_reg_dt = None
+        if save:
+            self.save()
+
     @property
-    def otp_registered(self):
+    def otp_registered(self) -> bool:
         return self.otp_reg_dt is not None
 
+    @property
     def provisioning_uri(self) -> str:
         return self.totp.provisioning_uri(name=self.name, issuer_name='Devlog')
 

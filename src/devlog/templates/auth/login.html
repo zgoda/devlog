@@ -1,37 +1,17 @@
 {% extends "auth/base.html" %}
 
+{% from "macros/forms.html" import render_form %}
+
 {% block pagetitle %}Logowanie{% endblock %}
 
 {% block content %}
 <h2>Logowanie do serwisu</h2>
-<div class="container-small">
-  <form method="POST" action="{{ request.path }}" novalidate>
-    {{ form.hidden_tag() }}
-    {% if form.errors %}
-    {% for fieldname, errors in form.errors.items() %}
-    {% if is_hidden_field(form[fieldname]) %}
-    <div class="">{{ error }}</div>
-    {% endif %}
-    {% endfor %}
-    {% endif %}
-    {% for field in form %}
-    {% if not is_hidden_field(field) %}
-    <div class="form-control">
-      {{ field.label }}
-      {% if field.errors %}
-      {{ field(class_='invalid') }}
-      {% for error in field.errors %}
-      <p class="validation-error">{{ error }}</p>
-      {% endfor %}
-      {% else %}
-      {{ field }}
-      {% endif %}
-    </div>
-    {% endif %}
-    {% endfor %}
-    <div class="form-control">
-      <button type="submit" class="button-primary">zaloguj</button>
-    </div>
-  </form>
+{% if partial %}
+<p>Podaj swoje dane uwierzytelniające. W następnym kroku nastąpi sparowanie z aplikacją kodów jednorazowych.</p>
+{% else %}
+<p>Aby sparować aplikację kodów jednorazowych przejdź do <a href="{{ url_for('auth.mfa-begin') }}">procedury parowania</a>.</p>
+{% endif %}
+<div class="container-small block-center">
+  {{ render_form(form, action=request.path) }}
 </div>
 {% endblock %}
