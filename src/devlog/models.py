@@ -55,6 +55,7 @@ class User(UserMixin, Model):
     name = CharField(max_length=100, unique=True)
     password = TextField(null=True)
     otp_secret = TextField(default=pyotp.random_base32)
+    otp_reg_dt = DateTimeField(null=True)
 
     class Meta:
         table_name = 'users'
@@ -69,11 +70,22 @@ class User(UserMixin, Model):
     def totp(self):
         return pyotp.totp.TOTP(self.otp_secret)
 
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def otp_registered(self):
+        return self.otp_reg_dt is not None
+
     def provisioning_uri(self) -> str:
         return self.totp.provisioning_uri(name=self.name, issuer_name='Devlog')
 
     def verify_otp(self, code: str) -> bool:
         return self.totp.verify(code)
+
+    def verify_secrets(self, password: str, otp_code: str) -> bool:
+        return self.check_password(password) and self.verify_otp(otp_code)
 
 
 class Post(Model):
