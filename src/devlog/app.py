@@ -95,6 +95,7 @@ def configure_extensions(app: Devlog):
     assetenv.init_app(app)
     assetenv.register('css_all', all_css)
     csrf.init_app(app)
+    csrf.exempt(api_bp)
     cache.init_app(app)
     babel.init_app(app)
     pages.init_app(app)
