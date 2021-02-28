@@ -4,3 +4,6 @@ DB_NAME = ':memory:'
 SECRET_KEY = 'sekrit'
 TOKEN_SALT = 'sekrit'
 TOKEN_MAX_AGE = 60*60  # one hour
+CSRF_ENABLED = False
+WTF_CSRF_ENABLED = CSRF_ENABLED
+LOGIN_DISABLED = False
