@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.8, 3.9]
     steps:
     - uses: actions/checkout@v2.3.4
     - name: Set up Python ${{ matrix.python-version }}
@@ -39,8 +39,8 @@ jobs:
         python -m pip install -U -e .[test] --upgrade-strategy eager
     - name: Generate assets
       env:
-        SASS_BIN: node_modules/.bin/sass
-        CLEANCSS_BIN: node_modules/.bin/cleancss
+        SASS_BIN: "${PWD}/node_modules/.bin/sass"
+        CLEANCSS_BIN: ${PWD}/node_modules/.bin/cleancss
       run: |
         devlog assets build
     - name: Test with pytest
