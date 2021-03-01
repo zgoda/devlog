@@ -40,7 +40,7 @@ def check_password_hash(stored: str, password: str) -> bool:  # pragma: nocover
     return pwd_context.verify(password, stored)
 
 
-def check_otp(totp: pyotp.totp.TOTP, code: str) -> bool:
+def check_otp(totp: pyotp.totp.TOTP, code: str) -> bool:  # pragma: nocover
     return totp.verify(code)
 
 
@@ -85,13 +85,9 @@ class User(UserMixin, Model):
     def get_id(self):
         return str(self.pk)
 
-    def register_otp(self, value: bool, save: bool = True):
-        if value:
-            self.otp_reg_dt = datetime.utcnow()
-        else:
-            self.otp_reg_dt = None
-        if save:
-            self.save()
+    def register_otp(self):
+        self.otp_reg_dt = datetime.utcnow()
+        self.save()
 
     @property
     def otp_registered(self) -> bool:

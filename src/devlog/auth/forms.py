@@ -31,14 +31,11 @@ class PartialLoginForm(FlaskForm):
     name = StringField('Nazwa użytkownika', validators=_REQ_VALIDATORS)
     password = PasswordField('Hasło', validators=_REQ_VALIDATORS)
 
-    def login(self) -> bool:
+    def login(self) -> User:
         user = User.get_or_none(User.name == self.name.data)
-        if user is None:
-            return False
-        if user.check_password(self.password.data):
+        if user and user.check_password(self.password.data):
             session['user'] = user.name
-            return True
-        return False
+            return user
 
 
 class OTPCodeForm(FlaskForm):

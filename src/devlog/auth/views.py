@@ -28,9 +28,14 @@ def login():
 def mfa_begin():
     form = PartialLoginForm()
     if form.validate_on_submit():
-        if form.login():
-            flash('Prawidłowe dane logowania', category='success')
-            return redirect(url_for('auth.mfa-qrcode'))
+        user = form.login()
+        if user:
+            if not user.otp_registered:
+                flash('Prawidłowe dane logowania', category='success')
+                return redirect(url_for('auth.mfa-qrcode'))
+            flash('Użytkownk ma już sparowaną aplikację OTP', category='warning')
+            del session['user']
+            return redirect(url_for('auth.login'))
         flash('Nieprawidłowe dane logowania', category='warning')
     return render_template('auth/login.html', form=form, partial=True)
 
@@ -45,15 +50,17 @@ def mfa_qrcode():
     if user is None:
         return login_redirect
     if request.method == 'POST':
-        session.pop('user', None)
+        del session['user']
     form = OTPCodeForm()
     if form.validate_on_submit():
         if form.verify(user):
             login_user(user)
             session.permanent = True
-            user.register_otp(True)
+            user.register_otp()
             flash('Użytkownik zalogowany', category='success')
             return redirect(next_redirect('main.index'))
+        flash('Podany kod jest nieprawidłowy, spróbuj jeszcze raz', category='warning')
+        return redirect(url_for('auth.mfa-begin'))
     return render_template('auth/qrcode.html', form=form), 200, NO_CACHE_HEADERS
 
 
@@ -63,6 +70,9 @@ def mfa_qrcode_gen():
         abort(404)
     name = session['user']
     user = User.get_or_none(User.name == name)
+    if user is None:
+        del session['user']
+        abort(404)
     data = user.provisioning_uri
     headers = NO_CACHE_HEADERS.copy()
     headers['Content-Type'] = 'image/svg+xml'
@@ -74,7 +84,7 @@ def mfa_qrcode_gen():
 
 @bp.route('/logout', methods=['POST', 'GET'])
 @login_required
-def logout():
+def logout():  # pragma: nocover
     logout_user()
     flash('Użytkownik wylogowany')
     return redirect(url_for('main.index'))
