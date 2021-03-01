@@ -16,7 +16,9 @@ def login():
     if form.validate_on_submit():
         if form.login():
             flash('Użytkownik zalogowany', category='success')
-            return redirect(next_redirect('main.index'))
+        else:
+            flash('Nieprawidłowe dane logowania', category='danger')
+        return redirect(next_redirect('main.index'))
     return render_template('auth/login.html', form=form)
 
 
