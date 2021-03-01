@@ -57,7 +57,6 @@ REQ_TEST = [
     'pytest-cov',
     'pytest-factoryboy',
     'pytest-flask',
-    'pytest-sugar',
     'responses',
 ]
 
