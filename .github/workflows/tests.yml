@@ -37,10 +37,13 @@ jobs:
         python -m pip install -U pip wheel --upgrade-strategy eager
         python -m pip install -U Cython --upgrade-strategy eager
         python -m pip install -U -e .[test] --upgrade-strategy eager
+    - name: Get NPM bin directory path
+      id: npm-bin-dir
+      run: echo "::set-output name=dir::$(npm bin)"
     - name: Generate assets
       env:
-        SASS_BIN: "$(npm bin)/sass"
-        CLEANCSS_BIN: "$(npm bin)/cleancss"
+        SASS_BIN: "${{ steps.npm-bin-dir.outputs.dir }}/sass"
+        CLEANCSS_BIN: "${{ steps.npm-bin-dir.outputs.dir }}/cleancss"
       run: |
         devlog assets build
     - name: Test with pytest
