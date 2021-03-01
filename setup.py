@@ -48,6 +48,7 @@ REQ_BASE = [
     'qrcode',
     'Marshmallow',
     'nanoid',
+    'defusedxml',
 ]
 
 REQ_TEST = [

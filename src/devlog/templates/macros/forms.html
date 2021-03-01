@@ -1,3 +1,11 @@
+{% macro render_form_buttons(buttons) %}
+<div class="form-control align-center">
+{% for button in buttons %}
+{{ button.render() }}&nbsp;
+{% endfor %}
+</div>
+{% endmacro %}
+
 {% macro render_form(form, action) %}
 <form method="POST" action="{{ action }}" novalidate>
   {{ form.hidden_tag() }}
@@ -23,8 +31,6 @@
   </div>
   {% endif %}
   {% endfor %}
-  <div class="form-control align-center">
-    <button type="submit" class="button-primary">zaloguj</button>
-  </div>
+  {{ render_form_buttons(form.buttons) }}
 </form>
 {% endmacro %}
