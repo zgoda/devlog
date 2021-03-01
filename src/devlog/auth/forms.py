@@ -6,11 +6,15 @@ from wtforms.validators import InputRequired, Length
 
 from ..models import User
 
+_REQ_VALIDATORS = [InputRequired()]
+_OTP_VALIDATORS = [InputRequired(), Length(6, 6)]
+_OTP_RENDER_KW = {'autocomplete': 'off'}
+
 
 class LoginForm(FlaskForm):
-    name = StringField('Nazwa użytkownika', validators=[InputRequired()])
-    password = PasswordField('Hasło', validators=[InputRequired()])
-    code = StringField('Kod OTP', validators=[InputRequired(), Length(6, 6)])
+    name = StringField('Nazwa użytkownika', validators=_REQ_VALIDATORS)
+    password = PasswordField('Hasło', validators=_REQ_VALIDATORS)
+    code = StringField('Kod OTP', validators=_OTP_VALIDATORS, render_kw=_OTP_RENDER_KW)
 
     def login(self) -> bool:
         user = User.get_or_none(User.name == self.name.data)
@@ -24,8 +28,8 @@ class LoginForm(FlaskForm):
 
 
 class PartialLoginForm(FlaskForm):
-    name = StringField('Nazwa użytkownika', validators=[InputRequired()])
-    password = PasswordField('Hasło', validators=[InputRequired()])
+    name = StringField('Nazwa użytkownika', validators=_REQ_VALIDATORS)
+    password = PasswordField('Hasło', validators=_REQ_VALIDATORS)
 
     def login(self) -> bool:
         user = User.get_or_none(User.name == self.name.data)
@@ -39,12 +43,10 @@ class PartialLoginForm(FlaskForm):
 
 class OTPCodeForm(FlaskForm):
     code1 = StringField(
-        'Kod OTP 1', validators=[InputRequired(), Length(6, 6)],
-        render_kw={'autocomplete': 'off'}
+        'Pierwszy kod OTP', validators=_OTP_VALIDATORS, render_kw=_OTP_RENDER_KW
     )
     code2 = StringField(
-        'Kod OTP 2', validators=[InputRequired(), Length(6, 6)],
-        render_kw={'autocomplete': 'off'}
+        'Drugi kod OTP', validators=_OTP_VALIDATORS, render_kw=_OTP_RENDER_KW
     )
 
     def verify(self, user: User) -> bool:

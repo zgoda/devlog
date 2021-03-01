@@ -1,5 +1,5 @@
 TESTING = True
-BABEL_DEFAULT_LOCALE = 'en_US'
+BABEL_DEFAULT_LOCALE = 'pl_PL'
 DB_NAME = ':memory:'
 SECRET_KEY = 'sekrit'
 TOKEN_SALT = 'sekrit'

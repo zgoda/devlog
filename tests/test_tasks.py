@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 
 import pytest
+import responses
 
 from devlog.models import Link, Post
 from devlog.tasks import app, link_from_markdown, post_from_markdown, sitemap_generator
@@ -112,13 +113,17 @@ tags:
 class TestSitemapGenerator:
 
     STATIC_URL_COUNT = 3
+    RESPONSE = responses.Response(
+        responses.GET, 'http://www.google.com/ping', status=200
+    )
 
     @pytest.fixture(autouse=True)
     def _set_up(self):
         self.sitemap_path = os.path.join(app.static_folder, 'sitemap.xml')
 
-    def test_generate_empty(self, mocker):
+    def test_generate_empty(self, mocker, mocked_responses):
         mocker.patch.dict('os.environ', {'WHERE_AM_I': 'localhost'})
+        mocked_responses.add(self.RESPONSE)
         sitemap_generator()
         with open(self.sitemap_path) as fp:
             content = fp.read()
@@ -129,10 +134,11 @@ class TestSitemapGenerator:
         with pytest.raises(SystemExit):
             sitemap_generator()
 
-    def test_with_post(self, mocker, post_factory):
+    def test_with_post(self, mocker, post_factory, mocked_responses):
         mocker.patch.dict('os.environ', {'WHERE_AM_I': 'localhost'})
         dt = datetime(2020, 6, 22, 18, 43, 15)
         post_factory(created=dt, published=dt, updated=dt)
+        mocked_responses.add(self.RESPONSE)
         sitemap_generator()
         with open(self.sitemap_path) as fp:
             content = fp.read()
@@ -140,7 +146,8 @@ class TestSitemapGenerator:
         assert dt.isoformat() in content
 
     def test_with_tagged_post(
-                self, mocker, post_factory, tag_factory, tagged_post_factory
+                self, mocker, mocked_responses,
+                post_factory, tag_factory, tagged_post_factory,
             ):
         mocker.patch.dict('os.environ', {'WHERE_AM_I': 'localhost'})
         dt = datetime(2020, 6, 22, 18, 43, 15)
@@ -149,6 +156,7 @@ class TestSitemapGenerator:
         for t_name in tags:
             tag = tag_factory(name=t_name)
             tagged_post_factory(tag=tag, post=post)
+        mocked_responses.add(self.RESPONSE)
         sitemap_generator()
         with open(self.sitemap_path) as fp:
             content = fp.read()

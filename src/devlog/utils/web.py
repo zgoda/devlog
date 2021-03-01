@@ -1,6 +1,12 @@
 import xml.etree.ElementTree as ET  # noqa: DUO107,N817
 from collections import namedtuple
 
+NO_CACHE_HEADERS = {
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0',
+}
+
 PageDef = namedtuple('PageDef', ['loc', 'lastmod'])
 URLSet = namedtuple('URLSet', ['config', 'pagedefs'])
 URLSetConfig = namedtuple(

@@ -1,9 +1,9 @@
 from datetime import datetime
 
+import nanoid
 import peewee
 import pyotp
 from flask_login import UserMixin
-from nanoid import generate
 from nanoid.resources import alphabet as nanoid_alphabet
 from passlib.context import CryptContext
 from peewee import (
@@ -40,8 +40,16 @@ def check_password_hash(stored: str, password: str) -> bool:  # pragma: nocover
     return pwd_context.verify(password, stored)
 
 
+def check_otp(totp: pyotp.totp.TOTP, code: str) -> bool:
+    return totp.verify(code)
+
+
+def generate_provisioning_uri(totp: pyotp.totp.TOTP, name: str) -> str:
+    return totp.provisioning_uri(name, issuer_name='Devlog')
+
+
 def gen_permalink() -> str:
-    return generate(ALPHABET, size=NANOID_LEN)
+    return nanoid.generate(ALPHABET, size=NANOID_LEN)
 
 
 class Model(peewee.Model):
@@ -91,10 +99,10 @@ class User(UserMixin, Model):
 
     @property
     def provisioning_uri(self) -> str:
-        return self.totp.provisioning_uri(name=self.name, issuer_name='Devlog')
+        return generate_provisioning_uri(self.totp, self.name)
 
     def verify_otp(self, code: str) -> bool:
-        return self.totp.verify(code)
+        return check_otp(self.totp, code)
 
     def verify_secrets(self, password: str, otp_code: str) -> bool:
         return self.check_password(password) and self.verify_otp(otp_code)

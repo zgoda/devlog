@@ -58,6 +58,7 @@ REQ_TEST = [
     'pytest-factoryboy',
     'pytest-flask',
     'pytest-sugar',
+    'responses',
 ]
 
 REQ_DEV = REQ_TEST + [
