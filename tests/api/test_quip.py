@@ -23,19 +23,19 @@ class TestQuipCollection:
         data = rv.get_json()
         assert 'authorization required' in data['message'].lower()
 
-    def test_get_empty(self, login, user_factory):
+    def test_get_empty(self, api_login, user_factory):
         user = user_factory()
-        token = login(user.name, user.password)
+        token = api_login(user.name, user.password)
         rv = self.client.get(self.url, headers={'Authorization': f'Basic {token}'})
         assert rv.status_code == 200
         data = rv.get_json()
         assert 'quips' in data
         assert data['quips'] == []
 
-    def test_get_nonempty(self, login, user_factory, quip_factory):
+    def test_get_nonempty(self, api_login, user_factory, quip_factory):
         user = user_factory()
         quip = quip_factory(author=user.name)
-        token = login(user.name, user.password)
+        token = api_login(user.name, user.password)
         rv = self.client.get(self.url, headers={'Authorization': f'Basic {token}'})
         assert rv.status_code == 200
         data = rv.get_json()
@@ -44,10 +44,10 @@ class TestQuipCollection:
         assert data['quips'][0]['text'] == quip.text
         assert data['quips'][0]['author'] == user.name
 
-    def test_post_without_author(self, login, user_factory):
+    def test_post_without_author(self, api_login, user_factory):
         user = user_factory()
         data = {'text': 'My *first* quip!'}
-        token = login(user.name, user.password)
+        token = api_login(user.name, user.password)
         rv = self.client.post(
             self.url, json=data, headers={'Authorization': f'Basic {token}'}
         )
@@ -56,11 +56,11 @@ class TestQuipCollection:
         assert quip.text == data['text']
         assert '<em>first</em>' in quip.text_html
 
-    def test_post_with_author(self, login, user_factory):
+    def test_post_with_author(self, api_login, user_factory):
         author = 'johnny'
         user = user_factory()
         data = {'text': 'My *first* quip!', 'author': author}
-        token = login(user.name, user.password)
+        token = api_login(user.name, user.password)
         rv = self.client.post(
             self.url, json=data, headers={'Authorization': f'Basic {token}'}
         )
@@ -96,33 +96,33 @@ class TestQuipItem:
         data = rv.get_json()
         assert 'authorization required' in data['message'].lower()
 
-    def test_get_ok(self, login, user_factory, quip_factory):
+    def test_get_ok(self, api_login, user_factory, quip_factory):
         user = user_factory()
         quip = quip_factory(author=user.name)
         url = self.url(quip)
-        token = login(user.name, user.password)
+        token = api_login(user.name, user.password)
         rv = self.client.get(url, headers={'Authorization': f'Basic {token}'})
         data = rv.get_json()['quip']
         assert rv.status_code == 200
         assert data['text'] == quip.text
         assert data['author'] == user.name
 
-    def test_get_notfound(self, login, user_factory):
+    def test_get_notfound(self, api_login, user_factory):
         user = user_factory()
         url = url_for('api.quip-item', quip_id=1)
-        token = login(user.name, user.password)
+        token = api_login(user.name, user.password)
         rv = self.client.get(url, headers={'Authorization': f'Basic {token}'})
         data = rv.get_json()
         assert rv.status_code == 404
         assert 'no such object' in data['message'].lower()
 
-    def test_put_ok(self, login, user_factory, quip_factory):
+    def test_put_ok(self, api_login, user_factory, quip_factory):
         user = user_factory()
         text = 'My *first* quip!'
         quip = quip_factory(author=user.name, text=text)
         url = self.url(quip)
         new_text = 'My *very* first quip!'
-        token = login(user.name, user.password)
+        token = api_login(user.name, user.password)
         rv = self.client.put(
             url, json={'text': new_text}, headers={'Authorization': f'Basic {token}'}
         )
@@ -132,10 +132,10 @@ class TestQuipItem:
         quip = Quip.get_by_id(quip.pk)
         assert quip.text == new_text
 
-    def test_put_notfound(self, login, user_factory):
+    def test_put_notfound(self, api_login, user_factory):
         user = user_factory()
         url = url_for('api.quip-item', quip_id=1)
-        token = login(user.name, user.password)
+        token = api_login(user.name, user.password)
         rv = self.client.put(
             url, json={'text': 'new text'}, headers={'Authorization': f'Basic {token}'}
         )

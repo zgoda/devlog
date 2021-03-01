@@ -37,9 +37,9 @@ class TestAuthDecorator:
         assert 'message' in data
         assert 'invalid authentication type' in data['message'].lower()
 
-    def test_user_not_found(self, login, user_factory):
+    def test_user_not_found(self, api_login, user_factory):
         user = user_factory(name='user_1')
-        token = login(user.name, user.password)
+        token = api_login(user.name, user.password)
         user.delete_instance()
         cache.clear()
         rv = self.client.get(self.url, headers={'Authorization': f'Basic {token}'})
@@ -48,9 +48,9 @@ class TestAuthDecorator:
         assert 'message' in data
         assert 'invalid token' in data['message'].lower()
 
-    def test_token_tampered(self, login, user_factory):
+    def test_token_tampered(self, api_login, user_factory):
         user = user_factory(name='user_1')
-        token = login(user.name, user.password)[:-1]
+        token = api_login(user.name, user.password)[:-1]
         rv = self.client.get(self.url, headers={'Authorization': f'Basic {token}'})
         assert rv.status_code == 401
         data = rv.get_json()
@@ -58,9 +58,9 @@ class TestAuthDecorator:
         assert 'invalid token' in data['message'].lower()
 
     @pytest.mark.options(TOKEN_MAX_AGE=1)
-    def test_token_expired(self, login, user_factory):
+    def test_token_expired(self, api_login, user_factory):
         user = user_factory(name='user_1')
-        token = login(user.name, user.password)
+        token = api_login(user.name, user.password)
         time.sleep(2)
         rv = self.client.get(self.url, headers={'Authorization': f'Basic {token}'})
         assert rv.status_code == 400

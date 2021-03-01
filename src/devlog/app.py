@@ -11,8 +11,9 @@ from werkzeug.utils import ImportStringError
 from ._version import get_version
 from .api import api_bp
 from .assets import all_css
-from .ext import assetenv, babel, cache, pages
-from .models import db
+from .auth import auth_bp
+from .ext import assetenv, babel, cache, csrf, login_manager, pages
+from .models import User, db
 from .templates import setup_template_extensions
 from .utils.app import Devlog
 from .views import bp
@@ -93,14 +94,26 @@ def configure_hooks(app: Devlog):
 def configure_extensions(app: Devlog):
     assetenv.init_app(app)
     assetenv.register('css_all', all_css)
+    csrf.init_app(app)
+    csrf.exempt(api_bp)
     cache.init_app(app)
     babel.init_app(app)
     pages.init_app(app)
+
+    login_manager.init_app(app)
+    login_manager.login_view = 'auth.login'
+    login_manager.login_message_category = 'warning'
+    login_manager.login_message = 'Musisz się zalogować by uzyskać dostęp do tej strony'
+
+    @login_manager.user_loader
+    def get_user(userid: str) -> Optional[User]:
+        return User.get_or_none(User.pk == userid)
 
 
 def configure_blueprints(app: Devlog):
     app.register_blueprint(bp)
     app.register_blueprint(api_bp, url_prefix='/api/v1')
+    app.register_blueprint(auth_bp, url_prefix='/auth')
 
 
 def configure_logging_handler(app: Devlog):

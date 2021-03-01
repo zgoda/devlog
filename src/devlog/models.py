@@ -1,7 +1,9 @@
 from datetime import datetime
 
+import nanoid
 import peewee
-from nanoid import generate
+import pyotp
+from flask_login import UserMixin
 from nanoid.resources import alphabet as nanoid_alphabet
 from passlib.context import CryptContext
 from peewee import (
@@ -9,6 +11,7 @@ from peewee import (
     TextField,
 )
 from pyuca import Collator
+from werkzeug.utils import cached_property
 
 c = Collator()
 
@@ -37,8 +40,16 @@ def check_password_hash(stored: str, password: str) -> bool:  # pragma: nocover
     return pwd_context.verify(password, stored)
 
 
+def check_otp(totp: pyotp.totp.TOTP, code: str) -> bool:  # pragma: nocover
+    return totp.verify(code)
+
+
+def generate_provisioning_uri(totp: pyotp.totp.TOTP, name: str) -> str:
+    return totp.provisioning_uri(name, issuer_name='Devlog')
+
+
 def gen_permalink() -> str:
-    return generate(ALPHABET, size=NANOID_LEN)
+    return nanoid.generate(ALPHABET, size=NANOID_LEN)
 
 
 class Model(peewee.Model):
@@ -47,10 +58,12 @@ class Model(peewee.Model):
         database = db
 
 
-class User(Model):
+class User(UserMixin, Model):
     pk = AutoField()
     name = CharField(max_length=100, unique=True)
     password = TextField(null=True)
+    otp_secret = TextField(default=pyotp.random_base32)
+    otp_reg_dt = DateTimeField(null=True)
 
     class Meta:
         table_name = 'users'
@@ -60,6 +73,35 @@ class User(Model):
 
     def check_password(self, password: str) -> bool:
         return check_password_hash(self.password, password)
+
+    @cached_property
+    def totp(self):
+        return pyotp.totp.TOTP(self.otp_secret)
+
+    @property
+    def is_active(self):
+        return True
+
+    def get_id(self):
+        return str(self.pk)
+
+    def register_otp(self):
+        self.otp_reg_dt = datetime.utcnow()
+        self.save()
+
+    @property
+    def otp_registered(self) -> bool:
+        return self.otp_reg_dt is not None
+
+    @property
+    def provisioning_uri(self) -> str:
+        return generate_provisioning_uri(self.totp, self.name)
+
+    def verify_otp(self, code: str) -> bool:
+        return check_otp(self.totp, code)
+
+    def verify_secrets(self, password: str, otp_code: str) -> bool:
+        return self.check_password(password) and self.verify_otp(otp_code)
 
 
 class Post(Model):

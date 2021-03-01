@@ -2,6 +2,7 @@ import os
 
 import fakeredis
 import pytest
+import responses
 from flask.wrappers import Response
 from pytest_factoryboy import register
 from werkzeug.utils import cached_property
@@ -37,12 +38,28 @@ def faker_session_locale():
 
 
 @pytest.fixture()
-def login(client):
+def api_login(client):
     def _login(name: str, password: str):
         rv = client.post('/api/v1/login', data={'name': name, 'password': password})
         data = rv.get_json()
         return data['token']
     return _login
+
+
+@pytest.fixture()
+def login(client):
+    def _login(name: str, password: str):
+        return client.post(
+            '/auth/login', data={'name': name, 'password': password},
+            follow_redirects=True,
+        )
+    return _login
+
+
+@pytest.fixture()
+def mocked_responses():
+    with responses.RequestsMock() as rsps:
+        yield rsps
 
 
 def fake_gen_password_hash(password):

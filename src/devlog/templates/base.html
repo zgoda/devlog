@@ -38,6 +38,16 @@
       </div>
     </nav>
 
+    {% with flashes = get_flashed_messages(with_categories=True) %}
+    {% if flashes %}
+    <div class="container">
+      {% for category, flash in flashes %}
+      <p class="alert alert-{{ category }}" role="alert">{{ flash }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
     <div class="container">
       {% block content %}
       {% endblock %}

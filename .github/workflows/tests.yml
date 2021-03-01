@@ -23,7 +23,7 @@ jobs:
       with:
         node-version: '14'
     - name: Install JS tools
-      run: npm i -g node-sass clean-css-cli
+      run: npm i sass clean-css-cli
     - name: Get pip cache dir
       id: pip-cache-dir
       run: echo "::set-output name=dir::$(pip cache dir)"
@@ -37,11 +37,20 @@ jobs:
         python -m pip install -U pip wheel --upgrade-strategy eager
         python -m pip install -U Cython --upgrade-strategy eager
         python -m pip install -U -e .[test] --upgrade-strategy eager
+    - name: Get NPM bin directory path
+      id: npm-bin-dir
+      run: echo "::set-output name=dir::$(npm bin)"
+    - name: Generate assets
+      env:
+        SASS_BIN: "${{ steps.npm-bin-dir.outputs.dir }}/sass"
+        CLEANCSS_BIN: "${{ steps.npm-bin-dir.outputs.dir }}/cleancss"
+      run: |
+        devlog assets build
     - name: Test with pytest
       env:
         ENV: test
       run: |
-        python -m pytest -p no:sugar --cov-branch --cov-report xml --cov devlog tests
+        python -m pytest --cov-branch --cov-report xml --cov devlog tests
     - name: Test package build
       run: |
         python setup.py sdist bdist_wheel
