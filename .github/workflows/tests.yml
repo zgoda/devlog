@@ -23,7 +23,7 @@ jobs:
       with:
         node-version: '14'
     - name: Install JS tools
-      run: npm i -g sass clean-css-cli
+      run: npm i sass clean-css-cli
     - name: Get pip cache dir
       id: pip-cache-dir
       run: echo "::set-output name=dir::$(pip cache dir)"
