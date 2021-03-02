@@ -1,8 +1,10 @@
 import os
+import sys
 from typing import List
 from xml.etree import ElementTree as etree  # noqa: DUO107,N813
 
 import click
+import pyotp
 from defusedxml.ElementTree import parse
 from dotenv import find_dotenv, load_dotenv
 from flask import current_app
@@ -71,6 +73,20 @@ def user_create(name: str, password: str) -> None:
     u.save()
     cache.delete_memoized(get_user)
     click.echo(f'User {name} created')
+
+
+@user_ops.command(name='otpclear', help='clear OTP registration status')
+@click.argument('name')
+def user_clear_otp(name: str) -> None:
+    u = User.get_or_none(User.name == name)
+    if not u:
+        click.echo(f'User {name} not found')
+        sys.exit(1)
+    u.otp_reg.dt = None
+    u.otp_secret = pyotp.random_base32()
+    u.save()
+    cache.delete_memoized(get_user)
+    click.echo(f'User {name} OTP status has been reset')
 
 
 @cli.group(name='generate')
