@@ -104,8 +104,9 @@ def gen_icons(iconset: str, names: List[str]):
     _default_icons = [
         'check',
     ]
-    if names[0] == 'default':
-        names = _default_icons
+    if 'default' in names:
+        names = [n for n in names if n != 'default']
+        names.extend(_default_icons)
     target = os.path.join(
         current_app.root_path, current_app.template_folder, 'includes'
     )
