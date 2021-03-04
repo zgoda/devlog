@@ -28,7 +28,7 @@ REQ_BASE = [
     'Flask-Babel',
     'Flask-FlatPages',
     'Flask-Assets',
-    'Flask-Caching',
+    'Flask-Caching>=1.10',
     'Flask-Login',
     'Flask-WTF',
     'Peewee',

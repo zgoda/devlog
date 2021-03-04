@@ -81,7 +81,10 @@ def _app_fixture(env, mocker):
     return app
 
 
-@pytest.fixture(params=['null', 'redis'], ids=['null-cache', 'redis-cache'])
+@pytest.fixture(
+    params=['flask_caching.backends.NullCache', 'flask_caching.backends.RedisCache'],
+    ids=['null-cache', 'redis-cache'],
+)
 def app(request, mocker):
     mocker.patch('devlog.models.generate_password_hash', fake_gen_password_hash)
     mocker.patch('devlog.models.check_password_hash', fake_check_password_hash)

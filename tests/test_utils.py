@@ -56,7 +56,7 @@ class TestPostDateNormalization:
 class TestCacheExtension:
 
     def test_backend_is_redis(self, app):
-        if self.cache_type != 'redis':
+        if 'redis' not in self.cache_type.lower():
             pytest.skip('To be run only with Redis cache')
         assert len(cache.cache._write_client.keys('*')) == 0
         cache.set('prefix1:key1', 'a')
@@ -66,7 +66,7 @@ class TestCacheExtension:
         assert len(cache.cache._write_client.keys('prefix1')) == 0
 
     def test_backend_is_not_redis(self, app):
-        if self.cache_type == 'redis':
+        if 'redis' in self.cache_type.lower():
             pytest.skip("Can't be run with Redis cache")
         cache.set('prefix1:key1', 'a')
         cache.set('prefix2:key1', 'b')

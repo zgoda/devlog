@@ -16,9 +16,12 @@ class DevlogCache(Cache):
         :return: number of keys deleted or None
         :rtype: Optional[int]
         """
-        if 'redis' in current_app.config.get('CACHE_TYPE', 'simple').lower():
+        cache_type = current_app.config.get(
+            'CACHE_TYPE', 'flask_caching.backends.SimpleCache'
+        )
+        if 'redis' in cache_type.lower():
             redis = self.cache._write_client
-            app_prefix = current_app.config.get("CACHE_KEY_PREFIX", "")
+            app_prefix = current_app.config.get('CACHE_KEY_PREFIX', '')
             key_prefix = f'{app_prefix}{prefix}*'
             deleted = 0
             for key in redis.scan_iter(match=key_prefix):
