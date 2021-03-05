@@ -1,7 +1,6 @@
-from flask import current_app
-
 from typing import Optional
 
+from flask import current_app
 from flask_caching import Cache
 
 

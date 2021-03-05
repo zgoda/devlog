@@ -1,4 +1,5 @@
 from flask import Blueprint, abort, render_template
+from playhouse.flask_utils import get_object_or_404
 
 from .ext import cache, pages
 from .models import Link, Post, Quip, Tag, TaggedPost
@@ -63,6 +64,12 @@ def quips():
     return render_template(
         'blog/quips.html', pagination=Pagination(query, page_size=30)
     )
+
+
+@bp.route('/plotka/<int:quip_id>')
+def quip(quip_id: int):
+    quip = get_object_or_404(Quip, (Quip.pk == quip_id))
+    return render_template('blog/quip.html', quip=quip)
 
 
 @bp.route('/tag/<slug>')
