@@ -8,13 +8,6 @@ from .utils.pagination import Pagination
 bp = Blueprint('main', __name__)
 
 
-@bp.context_processor
-def extra_context():
-    return {
-        'quips': Quip.select().order_by(Quip.created.desc()).limit(3)
-    }
-
-
 @bp.route('/')
 def index():
     posts = (
@@ -23,7 +16,8 @@ def index():
         .order_by(Post.created.desc())
         .limit(5)
     )
-    return render_template('index.html', posts=posts)
+    quips = Quip.select().order_by(Quip.created.desc()).limit(3)
+    return render_template('index.html', posts=posts, quips=quips)
 
 
 @bp.route('/strona/<path:path>')
