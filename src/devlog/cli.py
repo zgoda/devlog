@@ -89,7 +89,7 @@ def user_clear_otp(name: str) -> None:
     click.echo(f'User {name} OTP status has been reset')
 
 
-@cli.group(name='generate')
+@cli.group(name='generate', help='generate runtime artifacts')
 def generate_grp():
     pass
 
