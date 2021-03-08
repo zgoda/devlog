@@ -32,6 +32,8 @@ With activated virtualenv you now may install Devlog in dev mode.
 pip install -U -e .[dev]
 ```
 
+Now copy `.env.example` to `.env` and modify it to suit your environment. Some JS tools are required so run `npm i`. I tested it with Node 12 but it may work with Node 10 too. This will install `cleancss-cli` tool, you will need an implementation of SASS too. Either download `dart-sass` and put it in `PATH` (eg `~/.local/bin` on Ubuntu) or install JS version with `npm i -D sass`.
+
 Once installed Devlog provides CLI for basic management. 1st thing is to initialise database.
 
 ```console
