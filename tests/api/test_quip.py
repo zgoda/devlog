@@ -70,6 +70,18 @@ class TestQuipCollection:
         assert quip.text == data['text']
         assert '<em>first</em>' in quip.text_html
 
+    def test_escape_quip_text(self, api_login, user_factory):
+        user = user_factory()
+        data = {'text': '&'}
+        token = api_login(user.name, user.password)
+        rv = self.client.post(
+            self.url, json=data, headers={'Authorization': f'Basic {token}'}
+        )
+        assert rv.status_code == 201
+        quip = Quip.get(Quip.author == user.name)
+        assert quip.text != data['text']
+        assert '&amp;' in quip.text_html
+
 
 @pytest.mark.usefixtures('client_class')
 class TestQuipItem:
@@ -142,3 +154,20 @@ class TestQuipItem:
         data = rv.get_json()
         assert rv.status_code == 404
         assert 'no such object' in data['message'].lower()
+
+    def test_put_escape_text(self, api_login, user_factory, quip_factory):
+        user = user_factory()
+        text = 'My *first* quip!'
+        quip = quip_factory(author=user.name, text=text)
+        url = self.url(quip)
+        new_text = '&'
+        token = api_login(user.name, user.password)
+        rv = self.client.put(
+            url, json={'text': new_text}, headers={'Authorization': f'Basic {token}'}
+        )
+        data = rv.get_json()['quip']
+        assert rv.status_code == 200
+        assert data['text'] != new_text
+        quip = Quip.get_by_id(quip.pk)
+        assert quip.text != new_text
+        assert '&amp;' in quip.text

@@ -1,7 +1,8 @@
 from typing import Any
 
+import markupsafe
 import pytz
-from marshmallow import Schema, fields, pre_dump
+from marshmallow import Schema, fields, post_load, pre_dump
 
 
 class QuipSchema(Schema):
@@ -16,6 +17,11 @@ class QuipSchema(Schema):
     def created_to_utc(self, obj: Any, **kw) -> Any:
         obj.created = pytz.utc.localize(obj.created)
         return obj
+
+    @post_load
+    def sanitise_text(self, data: dict, **kw) -> dict:
+        data['text'] = markupsafe.escape_silent(data['text'])
+        return data
 
 
 quip_schema = QuipSchema()
