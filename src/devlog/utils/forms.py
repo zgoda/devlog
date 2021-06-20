@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from typing import ClassVar
 
-from flask import Markup, render_template_string
+from flask import render_template_string
+from markupsafe import Markup
 
 
 class Renderable:
