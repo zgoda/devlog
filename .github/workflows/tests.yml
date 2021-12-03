@@ -25,11 +25,10 @@ jobs:
       with:
         node-version: '14'
     - name: Install JS tools
-      run: npm i -D sass clean-css-cli
+      run: npm i
     - name: Install test dependencies
       run: |
-        python -m pip install -U pip wheel --upgrade-strategy eager
-        python -m pip install -U Cython --upgrade-strategy eager
+        python -m pip install -U pip wheel setuptools Cython --upgrade-strategy eager
         python -m pip install -U -e .[test] --upgrade-strategy eager
     - name: Get NPM bin directory path
       id: npm-bin-dir
@@ -49,7 +48,7 @@ jobs:
       run: |
         python setup.py sdist bdist_wheel
     - name: Coveralls report
-      if: matrix.python-version == 3.8
+      if: matrix.python-version == 3.9
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
