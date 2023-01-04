@@ -23,7 +23,8 @@ jobs:
     - name: Set up NodeJS
       uses: actions/setup-node@v3.5.1
       with:
-        node-version: '14'
+        node-version: '18'
+        cache: 'npm'
     - name: Install JS tools
       run: npm i
     - name: Install test dependencies
@@ -31,12 +32,12 @@ jobs:
         python -m pip install -U pip wheel setuptools Cython --upgrade-strategy eager
         python -m pip install -U -e .[test] --upgrade-strategy eager
     - name: Get NPM bin directory path
-      id: npm-bin-dir
-      run: echo "::set-output name=dir::$(npm bin)"
+      id: get-npm-bin-dir
+      run: echo "directory=$(npm bin)" >> $GITHUB_OUTPUT
     - name: Generate assets
       env:
-        SASS_BIN: "${{ steps.npm-bin-dir.outputs.dir }}/sass"
-        CLEANCSS_BIN: "${{ steps.npm-bin-dir.outputs.dir }}/cleancss"
+        SASS_BIN: "${{ steps.get-npm-bin-dir.outputs.directory }}/sass"
+        CLEANCSS_BIN: "${{ steps.get-npm-bin-dir.outputs.directory }}/cleancss"
       run: |
         devlog assets build
     - name: Test with pytest
