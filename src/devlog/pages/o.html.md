@@ -2,6 +2,7 @@ title: Informacje
 description: informacje ogólne o stronie i o mnie
 published: 2020-06-28
 updated: 2020-07-15
+---
 
 ### Ogólnie
 

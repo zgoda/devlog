@@ -1,5 +1,3 @@
-import os
-
 import fakeredis
 import pytest
 import responses
@@ -73,8 +71,8 @@ def fake_check_password_hash(stored, password):
 def _app_fixture(env, mocker):
     mocker.patch('devlog.models.generate_password_hash', fake_gen_password_hash)
     mocker.patch('devlog.models.check_password_hash', fake_check_password_hash)
-    os.environ['FLASK_ENV'] = 'test'
-    app = make_app(env=env)
+    app = make_app(env='test')
+    app.testing = True
     with app.app_context():
         all_css.build()
     app.response_class = TestResponse
@@ -88,13 +86,13 @@ def _app_fixture(env, mocker):
 def app(request, mocker):
     mocker.patch('devlog.models.generate_password_hash', fake_gen_password_hash)
     mocker.patch('devlog.models.check_password_hash', fake_check_password_hash)
-    os.environ['FLASK_ENV'] = 'test'
     cache_type = request.param
     if request.cls:
         request.cls.cache_type = cache_type
     config_test.CACHE_TYPE = cache_type
     config_test.CACHE_REDIS_HOST = fakeredis.FakeStrictRedis()
     app = make_app(env='test')
+    app.testing = True
     with app.app_context():
         all_css.build()
     app.response_class = TestResponse
