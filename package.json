@@ -1,7 +1,7 @@
 {
   "private": true,
   "devDependencies": {
-    "clean-css-cli": "^5.4.2",
-    "sass": "^1.44.0"
+    "clean-css-cli": "^5.6.1",
+    "sass": "^1.57.1"
   }
 }
