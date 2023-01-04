@@ -21,7 +21,7 @@ jobs:
         cache: pip
         cache-dependency-path: setup.py
     - name: Set up NodeJS
-      uses: actions/setup-node@v2.5.1
+      uses: actions/setup-node@v3.5.1
       with:
         node-version: '14'
     - name: Install JS tools
