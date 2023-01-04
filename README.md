@@ -6,9 +6,7 @@ My dev log and other logs.
 
 A very simple blogging engine that I often use to test some ideas wrt web programming (and general programming) in Python.
 
-## Microblog client development
-
-This is a bit of crossover but I imagine the only reason to run Devlog is to see how the microblog client application works, so here are basic instructions on how to get Devlog running in dev mode. Devlog is tested on Linux only so I don't know if it works in any other OS.
+## Development
 
 ### Grab the source
 
@@ -18,10 +16,10 @@ git clone https://github.com/zgoda/devlog.git
 
 ### Set up local Python runtime
 
-Python 3.7 or newer is required. In Ubuntu 20.04 default is Python 3.8 so you should be good to go. It's best to update installation tools upfront.
+Python 3.8 or newer is required. In Ubuntu 22.04 default is Python 3.10 so you should be good to go. It's best to update installation tools upfront.
 
 ```console
-/usr/bin/python3.8 -m venv venv
+/usr/bin/python3 -m venv venv
 source venv/bin/activate
 pip install -U pip setuptools
 ```
@@ -32,7 +30,7 @@ With activated virtualenv you now may install Devlog in dev mode.
 pip install -U -e .[dev]
 ```
 
-Now copy `.env.example` to `.env` and modify it to suit your environment. Some JS tools are required so run `npm i`. I tested it with Node 12 but it may work with Node 10 too. This will install `cleancss-cli` tool, you will need an implementation of SASS too. Either download `dart-sass` and put it in `PATH` (eg `~/.local/bin` on Ubuntu) or install JS version with `npm i -D sass`.
+Now copy `.env.example` to `.env` and modify it to suit your environment. Some JS tools are required so run `npm i`. I tested it with Node 18 but it may work with older versions. This will install `cleancss-cli` tool, you will need an implementation of SASS too. Either download `dart-sass` and put it in `PATH` (eg `~/.local/bin` on Ubuntu) or install JS version with `npm i -D sass`.
 
 Once installed Devlog provides CLI for basic management. 1st thing is to initialise database.
 

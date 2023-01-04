@@ -38,7 +38,6 @@ REQ_BASE = [
     'python-dotenv',
     'PyYAML',
     'requests',
-    'sentry-sdk[flask]',
     'markdown',
     'python-dateutil',
     'pygments',
@@ -110,8 +109,9 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: POSIX',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary',
     ],
     install_requires=REQ_BASE,
@@ -131,5 +131,5 @@ setup(
             'centerblock=devlog.utils.text:CenterBlockExtension',
         ]
     },
-    python_requires='~=3.7',
+    python_requires='~=3.8',
 )

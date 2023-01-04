@@ -3,12 +3,9 @@ import os
 import tempfile
 from typing import Optional
 
-import sentry_sdk
 from flask import render_template, send_from_directory
-from sentry_sdk.integrations.flask import FlaskIntegration
 from werkzeug.utils import ImportStringError
 
-from ._version import get_version
 from .api import api_bp
 from .assets import all_css
 from .auth import auth_bp
@@ -20,15 +17,6 @@ from .views import bp
 
 
 def make_app(env: Optional[str] = None) -> Devlog:
-    debug = os.environ.get('FLASK_DEBUG', '1')
-    if not debug:
-        sentry_dsn = os.environ.get('SENTRY_DSN')
-        if sentry_dsn:
-            version = get_version()
-            sentry_sdk.init(
-                dsn=sentry_dsn, release=f'devlog@{version}',
-                integrations=[FlaskIntegration()],
-            )
     extra = {}
     instance_path = os.environ.get('INSTANCE_PATH')
     if instance_path is not None:
@@ -46,7 +34,7 @@ def make_app(env: Optional[str] = None) -> Devlog:
     return app
 
 
-def configure_app(app: Devlog, env: Optional[str]):
+def configure_app(app: Devlog, env: Optional[str]) -> None:
     app.config.from_object('devlog.config')
     if env is not None:
         try:
@@ -59,7 +47,7 @@ def configure_app(app: Devlog, env: Optional[str]):
         return send_from_directory(os.path.join(app.instance_path, 'uploads'), path)
 
 
-def configure_database(app: Devlog):
+def configure_database(app: Devlog) -> None:
     if app.testing:
         tmp_dir = tempfile.mkdtemp()
         db_name = os.path.join(tmp_dir, 'db.sqlite3')
@@ -79,7 +67,7 @@ def configure_database(app: Devlog):
     db.init(db_name, **kw)
 
 
-def configure_hooks(app: Devlog):
+def configure_hooks(app: Devlog) -> None:
 
     @app.before_request
     def db_connect():
@@ -91,7 +79,7 @@ def configure_hooks(app: Devlog):
             db.close()
 
 
-def configure_extensions(app: Devlog):
+def configure_extensions(app: Devlog) -> None:
     assetenv.init_app(app)
     assetenv.register('css_all', all_css)
     csrf.init_app(app)
@@ -110,13 +98,13 @@ def configure_extensions(app: Devlog):
         return User.get_or_none(User.pk == userid)
 
 
-def configure_blueprints(app: Devlog):
+def configure_blueprints(app: Devlog) -> None:
     app.register_blueprint(bp)
     app.register_blueprint(api_bp, url_prefix='/api/v1')
     app.register_blueprint(auth_bp, url_prefix='/auth')
 
 
-def configure_logging_handler(app: Devlog):
+def configure_logging_handler(app: Devlog) -> None:
     if app.debug or app.testing:
         return
     gunicorn_logger = logging.getLogger('gunicorn.error')
@@ -124,7 +112,7 @@ def configure_logging_handler(app: Devlog):
     app.logger.setLevel(gunicorn_logger.level)
 
 
-def configure_error_handlers(app: Devlog):
+def configure_error_handlers(app: Devlog) -> None:
 
     @app.errorhandler(403)
     def forbidden_page(error):
