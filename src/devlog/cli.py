@@ -17,7 +17,7 @@ from .migrations import MIGRATIONS, run_migration
 from .models import MODELS, User, db
 
 
-def create_app(info):
+def create_app():
     return make_app('dev')
 
 
