@@ -1,7 +1,6 @@
 from datetime import datetime
 
 import peewee
-from nanoid.resources import alphabet as nanoid_alphabet
 from peewee import (
     AutoField, CharField, DateTimeField, ForeignKeyField, IntegerField, SqliteDatabase,
     TextField,
@@ -9,9 +8,6 @@ from peewee import (
 from pyuca import Collator
 
 c = Collator()
-
-ALPHABET = nanoid_alphabet.replace('_', '').replace('-', '')
-NANOID_LEN = 16
 
 db = SqliteDatabase(None)
 
