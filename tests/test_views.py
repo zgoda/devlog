@@ -92,44 +92,6 @@ class TestPostView:
 
 
 @pytest.mark.usefixtures('client_class')
-class TestQuipsView:
-
-    @pytest.fixture(autouse=True)
-    def _set_up(self):
-        self.url = url_for('main.quips')
-
-    def test_no_posts(self):
-        rv = self.client.get(self.url)
-        assert '<p>Nie ma jeszcze żadnych plotek.</p>' in rv.text
-
-    def test_some_posts(self, quip_factory):
-        title = 'Tytuł 1'
-        quip = quip_factory(title=title)
-        rv = self.client.get(self.url)
-        assert f'{quip.title}</h6>' in rv.text
-
-
-@pytest.mark.usefixtures('client_class')
-class TestQuipView:
-
-    def url(self, pk: int) -> str:
-        return url_for('main.quip', quip_id=pk)
-
-    def test_not_found(self):
-        url = self.url(999)
-        rv = self.client.get(url)
-        assert rv.status_code == 404
-
-    def test_ok(self, quip_factory):
-        title = 'Tytuł 1'
-        quip = quip_factory(title=title)
-        url = self.url(quip.pk)
-        rv = self.client.get(url)
-        assert rv.status_code == 200
-        assert f'{quip.title}</h6>' in rv.text
-
-
-@pytest.mark.usefixtures('client_class')
 class TestTagView:
 
     def test_ok(self, post_factory, tag_factory, tagged_post_factory):

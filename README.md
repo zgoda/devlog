@@ -38,12 +38,6 @@ Once installed Devlog provides CLI for basic management. 1st thing is to initial
 devlog db init
 ```
 
-For testing this program you'd also need to register user account.
-
-```console
-devlog user create myusername
-```
-
 Now you may launch your local instance. By default it listens on port 5000 and it's bound only to 127.0.0.1. This is fine if you want to access it only from emulator running on the same machine (use 10.0.2.2:5000 as host name), otherwise you may specify host and port using `-h` and `-p` parameters.
 
 ```console

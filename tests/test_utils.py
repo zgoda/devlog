@@ -101,7 +101,7 @@ class TestSafeRedirect:
 class TestNextRedirect:
 
     LOCAL_HOST_URL = 'http://localhost:5000'
-    FALLBACK_ENDPOINT = 'auth.login'
+    FALLBACK_ENDPOINT = 'main.index'
 
     def test_only_fallback(self):
         assert next_redirect(self.FALLBACK_ENDPOINT) == url_for(self.FALLBACK_ENDPOINT)

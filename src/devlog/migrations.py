@@ -1,9 +1,7 @@
-from __future__ import annotations
-
 from peewee import CharField, TextField
 from playhouse.migrate import SqliteMigrator, migrate
 
-from .models import db, gen_permalink
+from .models import db
 
 migrator = SqliteMigrator(db)
 
@@ -23,7 +21,7 @@ def add_quip_permalink():
     cursor = db.execute_sql('select pk from quip')
     for row in cursor:
         pk = row[0]
-        permalink = gen_permalink()
+        permalink = 'dummy'
         db.execute_sql(
             'update quip set permalink = ? where pk = ?', params=(permalink, pk)
         )
@@ -32,9 +30,18 @@ def add_quip_permalink():
     )
 
 
+def remove_quips_table():
+    db.execute_sql('drop table quip')
+
+
+def remove_users_table():
+    db.execute_sql('drop table users')
+
+
 MIGRATIONS = {
     '001.add_post_description': add_post_description,
     '002.add_quip_permalink': add_quip_permalink,
+    '003.remove_quips': remove_quips_table,
 }
 
 

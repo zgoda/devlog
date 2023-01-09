@@ -10,15 +10,13 @@ from devlog.assets import all_css
 from devlog.models import MODELS, db
 
 from .factories import (
-    LinkFactory, PostFactory, QuipFactory, TagFactory, TaggedPostFactory, UserFactory,
+    LinkFactory, PostFactory, TagFactory, TaggedPostFactory,
 )
 
 register(TagFactory)
 register(PostFactory)
 register(TaggedPostFactory)
 register(LinkFactory)
-register(UserFactory)
-register(QuipFactory)
 
 
 class TestResponse(Response):
@@ -36,41 +34,12 @@ def faker_session_locale():
 
 
 @pytest.fixture()
-def api_login(client):
-    def _login(name: str, password: str):
-        rv = client.post('/api/v1/login', data={'name': name, 'password': password})
-        data = rv.get_json()
-        return data['token']
-    return _login
-
-
-@pytest.fixture()
-def login(client):
-    def _login(name: str, password: str):
-        return client.post(
-            '/auth/login', data={'name': name, 'password': password},
-            follow_redirects=True,
-        )
-    return _login
-
-
-@pytest.fixture()
 def mocked_responses():
     with responses.RequestsMock() as rsps:
         yield rsps
 
 
-def fake_gen_password_hash(password):
-    return password
-
-
-def fake_check_password_hash(stored, password):
-    return stored == password
-
-
-def _app_fixture(env, mocker):
-    mocker.patch('devlog.models.generate_password_hash', fake_gen_password_hash)
-    mocker.patch('devlog.models.check_password_hash', fake_check_password_hash)
+def _app_fixture():
     app = make_app(env='test')
     app.testing = True
     with app.app_context():
@@ -83,9 +52,7 @@ def _app_fixture(env, mocker):
     params=['flask_caching.backends.NullCache', 'flask_caching.backends.RedisCache'],
     ids=['null-cache', 'redis-cache'],
 )
-def app(request, mocker):
-    mocker.patch('devlog.models.generate_password_hash', fake_gen_password_hash)
-    mocker.patch('devlog.models.check_password_hash', fake_check_password_hash)
+def app(request):
     cache_type = request.param
     if request.cls:
         request.cls.cache_type = cache_type

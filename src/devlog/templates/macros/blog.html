@@ -42,21 +42,3 @@
 </div>
 {% endif %}
 {% endmacro %}
-
-{% macro render_quip(quip) %}
-<div class="col col-lg-4 col-md-6 col-sm-12 quip-box">
-  <div class="panel">
-    {% if quip.title %}
-    <div class="panel-head">
-      <h6 class="panel-title">{{ quip.title }}</h6>
-    </div>
-    {% endif %}
-    <div class="panel-body">
-      {{ quip.text_html|safe }}
-    </div>
-    <div class="panel-footer">
-      <p class="align-right"><em><a href="{{ url_for('main.quip', quip_id=quip.pk) }}">{{ format_datetime(quip.created, format='short') }}</a></em></p>
-    </div>
-  </div>
-</div>
-{% endmacro %}

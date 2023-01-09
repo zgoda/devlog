@@ -1,20 +1,16 @@
 import os
-import sys
 from typing import List
 from xml.etree import ElementTree as etree  # noqa: DUO107,N813
 
 import click
-import pyotp
 from defusedxml.ElementTree import parse
 from dotenv import find_dotenv, load_dotenv
 from flask import current_app
 from flask.cli import FlaskGroup
 
 from . import make_app
-from .api.utils import get_user
-from .ext import cache
 from .migrations import MIGRATIONS, run_migration
-from .models import MODELS, User, db
+from .models import MODELS, db
 
 
 def create_app():
@@ -57,36 +53,6 @@ def db_migrate(name):
 @db_ops.command(name='migrations', help='list available migrations')
 def db_list_migrations():
     click.echo('\n'.join(sorted(MIGRATIONS.keys())))
-
-
-@cli.group(name='user', help='user account management')
-def user_ops():
-    pass
-
-
-@user_ops.command(name='create', help='create new user account')
-@click.argument('name')
-@click.password_option('-p', '--password', help='set password', required=True)
-def user_create(name: str, password: str) -> None:
-    u = User(name=name)
-    u.set_password(password)
-    u.save()
-    cache.delete_memoized(get_user)
-    click.echo(f'User {name} created')
-
-
-@user_ops.command(name='otpclear', help='clear OTP registration status')
-@click.argument('name')
-def user_clear_otp(name: str) -> None:
-    u = User.get_or_none(User.name == name)
-    if not u:
-        click.echo(f'User {name} not found')
-        sys.exit(1)
-    u.otp_reg.dt = None
-    u.otp_secret = pyotp.random_base32()
-    u.save()
-    cache.delete_memoized(get_user)
-    click.echo(f'User {name} OTP status has been reset')
 
 
 @cli.group(name='generate', help='generate runtime artifacts')

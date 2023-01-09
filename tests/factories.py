@@ -2,11 +2,10 @@ import factory
 import markdown
 from factory.base import Factory, FactoryOptions, OptionDefault
 
-from devlog.models import Link, Post, Quip, Tag, TaggedPost, User, db
+from devlog.models import Link, Post, Tag, TaggedPost, db
 from devlog.utils.text import PostProcessor, slugify
 
 factory.Faker._DEFAULT_LOCALE = 'pl_PL'
-DEFAULT_PASSWORD = 'password'
 
 
 class PeeweeOptions(FactoryOptions):
@@ -72,19 +71,6 @@ class PostFactory(BaseFactory):
         return markdown.markdown(self.text, **PostProcessor.MD_KWARGS)
 
 
-class QuipFactory(BaseFactory):
-
-    class Meta:
-        model = Quip
-
-    author = factory.Faker('user_name')
-    text = factory.Faker('text')
-
-    @factory.lazy_attribute
-    def text_html(self):
-        return markdown.markdown(self.text, **PostProcessor.MD_KWARGS)
-
-
 class TagFactory(BaseFactory):
 
     class Meta:
@@ -111,11 +97,3 @@ class LinkFactory(BaseFactory):
     @factory.lazy_attribute
     def text_html(self):
         return markdown.markdown(self.text, **PostProcessor.MD_KWARGS)
-
-
-class UserFactory(BaseFactory):
-    name = factory.Faker('user_name')
-    password = DEFAULT_PASSWORD
-
-    class Meta:
-        model = User

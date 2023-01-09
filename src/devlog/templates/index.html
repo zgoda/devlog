@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% from "macros/blog.html" import render_post_headline, render_quip %}
+{% from "macros/blog.html" import render_post_headline %}
 
 {% block pagetitle %}Devlog &middot; Jarek Zgoda{% endblock %}
 
@@ -9,21 +9,10 @@
   <div class="row">
     <div class="col col-md-2 col-sm-4 align-center"><img src="/static/img/poyg.jpg" alt="selfie"></div>
     <div class="col col-md-10 col-sm-8">
-      <p>Dzień dobry, serdecznie państwa witam na mojej stronie. Jestem programistą w wieku przedemerytalnym, mieszkam na wsi zabitej dechami i z nudów piszę dużo mało innowacyjnego kodu. Jak to starzy ludzie, lubię sobie ponarzekać, jak również lubię jeść i gotować, w tym gotować piwo.</p>
+      <p>Dzień dobry, serdecznie państwa witam na mojej stronie. Jestem programistą w wieku przedemerytalnym, mieszkam na wsi zabitej dechami i z nudów piszę dużo mało innowacyjnego kodu. Jak to starzy ludzie, lubię sobie ponarzekać, jak również lubię jeść i gotować, w tym gotować piwo.</p>
     </div>
   </div>
 </div>
-{% if quips %}
-<section>
-  <h2>Ploteczki</h2>
-  <div class="row">
-    {% for quip in quips %}
-    {{ render_quip(quip) }}
-    {% endfor %}
-  </div>
-  <p><a href="{{ url_for('main.quips') }}">więcej...</a></p>
-</section>
-{% endif %}
 <section>
   <h2>Ostatnie posty w blogu</h2>
   {% if posts %}

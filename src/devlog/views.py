@@ -1,8 +1,7 @@
 from flask import Blueprint, abort, render_template
-from playhouse.flask_utils import get_object_or_404
 
 from .ext import cache, pages
-from .models import Link, Post, Quip, Tag, TaggedPost
+from .models import Link, Post, Tag, TaggedPost
 from .utils.pagination import Pagination
 
 bp = Blueprint('main', __name__)
@@ -16,8 +15,7 @@ def index():
         .order_by(Post.created.desc())
         .limit(5)
     )
-    quips = Quip.select().order_by(Quip.created.desc()).limit(3)
-    return render_template('index.html', posts=posts, quips=quips)
+    return render_template('index.html', posts=posts)
 
 
 @bp.route('/strona/<path:path>')
@@ -50,20 +48,6 @@ def post(y: int, m: int, d: int, slug: str):
     if post is None:
         abort(404)
     return render_template('blog/post.html', post=post)
-
-
-@bp.route('/plotki')
-def quips():
-    query = Quip.select().order_by(Quip.created.desc())
-    return render_template(
-        'blog/quips.html', pagination=Pagination(query, page_size=30)
-    )
-
-
-@bp.route('/plotka/<int:quip_id>')
-def quip(quip_id: int):
-    quip = get_object_or_404(Quip, (Quip.pk == quip_id))
-    return render_template('blog/quip.html', quip=quip)
 
 
 @bp.route('/tag/<slug>')
