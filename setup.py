@@ -40,8 +40,6 @@ REQ_BASE = [
     'python-dateutil',
     'pygments',
     'jsx-lexer',
-    'Marshmallow',
-    'nanoid',
     'defusedxml',
 ]
 
