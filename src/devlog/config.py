@@ -4,9 +4,6 @@ DEBUG = False
 TESTING = False
 DB_NAME = os.getenv('DB_NAME')
 SECRET_KEY = os.getenv('SECRET_KEY')
-TOKEN_SALT = os.getenv('TOKEN_SALT')
-TOKEN_MAX_AGE = 15*60  # 15 minutes
-SESSION_COOKIE_HTTPONLY = True
 
 POST_INCOMING_DIR = os.getenv('POST_INCOMING_DIR', 'incoming')
 LINK_INCOMING_DIR = os.getenv('LINK_INCOMING_DIR', 'newlinks')
