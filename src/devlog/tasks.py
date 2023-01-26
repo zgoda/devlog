@@ -22,7 +22,7 @@ app = make_app(os.environ.get('ENV'))
 os.makedirs(app.instance_path, exist_ok=True)
 
 
-def import_posts():  # pragma: nocover
+def import_posts() -> None:  # pragma: nocover
     with single_instance_mutex(app.instance_path, 'postimport'):
         incoming_dir = app.config['POST_INCOMING_DIR']
         if not os.path.isabs(incoming_dir):
@@ -39,7 +39,7 @@ def import_posts():  # pragma: nocover
                 text = fp.read()
             post_from_markdown(text)
             os.remove(file_path)
-            files_imported = files_imported + 1
+            files_imported += 1
         if files_imported:
             sitemap_generator()
 
@@ -69,7 +69,7 @@ def post_from_markdown(text: str) -> Post:
             TaggedPost.create(post=post, tag=tag)
 
 
-def import_links():  # pragma: nocover
+def import_links() -> None:  # pragma: nocover
     with single_instance_mutex(app.instance_path, 'linkimport'):
         incoming_dir = app.config['LINK_INCOMING_DIR']
         if not os.path.isabs(incoming_dir):
@@ -86,7 +86,7 @@ def import_links():  # pragma: nocover
                 text = fp.read()
             link_from_markdown(text)
             os.remove(file_path)
-            processed = processed + 1
+            processed += 1
         if processed:
             with app.app_context():
                 cache.delete_prefixed('links')
@@ -102,7 +102,7 @@ def link_from_markdown(text: str) -> None:
     Link.create(**kw)
 
 
-def sitemap_generator():
+def sitemap_generator() -> None:
     sitemap_filename = 'sitemap.xml'
     server_name = os.environ.get('WHERE_AM_I')
     if not server_name:
