@@ -67,11 +67,9 @@ REQ_DEV = REQ_TEST + [
     'pep8-naming',
     'dlint',
     'rstcheck',
-    'rope',
     'isort',
     'flask-shell-ipython',
     'watchdog',
-    'httpie',
 ]
 
 REQ_PROD = [
