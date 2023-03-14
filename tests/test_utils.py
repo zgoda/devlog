@@ -22,9 +22,12 @@ class TestPostDateNormalization:
 
     TZ = pytz.timezone('Europe/Warsaw')
 
-    @pytest.mark.parametrize('value', ['', None], ids=['empty-str', 'none'])
-    def test_noop(self, value):
-        assert normalize_post_date(value) == value
+    def test_noop(self, mocker):
+        now = datetime(2020, 6, 14, 20, 21, 44)
+        mocker.patch(
+            'devlog.utils.text._get_now', mocker.Mock(return_value=now)
+        )
+        assert normalize_post_date('') == now
 
     def test_date(self, mocker):
         value = date(2020, 6, 12)
@@ -33,7 +36,9 @@ class TestPostDateNormalization:
             'devlog.utils.text._get_now', mocker.Mock(return_value=now)
         )
         rv = normalize_post_date(value)
-        assert rv.time() == (now - self.TZ.utcoffset(now, is_dst=False)).time()
+        assert rv.time() == (
+            now - self.TZ.utcoffset(now, is_dst=False)  # type: ignore
+        ).time()
         assert rv.date() == value
 
     @pytest.mark.parametrize('value', [
@@ -56,17 +61,17 @@ class TestPostDateNormalization:
 class TestCacheExtension:
 
     def test_backend_is_redis(self, app):
-        if 'redis' not in self.cache_type.lower():
+        if 'redis' not in self.cache_type.lower():  # type: ignore
             pytest.skip('To be run only with Redis cache')
-        assert len(cache.cache._write_client.keys('*')) == 0
+        assert len(cache.cache._write_client.keys('*')) == 0  # type: ignore
         cache.set('prefix1:key1', 'a')
         cache.set('prefix2:key1', 'b')
-        assert len(cache.cache._write_client.keys('*')) == 2
+        assert len(cache.cache._write_client.keys('*')) == 2  # type: ignore
         assert cache.delete_prefixed('prefix1') == 1
-        assert len(cache.cache._write_client.keys('prefix1')) == 0
+        assert len(cache.cache._write_client.keys('prefix1')) == 0  # type: ignore
 
     def test_backend_is_not_redis(self, app):
-        if 'redis' in self.cache_type.lower():
+        if 'redis' in self.cache_type.lower():  # type: ignore
             pytest.skip("Can't be run with Redis cache")
         cache.set('prefix1:key1', 'a')
         cache.set('prefix2:key1', 'b')

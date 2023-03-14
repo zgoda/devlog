@@ -13,9 +13,9 @@ def url_for_other_page(page: Union[int, str]) -> str:
     :return: url for page of the same object's set
     :rtype: str
     """
-    args = request.view_args.copy()
+    args = request.view_args.copy()  # type: ignore
     args['p'] = page
-    return url_for(request.endpoint, **args)
+    return url_for(request.endpoint, **args)  # type: ignore
 
 
 def get_page(arg_name: str = 'p') -> int:
@@ -41,7 +41,7 @@ class Pagination:
         self.query = query
         self.page = page or get_page()
         self.page_size = page_size or 10
-        obj_count = count or query.count()
+        obj_count = count or query.count()  # type: ignore
         self.pages = math.ceil(obj_count / self.page_size)
         self.has_next = self.pages > self.page
         self.has_prev = self.page > 1

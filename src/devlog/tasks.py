@@ -44,7 +44,7 @@ def import_posts() -> None:  # pragma: nocover
             sitemap_generator()
 
 
-def post_from_markdown(text: str) -> Post:
+def post_from_markdown(text: str) -> None:
     pp = PostProcessor(text)
     meta = pp.process_meta()
     search_crit = (
@@ -152,11 +152,16 @@ def sitemap_generator() -> None:
         )
         for path in ['o', 'kontakt']:
             page = pages.get(path)
-            last_mod = page.meta.get('updated') or page.meta.get('published')
-            page_def = PageDef(url_for('main.page', path=path), last_mod.isoformat())
+            last_mod = \
+                page.meta.get('updated') or page.meta.get('published')  # type: ignore
+            page_def = PageDef(
+                url_for('main.page', path=path), last_mod.isoformat()
+            )
             misc.pagedefs.append(page_def)
         urlsets = [misc, posts, collections]
         sitemap = generate_sitemap(*urlsets)
-        save_sitemap_file(os.path.join(app.static_folder, sitemap_filename), sitemap)
+        save_sitemap_file(
+            os.path.join(app.static_folder, sitemap_filename), sitemap  # type: ignore
+        )
         sitemap_url = os.path.join(server_name, sitemap_filename)
         requests.get('http://www.google.com/ping', params={'sitemap': sitemap_url})

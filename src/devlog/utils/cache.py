@@ -19,7 +19,7 @@ class DevlogCache(Cache):
             'CACHE_TYPE', 'flask_caching.backends.SimpleCache'
         )
         if 'redis' in cache_type.lower():
-            redis = self.cache._write_client
+            redis = self.cache._write_client  # type: ignore
             app_prefix = current_app.config.get('CACHE_KEY_PREFIX', '')
             key_prefix = f'{app_prefix}{prefix}*'
             deleted = 0

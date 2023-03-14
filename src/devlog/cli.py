@@ -40,8 +40,8 @@ def db_clear():
     name='recreate', help='recreate all database objects from scratch'
 )
 def db_recreate():
-    db.drop_all()
-    db.create_all()
+    db.drop_all()  # type: ignore
+    db.create_all()  # type: ignore
 
 
 @db_ops.command(name='migrate', help='run schema migration script')
@@ -74,7 +74,7 @@ def gen_icons(iconset: str, names: List[str]):
         names = [n for n in names if n != 'default']
         names.extend(_default_icons)
     target = os.path.join(
-        current_app.root_path, current_app.template_folder, 'includes'
+        current_app.root_path, current_app.template_folder, 'includes'  # type: ignore
     )
     os.makedirs(target, exist_ok=True)
     target = os.path.join(target, 'icons.html')
@@ -85,7 +85,9 @@ def gen_icons(iconset: str, names: List[str]):
         ):
             return
     ns = 'http://www.w3.org/2000/svg'
-    directory = os.path.join(current_app.static_folder, 'vendor', iconset)
+    directory = os.path.join(
+        current_app.static_folder, 'vendor', iconset  # type: ignore
+    )
     includes = []
     for name in names:
         fname = f'{name}.svg'

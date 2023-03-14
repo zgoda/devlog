@@ -50,9 +50,9 @@ def stripping_markdown() -> Markdown:
             stream.write(element.tail)
         return stream.getvalue()
 
-    Markdown.output_formats['plain'] = unmark_element
-    md = Markdown(output_format='plain')
-    md.stripTopLevelTags = False
+    Markdown.output_formats['plain'] = unmark_element  # type: ignore
+    md = Markdown(output_format='plain')  # type: ignore
+    md.stripTopLevelTags = False  # type: ignore
     return md
 
 
@@ -65,8 +65,8 @@ def _get_now(utc: bool = False) -> datetime.datetime:  # pragma: nocover
 
 
 def normalize_post_date(
-            dt: Optional[Union[str, datetime.date, datetime.datetime]]
-        ) -> Optional[datetime.datetime]:
+            dt: Union[str, datetime.date, datetime.datetime]
+        ) -> datetime.datetime:
     """This function normalizes input to UTC datetime without timezone
     information (naive). If input object does not have timezone information,
     it is assumed to be local time and this may produce wrong result if at
@@ -74,25 +74,27 @@ def normalize_post_date(
 
     :param dt: input date, datetime or string representation in "common"
                format
-    :type dt: Optional[Union[str, datetime.date, datetime.datetime]]
+    :type dt: Union[str, datetime.date, datetime.datetime]
     :return: datetime in UTC without timezone information
-    :rtype: Optional[datetime.datetime]
+    :rtype: datetime.datetime
     """
-    if dt:
-        if isinstance(dt, str):
+    if isinstance(dt, str):
+        try:
             dt = parser.parse(dt, tzinfos=KNOWN_TZ)
-        if isinstance(dt, datetime.date) and not isinstance(dt, datetime.datetime):
-            dt = _get_now().replace(
-                year=dt.year, month=dt.month, day=dt.day
-            )
-        if dt.tzinfo is None:
-            tz = pytz.timezone(
-                os.environ.get('BABEL_DEFAULT_TIMEZONE', 'Europe/Warsaw')
-            )
-            dt = tz.localize(dt).astimezone(pytz.utc)
-        else:
-            dt = dt.astimezone(pytz.utc)
-        dt = dt.replace(tzinfo=None)
+        except parser.ParserError:
+            return _get_now(True)
+    if isinstance(dt, datetime.date) and not isinstance(dt, datetime.datetime):
+        dt = _get_now().replace(
+            year=dt.year, month=dt.month, day=dt.day
+        )
+    if dt.tzinfo is None:
+        tz = pytz.timezone(
+            os.environ.get('BABEL_DEFAULT_TIMEZONE', 'Europe/Warsaw')
+        )
+        dt = tz.localize(dt).astimezone(pytz.utc)
+    else:
+        dt = dt.astimezone(pytz.utc)
+    dt = dt.replace(tzinfo=None)
     return dt
 
 
@@ -180,7 +182,7 @@ class PostProcessor(MarkdownDocumentProcessor):
     def summary(self) -> str:
         return markdown.markdown(self.summary_src(self.text), **self.MD_KWARGS)
 
-    def published(self, new_post: bool, meta: PostMeta) -> datetime.datetime:
+    def published(self, new_post: bool, meta: PostMeta) -> Optional[datetime.datetime]:
         if meta.draft:
             return None
         if new_post:
