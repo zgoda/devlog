@@ -33,7 +33,7 @@ jobs:
         python -m pip install -U -e .[test] --upgrade-strategy eager
     - name: Get NPM bin directory path
       id: get-npm-bin-dir
-      run: echo "directory=$(npm bin)" >> $GITHUB_OUTPUT
+      run: echo "directory=$(npm root)/.bin" >> $GITHUB_OUTPUT
     - name: Generate assets
       env:
         SASS_BIN: "${{ steps.get-npm-bin-dir.outputs.directory }}/sass"
